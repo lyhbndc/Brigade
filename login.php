@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brigade Clothing - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
@@ -24,10 +25,20 @@
         }
 
         nav {
-            display: flex;
-            justify-content: center;
             background-color: #111;
             padding: 10px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+        }
+
+        nav .logo {
+            width: 150px; 
+            height: auto;
+            margin-left: 20px;
         }
 
         nav a {
@@ -41,17 +52,41 @@
             background-color: #575757;
         }
 
+        nav a:hover {
+            background-color: transparent;
+        }
+
+        .header {
+            margin: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        footer {
+            background-color: #111;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
         .login-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh; /* Center the form vertically */
+            height: 80vh; 
         }
 
         .login-form {
             background-color: white;
             padding: 40px;
-            border-radius: 8px;
+            border-radius: 15px;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
             width: 400px;
             text-align: center;
@@ -59,6 +94,7 @@
 
         .login-form h2 {
             margin-bottom: 20px;
+            margin-top: 10px;
         }
 
         .input-group {
@@ -73,14 +109,14 @@
         }
 
         .input-group input {
-            width: 100%;
+            width: 94%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
 
         .login-btn {
-            background-color: #4CAF50;
+            background-color: black;
             color: white;
             border: none;
             padding: 10px 15px;
@@ -90,32 +126,24 @@
         }
 
         .login-btn:hover {
-            background-color: #45a049;
+            background-color: gray;
         }
-
-        footer {
-            background-color: #111;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
+        h2{
+            font-size: 40px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
         }
     </style>
 </head>
 <body>
 <nav>
-    <a href="#">HOME</a>
-    <a href="#">SHOP</a>
-    <a href="#">NEW</a>
-    <a href="#">ON SALE</a>
+<a href="index.php">
+    <img src="logo/1.png" class="logo" > 
+</a>      
 </nav>
-
-<header>
-    <h1>Brigade Clothing - Login</h1>
-</header>
 
 <section class="login-container">
     <div class="login-form">
-        <h2>Login</h2>
+        <h2>LOGIN</h2>
         <form id="loginForm">
             <div class="input-group">
                 <label for="username">Username</label>
