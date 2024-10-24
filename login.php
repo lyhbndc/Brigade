@@ -38,7 +38,7 @@
         nav .logo {
             width: 150px; 
             height: auto;
-            margin-left: 20px;
+            margin-top: 10px;
         }
 
         nav a {
@@ -163,13 +163,12 @@
 </footer>
 
 <script>
-    // Simple login form submission handling
+
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
-        // Here you can add your logic for authentication
         alert(`Logging in with Username: ${username} and Password: ${password}`);
     });
 </script>

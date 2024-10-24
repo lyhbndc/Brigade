@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brigade Clothing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,6 +32,7 @@
             width: 150px;
             height: auto;
             margin-top: 10px;
+            margin-left: 20px;
         }
 
         .nav-links {
@@ -161,6 +163,16 @@
             text-align: center;
             padding: 20px 0;
         }
+        h2 {
+            text-align: left;
+            font-family: Poppins;
+            font-weight: 600;
+        }
+        h1 {
+            text-align: center;
+            font-family: Poppins;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -181,11 +193,12 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-person" viewBox="0 0 16 16">
                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
             </svg>
+        </a>
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="31" fill="white" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
             <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" fill="white" class="bi bi-cart" viewBox="0 0 16 16">
                 <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-            </svg>
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="31" fill="white" class="bi bi-search" viewBox="0 0 16 16">
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
             </svg>
         </div>
        
@@ -200,23 +213,30 @@
 </section>
 
 <section class="products-section">
-    <h2>See What's New</h2>
+    <h2>SEE WHAT'S NEW</h2>
     <div class="product-grid">
         <div class="product-card">
-            <img src="https://via.placeholder.com/400x400" alt="Brigade Clothing">
+        <a href="products/1.php">
+            <img src="assets/shirts/Racer/1.png" alt="Brigade Clothing">
+        </a>
             <h3>Brigade Clothing</h3>
             <p class="price">$625</p>
         </div>
         <div class="product-card">
-            <img src="https://via.placeholder.com/400x400" alt="Brigade Clothing">
+        <a href="products/1.php">
+            <img src="assets/shirts/Racer/1.png" alt="Brigade Clothing">
+        </a>
             <h3>Brigade Clothing</h3>
             <p class="price">$625</p>
         </div>
         <div class="product-card">
-            <img src="https://via.placeholder.com/400x400" alt="Brigade Clothing">
+        <a href="products/1.php">
+            <img src="assets/shirts/Racer/1.png" alt="Brigade Clothing">
+        </a>
             <h3>Brigade Clothing</h3>
             <p class="price">$625</p>
         </div>
+        <h1>SEE WHAT'S NEW</h1>
     </div>
 </section>
 
