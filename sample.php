@@ -9,7 +9,7 @@
   <meta name="generator" content="Hugo 0.72.0">
   <title>Album example · Bootstrap</title>
 
-  <link rel="canonical" href="https://v5.getbootstrap.com/docs/5.0/examples/album/">
+  <link rel="canonical" href="https://v5.getbootstrap.com/docs/5.0/examples/album/">ab hmsavkjdhajhda
 
 
 
