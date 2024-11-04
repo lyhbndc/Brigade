@@ -15,82 +15,72 @@
             background-color: white;
             color: black;
         }
-        .login-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            width: 350px;
-            margin: 30px auto; /* Center the form */
-            text-align: center;
-        }
         h2 {
             margin-bottom: 20px;
             font-size: 30px;
             color: black;
             font-weight: bold;
         }
-        label {
-            display: block;
-            text-align: left;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #444;
-            border-radius: 20px;
-            background-color: white;
-            color: gray;
-            font-size: 14px;
-            transition: border 0.3s;
-        }
-        input[type="text"]:focus,
-        input[type="password"]:focus {
-            border: 1px solid gray;
-            outline: none;
-        }
-        input[type="submit"] {
-            background-color: black;
-            color: white;
-            margin-top: 10px;
-            padding: 12px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 280px;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        input[type="submit"]:hover {
-            background-color: #555;
-            transform: translateY(-1px);
-        }
-        .forgot-password {
-            margin-top: 10px;
-            font-size: 12px;
-        }
-        .forgot-password a {
-            color: #bbb;
-            text-decoration: none;
-        }
-        .forgot-password a:hover {
-            text-decoration: underline;
-        }
-        .toggle-password {
-            cursor: pointer;
-            position: absolute;
-            right: 20px;
-            top: 24px;
-            color: gray;
-            font-size: 20px;
-        }
         .footer-logo{
            cursor: default; 
         }
+        .account-container {
+        width: 80%;
+        max-width: 900px;
+        margin: 0 auto;
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+    .logout {
+        color: #333;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .account-content {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 0;
+    }
+
+    .order-history, .account-details {
+        width: 48%;
+    }
+
+    .order-history h2, .account-details h2 {
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .order-history p, .account-details p {
+        font-size: 14px;
+        margin: 10px 0;
+        color: #666;
+    }
+
+    .view-addresses {
+        color: #333;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .title h1 {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+    }
     </style>
 </head>
 
@@ -105,7 +95,6 @@
                         <div class="col-md-12">
                             <div class="top_nav_left">
                                 <div class="marquee">
-                                    <span>Free shipping on orders over P1,500  </span>
                                 </div>
                             </div>
                         </div>
@@ -126,14 +115,31 @@
                                 <a href="#"><img src="assets/1.png"></a>
                             </div>
                             <nav class="navbar">
-                                
+                                <ul class="navbar_menu">
+                                    <li><a href="#">home</a></li>
+                                    <li><a href="#">shop</a></li>
+                                    <li><a href="#">new</a></li>
+                                    <li><a href="#">on sale</a></li>
+                                </ul>
+                                <ul class="navbar_user">
+                                    <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+                                    <li class="checkout">
+                                        <a href="#">
+                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                            <span id="checkout_items" class="checkout_items">100</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="hamburger_container">
+                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                </div>
                             </nav>
                         </div>
                     </div>
                 </div>
             </div>
-        </header>
-
+            </header>
         <div class="fs_menu_overlay"></div>
 
         <!-- Hamburger Menu -->
@@ -158,37 +164,27 @@
                 </ul>
             </div>
         </div>
-
-        <div class="container single_product_container">
-            <div class="row">
-                <div class="col">
-                    <!-- Login Form -->
-                    <div class="login-container">
-                        <img src="assets/2.png" class="footer-logo">
-                        <form action="/your-login-endpoint" method="post">
-                            <label for="username">Username:</label>
-                            <input type="text" id="username" name="username" required>
-                            
-                            <label for="password">Password:</label>
-                            <div style="position: relative;">
-                                <input type="password" id="password" name="password" required>
-                                <i id="toggle-password-icon" class="fa fa-eye toggle-password" onclick="togglePassword()"></i>
-                            </div>
-                            
-                            <input type="submit" value="Login">
-                            <div class="forgot-password">
-                                <a href="#">Forgot Password?</a>
-                            </div>
-                            <br>
-                            <div class="sign-up-link">
-                               <a>Don't have an account? </a> <a href="">Sign up</a>
-                            </div>
-                        </form>
+        <br><br><br><br><br><br><br>
+                    <div class="title">
+                    <div class="account-container">
+                        <h1>My Account</h1>
+                        <div class="account-content">
+                            <div class="order-history">
+                                <h2>Order History</h2>
+                                <p>You haven't placed any orders yet.</p>
                     </div>
-                </div>
-            </div>
-        </div>
-
+                        <div class="account-details">
+                            <h2>Account Details</h2>
+                            <p>Username: Angcuteko213</p>
+                            <p>Country: Philippines</p>
+                            <p>Address: 1234 Example Street, City Name, Region, Postal Code</p>
+                        </div>
+                    </div>
+                    <br><br><br><br><br><br><br>
+                </div>   
+                </div>   
+                     
+            
         <!-- Footer -->
         <br><br><br><br>
         <footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
@@ -197,7 +193,7 @@
                     <div class="col-sm-6 col-lg-3 p-b-50">
                         <br>
                         <h4 class="stext-301 cl0 p-b-30">
-                            <a href="#"><img src="assets/Untitled design.png" class="footer-logo"></a>
+                            <img src="assets/Untitled design.png" class="footer-logo">
                         </h4>
                         <p class="stext-107 cl7 size-201">
                             Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
@@ -242,20 +238,5 @@
             <br><br>
         </footer>
     </div>
-    <script>
-        function togglePassword() {
-            const passwordField = document.getElementById('password');
-            const toggleIcon = document.getElementById('toggle-password-icon');
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        }
-    </script>
 </body>
 </html>

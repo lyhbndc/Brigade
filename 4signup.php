@@ -20,7 +20,7 @@
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            width: 350px;
+            width: 600px;
             margin: 30px auto; /* Center the form */
             text-align: center;
         }
@@ -36,7 +36,7 @@
             margin-bottom: 5px;
             font-size: 14px;
         }
-        input[type="text"],
+        input[type="text"],input[type="email"],
         input[type="password"] {
             width: 100%;
             padding: 12px;
@@ -84,7 +84,7 @@
             cursor: pointer;
             position: absolute;
             right: 20px;
-            top: 24px;
+            top: 13px;
             color: gray;
             font-size: 20px;
         }
@@ -105,7 +105,6 @@
                         <div class="col-md-12">
                             <div class="top_nav_left">
                                 <div class="marquee">
-                                    <span>Free shipping on orders over P1,500  </span>
                                 </div>
                             </div>
                         </div>
@@ -165,25 +164,55 @@
                     <!-- Login Form -->
                     <div class="login-container">
                         <img src="assets/2.png" class="footer-logo">
-                        <form action="/your-login-endpoint" method="post">
-                            <label for="username">Username:</label>
-                            <input type="text" id="username" name="username" required>
-                            
-                            <label for="password">Password:</label>
-                            <div style="position: relative;">
-                                <input type="password" id="password" name="password" required>
-                                <i id="toggle-password-icon" class="fa fa-eye toggle-password" onclick="togglePassword()"></i>
+                        <br><br>
+                        <form action="/your-signup-endpoint" method="post">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="first-name">First Name:</label>
+                                    <input type="text" id="first-name" name="first_name" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="last-name">Last Name:</label>
+                                    <input type="text" id="last-name" name="last_name" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address:</label>
+                                <input type="text" id="address" name="address" class="form-control" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="city">City:</label>
+                                    <input type="text" id="city" name="city" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="zip">Zip Code:</label>
+                                    <input type="text" id="zip" name="zip_code" class="form-control" required>
+                                </div>
                             </div>
                             
-                            <input type="submit" value="Login">
-                            <div class="forgot-password">
-                                <a href="#">Forgot Password?</a>
+                            <div class="form-group">
+                                <label for="contact">Contact No:</label>
+                                <input type="text" id="contact" name="contact_no" class="form-control" required>
                             </div>
-                            <br>
-                            <div class="sign-up-link">
-                               <a>Don't have an account? </a> <a href="">Sign up</a>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
                             </div>
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="text" id="username" name="username" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <div style="position: relative;">
+                                    <input type="password" id="signup-password" name="password" class="form-control" required>
+                                    <i id="toggle-signup-password-icon" class="fa fa-eye toggle-password" onclick="toggleSignupPassword()"></i>
+                                </div>
+                            </div>
+                            <input type="submit" value="Sign Up" class="btn btn-primary">
                         </form>
+                        <br>
                     </div>
                 </div>
             </div>
@@ -197,7 +226,7 @@
                     <div class="col-sm-6 col-lg-3 p-b-50">
                         <br>
                         <h4 class="stext-301 cl0 p-b-30">
-                            <a href="#"><img src="assets/Untitled design.png" class="footer-logo"></a>
+                            <img src="assets/Untitled design.png" class="footer-logo">
                         </h4>
                         <p class="stext-107 cl7 size-201">
                             Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
@@ -243,9 +272,9 @@
         </footer>
     </div>
     <script>
-        function togglePassword() {
-            const passwordField = document.getElementById('password');
-            const toggleIcon = document.getElementById('toggle-password-icon');
+        function toggleSignupPassword() {
+            const passwordField = document.getElementById('signup-password');
+            const toggleIcon = document.getElementById('toggle-signup-password-icon');
             if (passwordField.type === 'password') {
                 passwordField.type = 'text';
                 toggleIcon.classList.remove('fa-eye');
