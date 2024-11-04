@@ -179,7 +179,7 @@
                             </div>
                             <br>
                             <div class="sign-up-link">
-                               <a>Don't have an account? </a> <a href="">Sign up</a>
+                               <a>Don't have an account? </a> <a href="4signup.php">Sign up</a>
                             </div>
                         </form>
                     </div>
