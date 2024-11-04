@@ -27,7 +27,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-6">
-						<div class="top_nav_left">free shipping on all PH orders over P2500</div>
+					
 					</div>
 				</div>
 			</div>

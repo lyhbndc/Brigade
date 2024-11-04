@@ -33,7 +33,6 @@
 					<div class="col-md-12">
 						<div class="top_nav_left">
 							<div class="marquee">
-								<span>Free shipping on orders over P1,500  </span>
 							</div>
 						</div>
 					</div>
