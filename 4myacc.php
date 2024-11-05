@@ -1,3 +1,29 @@
+<?php
+session_start();
+
+    $user = $_SESSION['user'];
+    $conn = mysqli_connect("localhost", "root", "", "brigade");
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+$fullname = ""; // Initialize $fullname variable
+
+$query = "SELECT * FROM user WHERE Username = '$user'";
+$result = mysqli_query($conn, $query);
+
+if ($result && mysqli_num_rows($result) > 0) {
+    // Output data of each row
+    while ($row = mysqli_fetch_assoc($result)) {
+        $city = $row["City"];
+        $email = $row["Email"];
+        $address = $row["Address"];
+    }
+} 
+
+mysqli_close($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -126,7 +152,7 @@
                                     <li class="checkout">
                                         <a href="#">
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items">100</span>
+                                            <span id="checkout_items" class="checkout_items">0</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -172,12 +198,15 @@
                                 <h2>Order History</h2>
                                 <p>You haven't placed any orders yet.</p>
                     </div>
-                        <div class="account-details">
-                            <h2>Account Details</h2>
-                            <p>Username: Angcuteko213</p>
-                            <p>Country: Philippines</p>
-                            <p>Address: 1234 Example Street, City Name, Region, Postal Code</p>
-                        </div>
+                    <div class="account-details">
+    <h2>Account Details</h2>
+    <p><strong>Email:</strong> <span><?php echo $email; ?></span></p>
+    <p><strong>Address:</strong> <span><?php echo $address; ?></span></p>
+    <p><strong>City:</strong> <span><?php echo $city; ?></span></p>
+        <p><strong>Country:</strong> <span>Philippines</span></p>
+        <p><strong>Address:</strong> <span>1234 Example Street, City Name, Region, Postal Code</span></p>
+    </div>
+</div>
                     </div>
                     <br><br><br><br><br><br><br>
                 </div>   

@@ -1,3 +1,41 @@
+<?php
+session_start();
+
+$conn = mysqli_connect("localhost", "root", "", "brigade");
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+if (isset($_POST['next'])) {
+    if (isset($_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['password'], $_POST['city'],$_POST['zip_code'], $_POST['contact_no'], $_POST['email'], $_POST['username']) && !empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['zip_code']) && !empty($_POST['contact_no']) && !empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['password'])) {
+
+        $firstname = $_POST['first_name'];
+        $lastname = $_POST['last_name'];
+        $address = $_POST['address'];
+        $city =  $_POST['city'];
+        $zip = $_POST['zip_code'];
+        $contact = $_POST['contact_no'];
+        $email = $_POST['email'];
+        $user = $_POST['username'];
+        $pass = $_POST['password'];
+
+        $query = "INSERT INTO user (firstname, lastname, address, city,zip, contact, email, username, password) VALUES ('$firstname', '$lastname', '$address', '$city','$zip', '$contact', '$email', '$user', '$pass')";
+        $result = mysqli_query($conn, $query);
+
+        if ($result) {
+            header("Location: 4login.php");
+            exit();
+        } else {
+            echo "Error: " . mysqli_error($conn);
+        }
+    } else {
+        echo "Please fill in all fields.";
+    }
+}
+
+mysqli_close($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -165,7 +203,7 @@
                     <div class="login-container">
                         <img src="assets/2.png" class="footer-logo">
                         <br><br>
-                        <form action="/your-signup-endpoint" method="post">
+                        <form method="POST">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="first-name">First Name:</label>
@@ -210,7 +248,7 @@
                                     <i id="toggle-signup-password-icon" class="fa fa-eye toggle-password" onclick="toggleSignupPassword()"></i>
                                 </div>
                             </div>
-                            <input type="submit" value="Sign Up" class="btn btn-primary">
+                            <input type="submit" name ="next" value="Sign Up" class="btn btn-primary">
                         </form>
                         <br>
                     </div>

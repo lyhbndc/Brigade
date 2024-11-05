@@ -1,3 +1,37 @@
+<?php
+session_start();
+
+$conn = mysqli_connect("localhost", "root", "", "brigade");
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+if (isset($_POST['login'])) {
+    if (isset($_POST['username'], $_POST['password']) && !empty($_POST['username']) && !empty($_POST['password'])) {
+        $user = $_POST['username'];
+        $pass = $_POST['password'];
+       
+        $query = "SELECT * FROM user WHERE Username='$user' AND Password='$pass'";
+        $result = mysqli_query($conn, $query);
+
+        if (mysqli_num_rows($result) == 1) {
+            $row = mysqli_fetch_assoc($result);
+            $id = $row['ID'];
+            $_SESSION['user'] = $user; // Save user data to session
+            $_SESSION['id'] = $id;
+            header("Location: /Brigade/1index.php");
+            exit;
+        } else {
+            echo "Invalid username or password";
+        }
+    } else {
+        echo "Please fill in both fields";
+    }
+}
+
+mysqli_close($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -163,7 +197,7 @@
                     <!-- Login Form -->
                     <div class="login-container">
                         <img src="assets/2.png" class="footer-logo">
-                        <form action="/your-login-endpoint" method="post">
+                        <form method="POST">
                             <label for="username">Username:</label>
                             <input type="text" id="username" name="username" required>
                             
@@ -173,7 +207,7 @@
                                 <i id="toggle-password-icon" class="fa fa-eye toggle-password" onclick="togglePassword()"></i>
                             </div>
                             
-                            <input type="submit" value="Login">
+                            <input type="submit" name="login" value="Login">
                             <div class="forgot-password">
                                 <a href="#">Forgot Password?</a>
                             </div>
