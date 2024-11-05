@@ -1,29 +1,3 @@
-<?php
-session_start();
-
-    $user = $_SESSION['user'];
-    $conn = mysqli_connect("localhost", "root", "", "brigade");
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
-$fullname = ""; // Initialize $fullname variable
-
-$query = "SELECT * FROM user WHERE Username = '$user'";
-$result = mysqli_query($conn, $query);
-
-if ($result && mysqli_num_rows($result) > 0) {
-    // Output data of each row
-    while ($row = mysqli_fetch_assoc($result)) {
-        $city = $row["City"];
-        $email = $row["Email"];
-        $address = $row["Address"];
-    }
-} 
-
-mysqli_close($conn);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,76 +10,29 @@ mysqli_close($conn);
     <link rel="stylesheet" type="text/css" href="styles/single_styles.css">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
     <style>
-        body {
-            background-color: white;
-            color: black;
+        .checkout-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        h2 {
-            margin-bottom: 20px;
-            font-size: 30px;
-            color: black;
+        .checkout-header {
             font-weight: bold;
+            font-size: 1.5em;
+            text-align: center;
+            margin-bottom: 20px;
         }
-        .footer-logo{
-           cursor: default; 
+        .checkout-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #333;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
         }
-        .account-container {
-        width: 80%;
-        max-width: 900px;
-        margin: 0 auto;
-        font-family: Arial, sans-serif;
-        color: #333;
-    }
-    .logout {
-        color: #333;
-        text-decoration: none;
-        font-size: 16px;
-        font-weight: bold;
-    }
-
-    .account-content {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px 0;
-    }
-
-    .order-history, .account-details {
-        width: 48%;
-    }
-
-    .order-history h2, .account-details h2 {
-        font-size: 16px;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin-bottom: 10px;
-        color: #333;
-    }
-
-    .order-history p, .account-details p {
-        font-size: 14px;
-        margin: 10px 0;
-        color: #666;
-    }
-
-    .view-addresses {
-        color: #333;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: bold;
-    }
-    .title {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px 0;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .title h1 {
-        font-size: 24px;
-        font-weight: bold;
-        margin: 0;
-    }
     </style>
 </head>
 
@@ -137,11 +64,11 @@ mysqli_close($conn);
                     <div class="row">
                         <div class="col-lg-12 text-right">
                             <div class="logo_container">
-                                <a href="#"><img src="assets/1.png"></a>
+                                <a href="1index.php"><img src="assets/1.png"></a>
                             </div>
                             <nav class="navbar">
                                 <ul class="navbar_menu">
-                                    <li><a href="#">home</a></li>
+                                    <li><a href="index.html">home</a></li>
                                     <li><a href="#">shop</a></li>
                                     <li><a href="#">new</a></li>
                                     <li><a href="#">on sale</a></li>
@@ -152,7 +79,7 @@ mysqli_close($conn);
                                     <li class="checkout">
                                         <a href="3cart.php">
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items">0</span>
+                                            <span id="checkout_items" class="checkout_items">2</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -164,9 +91,11 @@ mysqli_close($conn);
                     </div>
                 </div>
             </div>
-            </header>
+    
+        </header>
+    
         <div class="fs_menu_overlay"></div>
-
+    
         <!-- Hamburger Menu -->
         <div class="hamburger_menu">
             <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
@@ -189,30 +118,76 @@ mysqli_close($conn);
                 </ul>
             </div>
         </div>
-        <br><br><br><br><br><br><br>
-                    <div class="title">
-                    <div class="account-container">
-                        <h1>My Account</h1>
-                        <div class="account-content">
-                            <div class="order-history">
-                                <h2>Order History</h2>
-                                <p>You haven't placed any orders yet.</p>
+
+        <div class="container single_product_container">
+            <div class="row">
+                <div class="col">
+                    <div class="checkout-container">
+                        <div class="checkout-header">Checkout</div>
+                    
+                        <form>
+                            <!-- Personal Information -->
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter your full name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                            </div>
+                    
+                            <!-- Shipping Address -->
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="city">City</label>
+                                    <input type="text" class="form-control" id="city" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="state">State</label>
+                                    <input type="text" class="form-control" id="state" required>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="zip">Zip</label>
+                                    <input type="text" class="form-control" id="zip" required>
+                                </div>
+                            </div>
+                    
+                            <!-- Payment Information -->
+                            <div class="form-group">
+                                <label for="cardName">Name on Card</label>
+                                <input type="text" class="form-control" id="cardName" placeholder="Name as it appears on card" required>
+                            </div>
+                    
+                            <div class="form-group">
+                                <label for="cardNumber">Credit Card Number</label>
+                                <input type="text" class="form-control" id="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX" required>
+                            </div>
+                    
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="expiry">Expiration Date</label>
+                                    <input type="text" class="form-control" id="expiry" placeholder="MM/YY" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="cvv">CVV</label>
+                                    <input type="text" class="form-control" id="cvv" placeholder="XXX" required>
+                                </div>
+                            </div>
+                    
+                            <button type="submit" class="checkout-button">Place Order</button>
+                        </form>
                     </div>
-                    <div class="account-details">
-    <h2>Account Details</h2>
-    <p><strong>Email:</strong> <span><?php echo $email; ?></span></p>
-    <p><strong>Address:</strong> <span><?php echo $address; ?></span></p>
-    <p><strong>City:</strong> <span><?php echo $city; ?></span></p>
-        <p><strong>Country:</strong> <span>Philippines</span></p>
-        <p><strong>Address:</strong> <span>1234 Example Street, City Name, Region, Postal Code</span></p>
-    </div>
-</div>
                     </div>
-                    <br><br><br><br><br><br><br>
-                </div>   
-                </div>   
-                     
-            
+                    </div>
+                    </div>
+
+
         <!-- Footer -->
         <br><br><br><br>
         <footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
@@ -221,7 +196,7 @@ mysqli_close($conn);
                     <div class="col-sm-6 col-lg-3 p-b-50">
                         <br>
                         <h4 class="stext-301 cl0 p-b-30">
-                            <img src="assets/Untitled design.png" class="footer-logo">
+                            <a href="#"><img src="assets/Untitled design.png" class="footer-logo"></a>
                         </h4>
                         <p class="stext-107 cl7 size-201">
                             Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
@@ -266,7 +241,10 @@ mysqli_close($conn);
             <br><br>
         </footer>
     </div>
-    <script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
     const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
     function updateCart() {
@@ -301,6 +279,6 @@ mysqli_close($conn);
 
     // Update cart count on page load
     updateCart();
-</script> 
+</script>
 </body>
 </html>

@@ -1,29 +1,3 @@
-<?php
-session_start();
-
-    $user = $_SESSION['user'];
-    $conn = mysqli_connect("localhost", "root", "", "brigade");
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
-$fullname = ""; // Initialize $fullname variable
-
-$query = "SELECT * FROM user WHERE Username = '$user'";
-$result = mysqli_query($conn, $query);
-
-if ($result && mysqli_num_rows($result) > 0) {
-    // Output data of each row
-    while ($row = mysqli_fetch_assoc($result)) {
-        $city = $row["City"];
-        $email = $row["Email"];
-        $address = $row["Address"];
-    }
-} 
-
-mysqli_close($conn);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,76 +10,81 @@ mysqli_close($conn);
     <link rel="stylesheet" type="text/css" href="styles/single_styles.css">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
     <style>
-        body {
-            background-color: white;
-            color: black;
+        .cart-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        h2 {
+        .cart-header {
+            font-weight: bold;
+            font-size: 1.5em;
+            text-align: center;
             margin-bottom: 20px;
-            font-size: 30px;
-            color: black;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            border-radius: 4px;
+        }
+        .cart-item-info {
+            flex-grow: 1;
+            margin-left: 15px;
+        }
+        .cart-item-info h6 {
+            margin: 0;
+            font-size: 1em;
             font-weight: bold;
         }
-        .footer-logo{
-           cursor: default; 
+        .cart-item-info p {
+            margin: 5px 0;
+            font-size: 0.9em;
         }
-        .account-container {
-        width: 80%;
-        max-width: 900px;
-        margin: 0 auto;
-        font-family: Arial, sans-serif;
-        color: #333;
-    }
-    .logout {
-        color: #333;
-        text-decoration: none;
-        font-size: 16px;
-        font-weight: bold;
-    }
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+        }
+        .cart-item-quantity input {
+            width: 40px;
+            text-align: center;
+            margin: 0 5px;
+        }
+        .cart-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .checkout-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #333;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+        }
+        .checkout-button:hover {
+    background-color: #555; 
+    cursor: pointer;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
-    .account-content {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px 0;
-    }
-
-    .order-history, .account-details {
-        width: 48%;
-    }
-
-    .order-history h2, .account-details h2 {
-        font-size: 16px;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin-bottom: 10px;
-        color: #333;
-    }
-
-    .order-history p, .account-details p {
-        font-size: 14px;
-        margin: 10px 0;
-        color: #666;
-    }
-
-    .view-addresses {
-        color: #333;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: bold;
-    }
-    .title {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px 0;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .title h1 {
-        font-size: 24px;
-        font-weight: bold;
-        margin: 0;
-    }
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
     </style>
 </head>
 
@@ -137,11 +116,11 @@ mysqli_close($conn);
                     <div class="row">
                         <div class="col-lg-12 text-right">
                             <div class="logo_container">
-                                <a href="#"><img src="assets/1.png"></a>
+                                <a href="1index.php"><img src="assets/1.png"></a>
                             </div>
                             <nav class="navbar">
                                 <ul class="navbar_menu">
-                                    <li><a href="#">home</a></li>
+                                    <li><a href="index.html">home</a></li>
                                     <li><a href="#">shop</a></li>
                                     <li><a href="#">new</a></li>
                                     <li><a href="#">on sale</a></li>
@@ -150,9 +129,9 @@ mysqli_close($conn);
                                     <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
                                     <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
                                     <li class="checkout">
-                                        <a href="3cart.php">
+                                        <a href="#">
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items">0</span>
+                                            <span id="checkout_items" class="checkout_items">2</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -164,9 +143,11 @@ mysqli_close($conn);
                     </div>
                 </div>
             </div>
-            </header>
+    
+        </header>
+    
         <div class="fs_menu_overlay"></div>
-
+    
         <!-- Hamburger Menu -->
         <div class="hamburger_menu">
             <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
@@ -189,30 +170,29 @@ mysqli_close($conn);
                 </ul>
             </div>
         </div>
-        <br><br><br><br><br><br><br>
-                    <div class="title">
-                    <div class="account-container">
-                        <h1>My Account</h1>
-                        <div class="account-content">
-                            <div class="order-history">
-                                <h2>Order History</h2>
-                                <p>You haven't placed any orders yet.</p>
+
+        <div class="container single_product_container">
+        <div class="row">
+            <div class="col">
+                <div class="cart-container">
+                    <div class="cart-header">Cart</div>
+                    <div id="cart-items-container"></div>
+                    <div class="cart-footer">
+                        <p>Shipping & taxes calculated at checkout</p>
+                        <a href="checkout.html"><button class="checkout-button">CHECK OUT</button></a>
                     </div>
-                    <div class="account-details">
-    <h2>Account Details</h2>
-    <p><strong>Email:</strong> <span><?php echo $email; ?></span></p>
-    <p><strong>Address:</strong> <span><?php echo $address; ?></span></p>
-    <p><strong>City:</strong> <span><?php echo $city; ?></span></p>
-        <p><strong>Country:</strong> <span>Philippines</span></p>
-        <p><strong>Address:</strong> <span>1234 Example Street, City Name, Region, Postal Code</span></p>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+
                     </div>
-                    <br><br><br><br><br><br><br>
-                </div>   
-                </div>   
-                     
-            
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+
+
         <!-- Footer -->
         <br><br><br><br>
         <footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
@@ -221,7 +201,7 @@ mysqli_close($conn);
                     <div class="col-sm-6 col-lg-3 p-b-50">
                         <br>
                         <h4 class="stext-301 cl0 p-b-30">
-                            <img src="assets/Untitled design.png" class="footer-logo">
+                            <a href="#"><img src="assets/Untitled design.png" class="footer-logo"></a>
                         </h4>
                         <p class="stext-107 cl7 size-201">
                             Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
@@ -268,39 +248,70 @@ mysqli_close($conn);
     </div>
     <script>
     const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    const cartItemsContainer = document.getElementById('cart-items-container');
 
-    function updateCart() {
-        const cartCountElement = document.getElementById('checkout_items');
-        cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    function renderCartItems() {
+        cartItemsContainer.innerHTML = ''; // Clear the container
+        if (cartItems.length === 0) {
+            cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+            updateCartCount();
+            return;
+        }
+
+        cartItems.forEach((item, index) => {
+            const cartItemDiv = document.createElement('div');
+            cartItemDiv.className = 'cart-item';
+            cartItemDiv.innerHTML = `
+                <img src="${item.image}" alt="Product Image">
+                <div class="cart-item-info">
+                    <h6>${item.name}</h6>
+                    <p>${item.price}</p>
+                </div>
+                <div class="cart-item-quantity">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, -1)">-</button>
+                    <input type="number" value="${item.quantity || 1}" min="1" id="quantity-${index}">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, 1)">+</button>
+                </div>
+                <button class="btn btn-link text-danger" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button>
+            `;
+            cartItemsContainer.appendChild(cartItemDiv);
+        });
+        updateCartCount();
     }
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default anchor click behavior
-            const productItem = button.closest('.product-item');
-            const productId = productItem.getAttribute('data-id');
-            const productName = productItem.querySelector('.product_name a').textContent;
-            const productImage = productItem.querySelector('.product_image img').src;
-            const productPrice = productItem.querySelector('.product_price').textContent;
+    function changeQuantity(index, delta) {
+        const quantityInput = document.getElementById(`quantity-${index}`);
+        let quantity = parseInt(quantityInput.value) + delta;
+        if (quantity < 1) {
+            quantity = 1; // Minimum quantity is 1
+        }
+        quantityInput.value = quantity;
 
-            // Check if item already exists in the cart
-            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
-            if (existingItemIndex > -1) {
-                // Increase quantity if it already exists
-                cartItems[existingItemIndex].quantity += 1;
-            } else {
-                // Add new item to cart with a default quantity of 1
-                cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
-            }
+        // Update the item in the cartItems array
+        cartItems[index].quantity = quantity;
+        // Update local storage
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        updateCartCount(); // Update the cart count in the header
+    }
 
-            updateCart(); // Update the cart display
-            alert(`${productName} has been added to your cart!`);
-        });
-    });
+    function removeItem(index) {
+        // Remove the item from the cart items array
+        cartItems.splice(index, 1);
+        // Update local storage
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        // Re-render the cart items
+        renderCartItems();
+        updateCartCount();
+    }
 
-    // Update cart count on page load
-    updateCart();
-</script> 
+    function updateCartCount() {
+        const cartCountElement = document.getElementById('checkout_items');
+        cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
+    }
+
+    // Call the function to render cart items
+    renderCartItems();
+</script>
 </body>
 </html>
+

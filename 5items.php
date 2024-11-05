@@ -77,7 +77,7 @@
 								<li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
 								<li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
 								<li class="checkout">
-									<a href="#">
+									<a href="3cart.php">
 										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
 										<span id="checkout_items" class="checkout_items">2</span>
 									</a>
@@ -375,6 +375,45 @@
 <script src="plugins/easing/easing.js"></script>
 <script src="plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 <script src="js/single_custom.js"></script>
-</body>
+<script>
+    // Initialize the cart items from localStorage
+    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
+    // Function to update the cart count in the header
+    function updateCartCount() {
+        const cartCountElement = document.getElementById('checkout_items');
+        cartCountElement.textContent = cartItems.reduce((total, item) => total + item.quantity, 0);
+    }
+
+    // Add event listener to "Add to Cart" button
+    document.querySelector('.add_to_cart_button a').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        // Product details
+        const productId = "1";  // This could be dynamically set based on your product data
+        const productName = document.querySelector('.product_details_title h2').textContent;
+        const productPrice = document.querySelector('.product_price').textContent.trim();
+        const productImage = document.querySelector('.single_product_image_background').style.backgroundImage.replace(/url\(["']?(.+?)["']?\)/, '$1');
+        const quantity = parseInt(document.getElementById('quantity_value').textContent);
+
+        // Check if the item is already in the cart
+        const existingItemIndex = cartItems.findIndex(item => item.id === productId);
+        if (existingItemIndex > -1) {
+            // Increase quantity if item exists
+            cartItems[existingItemIndex].quantity += quantity;
+        } else {
+            // Add new item
+            cartItems.push({ id: productId, name: productName, price: productPrice, image: productImage, quantity });
+        }
+
+        // Update localStorage and cart count
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        updateCartCount();
+        alert(`${productName} has been added to your cart!`);
+    });
+
+    // Update cart count on page load
+    document.addEventListener('DOMContentLoaded', updateCartCount);
+</script>
+</body>
 </html>
