@@ -160,156 +160,260 @@
 
 								<div class="product-grid">
 
-									<!-- Product 1 -->
-
-									<div class="product-item tees" data-id="1">
+								<div class="product-item shorts" data-id="1">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
                                                 <img src="images/product_1.png" alt="">
                                             </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
                                                 <h6 class="product_name"><a href="single.html">Brigade Clothing - Let's Get High (Black)</a></h6>
-                                                <div class="product_price">₱700.00</div>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
 
-									<!-- Product 2 -->
-
-									<div class="product-item tees" data-id="2">
+									<div class="product-item shorts" data-id="2">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
                                                 <img src="images/product_1.png" alt="">
                                             </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Brigade Clothing - Lucky (Black)</a></h6>
-                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                                <h6 class="product_name"><a href="single.html">BBrigade Clothing - Lucky (Black)</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
-									
-                                    <div class="product-item tees" data-id="3">
+                                    <div class="product-item shorts" data-id="3">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
                                                 <img src="images/product_1.png" alt="">
                                             </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
                                                 <h6 class="product_name"><a href="single.html">Brigade Clothing - Chase Dream (Blue)</a></h6>
-                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
-
-                                    <div class="product-item tees" data-id="4">
+									<div class="product-item shorts" data-id="4">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
                                                 <img src="images/product_1.png" alt="">
                                             </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
                                                 <h6 class="product_name"><a href="single.html">Brigade Clothing - Coldest (Blue)</a></h6>
-                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+									<div class="product-item shorts" data-id="5">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Word of Knives (Black)</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+									<div class="product-item shorts" data-id="6">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Chase Dream (White)</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+									<div class="product-item shorts" data-id="7">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Multiverse (White)</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+									<div class="product-item shorts" data-id="8">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Global Terror (White)</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+									<div class="product-item shorts" data-id="9">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Cyberpunk (Longsleeve)</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+									<div class="product-item shorts" data-id="10">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Daily (Longsleeve)</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+									<div class="product-item shorts" data-id="11">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Cookies (Longsleeve)</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+									<div class="product-item shorts" data-id="12">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Whatever (Pullovers)</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+									<div class="product-item shorts" data-id="13">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - You're Hired (Pullovers)</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+									<div class="product-item shorts" data-id="14">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Chicago</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+									<div class="product-item shorts" data-id="15">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Snake</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+									<div class="product-item shorts" data-id="16">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Mystery Machine</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+									<div class="product-item shorts" data-id="17">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Grizzly</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+									<div class="product-item shorts" data-id="18">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Bay Area</a></h6>
+                                                <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
 
-                                    <div class="product-item tees" data-id="5">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Word of Knives (Black)</a></h6>
-                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-                                    <div class="product-item tees" data-id="6">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Chase Dream (White)</a></h6>
-                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-                                    <div class="product-item tees" data-id="7">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Multiverse (White)</a></h6>
-                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-                                    <div class="product-item tees" data-id="8">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Global Terror (White)</a></h6>
-                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-                                    <div class="product-item tees" data-id="9">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Cyberpunk (Longsleeve)</a></h6>
-                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-                                    <div class="product-item tees" data-id="10">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Daily (Longsleeve)</a></h6>
-                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-                                    <div class="product-item tees" data-id="11">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Cookies (Longsleeve)</a></h6>
-                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
 								</div>
 						
 							</div>

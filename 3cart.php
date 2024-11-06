@@ -208,7 +208,7 @@
         <span id="order-total"><strong>₱0.00</strong></span>
         <hr class="summary-divider">
                 <div class="cart-footer">
-                    <a href="checkout.html"><button class="checkout-button">CHECK OUT</button></a>
+                    <a href="3checkout.php"><button class="checkout-button">CHECK OUT</button></a>
                 </div>
             </div>
         </div>
