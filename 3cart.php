@@ -336,37 +336,6 @@
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
         updateCartCount(); // Update the cart count in the header
         calculateSummary();
-    }
-
-    function removeItem(index) {
-        // Remove the item from the cart items array
-        cartItems.splice(index, 1);
-        // Update local storage
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-        // Re-render the cart items
-        renderCartItems();
-        updateCartCount();
-    }
-
-    function updateCartCount() {
-        const cartCountElement = document.getElementById('checkout_items');
-        cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
-    }
-
-    // Call the function to render cart items
-    renderCartItems();
-</script>
-<script>
-    // JavaScript to make the navbar opaque when scrolling
-    window.addEventListener('scroll', function() {
-        const mainNav = document.querySelector('.main_nav_container');
-        
-        if (window.scrollY > 50) { // Adjust the scroll threshold as needed
-            mainNav.classList.add('opaque');
-        } else {
-            mainNav.classList.remove('opaque');
-        }
-    });
 </script>
 </body>
 </html>
