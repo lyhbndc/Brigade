@@ -21,6 +21,9 @@ session_start(); // Start the session
 </head>
 
 <body>
+<div class="loading-page" id="loadingPage">
+        <img src="assets/1.png" alt="Logo" class="logo" id="logo">
+    </div>
 <div class="super_container">
 
 	<header class="header trans_300">
@@ -161,7 +164,7 @@ session_start(); // Start the session
 				<div class="col">
 					<div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
 
-					<div class="product-item tees" data-id="3">
+					<div class="product-item men" data-id="1">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
                                                 <img src="images/product_1.png" alt="">
@@ -169,14 +172,14 @@ session_start(); // Start the session
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Chase Dream (Blue)</a></h6>
+                                                <h6 class="product_name"><a href="single.html">Fujifilm X100T 16 MP Digital Camera (Silver)</a></h6>
                                                 <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
 
-									<div class="product-item tees" data-id="5">
+									<div class="product-item men" data-id="2">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
                                                 <img src="images/product_1.png" alt="">
@@ -184,14 +187,13 @@ session_start(); // Start the session
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Word of Knives (Black)</a></h6>
+                                                <h6 class="product_name"><a href="single.html">Fujifilm X100T 16 MP Digital Camera (Silver)</a></h6>
                                                 <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
-
-									<div class="product-item tees" data-id="6">
+									<div class="product-item men" data-id="3">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
                                                 <img src="images/product_1.png" alt="">
@@ -199,14 +201,13 @@ session_start(); // Start the session
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Chase Dream (White)</a></h6>
+                                                <h6 class="product_name"><a href="single.html">Fujifilm X100T 16 MP Digital Camera (Silver)</a></h6>
                                                 <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
-
-									<div class="product-item tees" data-id="7">
+									<div class="product-item men" data-id="4">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
                                                 <img src="images/product_1.png" alt="">
@@ -214,14 +215,13 @@ session_start(); // Start the session
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Multiverse (White)</a></h6>
+                                                <h6 class="product_name"><a href="single.html">Fujifilm X100T 16 MP Digital Camera (Silver)</a></h6>
                                                 <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
-
-						<div class="product-item tees" data-id="10">
+						<div class="product-item men" data-id="5">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
                                                 <img src="images/product_1.png" alt="">
@@ -229,83 +229,12 @@ session_start(); // Start the session
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Daily (Longsleeve)</a></h6>
+                                                <h6 class="product_name"><a href="single.html">Fujifilm X100T 16 MP Digital Camera (Silver)</a></h6>
                                                 <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
-									<div class="product-item tees" data-id="11">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Cookies (Longsleeve)</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-									<div class="product-item hoodies" data-id="13">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - You're Hired (Pullovers)</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-									<div class="product-item shorts" data-id="14">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Chicago</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-									<div class="product-item shorts" data-id="15">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Snake</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-									<div class="product-item shorts" data-id="17">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Grizzly</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-
 					</div>
 				</div>
 			</div>
@@ -333,115 +262,7 @@ session_start(); // Start the session
 							
 
 							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="1">
-									<div class="product discount">
-										<div class="product_image">
-											<img src="images/product_1.png" alt="">
-										</div>
-										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - Let's Get High (Black)</a></h6>
-											<div class="product_price">P700.00<span>750.00</span></div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<!-- Slide 2 -->
-
-							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="2">
-									<div class="product discount">
-										<div class="product_image">
-											<img src="images/product_1.png" alt="">
-										</div>
-										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - Lucky (Black)</a></h6>
-											<div class="product_price">P700.00<span>750.00</span></div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							
-
-							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="4">
-									<div class="product discount">
-										<div class="product_image">
-											<img src="images/product_1.png" alt="">
-										</div>
-										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - Coldest (Blue)</a></h6>
-											<div class="product_price">P700.00<span>750.00</span></div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							
-
-							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="8">
-									<div class="product discount">
-										<div class="product_image">
-											<img src="images/product_1.png" alt="">
-										</div>
-										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - Global Terror (White)</a></h6>
-											<div class="product_price">P700.00<span>750.00</span></div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							
-
-							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="9">
-									<div class="product discount">
-										<div class="product_image">
-											<img src="images/product_1.png" alt="">
-										</div>
-										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - Cyber Punk (Longsleeve)</a></h6>
-											<div class="product_price">P700.00<span>750.00</span></div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							
-
-							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="12">
-									<div class="product discount">
-										<div class="product_image">
-											<img src="images/product_1.png" alt="">
-										</div>
-										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - What Ever (Pullovers)</a></h6>
-											<div class="product_price">P700.00<span>750.00</span></div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							
-
-							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="14">
+								<div class="product-item">
 									<div class="product discount">
 										<div class="product_image">
 											<img src="images/product_1.png" alt="">
@@ -456,39 +277,167 @@ session_start(); // Start the session
 								</div>
 							</div>
 
+							<!-- Slide 2 -->
+
 							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="16">
-									<div class="product discount">
+								<div class="product-item hoodies">
+									<div class="product">
 										<div class="product_image">
-											<img src="images/product_1.png" alt="">
+											<img src="images/product_2.png" alt="">
 										</div>
-										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+										<div class="favorite"></div>
+										<div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center"><span>new</span></div>
 										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - Mystery Machine</a></h6>
-											<div class="product_price">P700.00<span>750.00</span></div>
+											<h6 class="product_name"><a href="5items.php">Racer Sweater (White)</a></h6>
+											<div class="product_price">$610.00</div>
 										</div>
 									</div>
 								</div>
 							</div>
 
+							
+
 							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="18">
+								<div class="product-item tees">
+									<div class="product">
+										<div class="product_image">
+											<img src="images/product_3.png" alt="">
+										</div>
+										<div class="favorite"></div>
+										<div class="product_info">
+											<h6 class="product_name"><a href="5items.php">Racer Sweater (White)</a></h6>
+											<div class="product_price">$120.00</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							
+
+							<div class="owl-item product_slider_item">
+								<div class="product-item shorts">
+									<div class="product">
+										<div class="product_image">
+											<img src="images/product_4.png" alt="">
+										</div>
+										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>sale</span></div>
+										<div class="favorite favorite_left"></div>
+										<div class="product_info">
+											<h6 class="product_name"><a href="5items.php">Racer Sweater (White)</a></h6>
+											<div class="product_price">$410.00</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							
+
+							<div class="owl-item product_slider_item">
+								<div class="product-item tees">
+									<div class="product">
+										<div class="product_image">
+											<img src="images/product_5.png" alt="">
+										</div>
+										<div class="favorite"></div>
+										<div class="product_info">
+											<h6 class="product_name"><a href="5items.php">Racer Sweater (White)</a></h6>
+											<div class="product_price">$180.00</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							
+
+							<div class="owl-item product_slider_item">
+								<div class="product-item shorts">
 									<div class="product discount">
 										<div class="product_image">
-											<img src="images/product_1.png" alt="">
+											<img src="images/product_6.png" alt="">
 										</div>
 										<div class="favorite favorite_left"></div>
 										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
 										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - Bay Area</a></h6>
-											<div class="product_price">P700.00<span>750.00</span></div>
+											<h6 class="product_name"><a href="5items.php">Racer Sweater (White)</a></h6>
+											<div class="product_price">$520.00<span>$590.00</span></div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							
+
+							<div class="owl-item product_slider_item">
+								<div class="product-item hoodies">
+									<div class="product">
+										<div class="product_image">
+											<img src="images/product_7.png" alt="">
+										</div>
+										<div class="favorite"></div>
+										<div class="product_info">
+											<h6 class="product_name"><a href="5items.php">Racer Sweater (White)</a></h6>
+											<div class="product_price">$610.00</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							
+
+							<div class="owl-item product_slider_item">
+								<div class="product-item tees">
+									<div class="product">
+										<div class="product_image">
+											<img src="images/product_8.png" alt="">
+										</div>
+										<div class="favorite"></div>
+										<div class="product_info">
+											<h6 class="product_name"><a href="5items.php">Racer Sweater (White)</a></h6>
+											<div class="product_price">$120.00</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							
+
+							<div class="owl-item product_slider_item">
+								<div class="product-item shorts">
+									<div class="product">
+										<div class="product_image">
+											<img src="images/product_9.png" alt="">
+										</div>
+										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>sale</span></div>
+										<div class="favorite favorite_left"></div>
+										<div class="product_info">
+											<h6 class="product_name"><a href="5items.php">Racer Sweater (White)</a></h6>
+											<div class="product_price">$410.00</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							
+
+							<div class="owl-item product_slider_item">
+								<div class="product-item shorts">
+									<div class="product">
+										<div class="product_image">
+											<img src="images/product_10.png" alt="">
+										</div>
+										<div class="favorite"></div>
+										<div class="product_info">
+											<h6 class="product_name"><a href="5items.php">Racer Sweater (White)</a></h6>
+											<div class="product_price">$180.00</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-							<div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
+
+						
+
+						<div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
 							<i class="fa fa-chevron-left" aria-hidden="true"></i>
 						</div>
 						<div class="product_slider_nav_right product_slider_nav d-flex align-items-center justify-content-center flex-column">
@@ -499,7 +448,6 @@ session_start(); // Start the session
 			</div>
 		</div>
 	</div>
-	
 
 	<!-- Benefit -->
 
@@ -510,8 +458,8 @@ session_start(); // Start the session
 					<div class="benefit_item d-flex flex-row align-items-center">
 						<div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
 						<div class="benefit_content">
-							<h6>shipping nationwide</h6>
-							<p>Fast and reliable.</p>
+							<h6>free shipping</h6>
+							<p>On orders above P1500</p>
 						</div>
 					</div>
 				</div>
@@ -520,7 +468,7 @@ session_start(); // Start the session
 						<div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
 						<div class="benefit_content">
 							<h6>cash on delivery</h6>
-							<p>Pay conveniently at your doorstep.</p>
+							<p>Pay only when you receive</p>
 						</div>
 					</div>
 				</div>
@@ -529,7 +477,7 @@ session_start(); // Start the session
 						<div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
 						<div class="benefit_content">
 							<h6>45 days return</h6>
-							<p>Hassle-free returns within 45 days.</p>
+							<p>Easy returns for up to 45 days</p>
 						</div>
 					</div>
 				</div>
@@ -537,8 +485,8 @@ session_start(); // Start the session
 					<div class="benefit_item d-flex flex-row align-items-center">
 						<div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
 						<div class="benefit_content">
-							<h6>open everyday</h6>
-							<p>10:00AM - 8:00PM</p>
+							<h6>opening all week</h6>
+							<p>8AM - 09PM</p>
 						</div>
 					</div>
 				</div>

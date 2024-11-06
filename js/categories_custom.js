@@ -365,9 +365,9 @@ jQuery(document).ready(function($)
 		            filter: function()
 		            {
 		            	var priceRange = $('#amount').val();
-			        	var priceMin = parseFloat(priceRange.split('-')[0].replace('$', ''));
-			        	var priceMax = parseFloat(priceRange.split('-')[1].replace('$', ''));
-			        	var itemPrice = $(this).find('.product_price').clone().children().remove().end().text().replace( '$', '' );
+			        	var priceMin = parseFloat(priceRange.split('-')[0].replace('₱', ''));
+			        	var priceMax = parseFloat(priceRange.split('-')[1].replace('₱', ''));
+			        	var itemPrice = $(this).find('.product_price').clone().children().remove().end().text().replace( '₱', '' );
 
 			        	return (itemPrice > priceMin) && (itemPrice < priceMax);
 		            },
@@ -393,15 +393,15 @@ jQuery(document).ready(function($)
 		{
 			range: true,
 			min: 0,
-			max: 1000,
+			max: 2000,
 			values: [ 0, 580 ],
 			slide: function( event, ui )
 			{
-				$( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+				$( "#amount" ).val( "₱" + ui.values[ 0 ] + " - ₱" + ui.values[ 1 ] );
 			}
 		});
 			
-		$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) + " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+		$( "#amount" ).val( "₱" + $( "#slider-range" ).slider( "values", 0 ) + " - ₱" + $( "#slider-range" ).slider( "values", 1 ) );
     }
 
     /* 
@@ -450,3 +450,4 @@ jQuery(document).ready(function($)
     	};
     }
 });
+

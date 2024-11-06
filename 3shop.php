@@ -21,39 +21,7 @@
 
 	<!-- Header -->
 
-	<header class="header trans_300">
-
-		<!-- Top Navigation -->
-
-		<div class="top_nav">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="top_nav_left">
-							<div class="marquee">
-							</div>
-						</div>
-					</div>
-					<div class="col-md-12 text-right">
-						<div class="top_nav_right">
-							<ul class="top_nav_menu">
-								<li class="account">
-									<a href="#">
-										My Account
-										<i class="fa fa-angle-down"></i>
-									</a>
-									<ul class="account_selection">
-										<li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-										<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
-									</ul>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
+	<header class="header trans_300">	
 
 		<!-- Main Navigation -->
 
@@ -62,18 +30,18 @@
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="1index.php"><img src="assets/1.png"></a>
+							<a href="1index2.php"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
 							<ul class="navbar_menu">
 								<li><a href="index.html">home</a></li>
-								<li><a href="#">shop</a></li>
-								<li><a href="#">new</a></li>
-								<li><a href="#">on sale</a></li>
+								<li><a href="3shop.php">shop</a></li>
+								<li><a href="3new.php">new</a></li>
+								<li><a href="3onsale.php">on sale</a></li>
 							</ul>
 							<ul class="navbar_user">
 								<li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-								<li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+								<li><a href="4myacc.php"><i class="fa fa-user" aria-hidden="true"></i></a></li>
 								<li class="checkout">
 									<a href="3cart.php">
 										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -126,26 +94,15 @@
 
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
-						<li><a href="index.html">Home</a></li>
-						<li class="active"><a href="index.html"><i class="fa fa-angle-right" aria-hidden="true"></i>On Sale</a></li>
+						<li><a href="1index2.php">Home</a></li>
+						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Shop</a></li>
 					</ul>
 				</div>
 
 				<!-- Sidebar -->
 
 				<div class="sidebar">
-					<div class="sidebar_section">
-						<div class="sidebar_title">
-							<h5>Product Category</h5>
-						</div>
-						<ul class="sidebar_categories">
-							<li><a href="#">Hoodies</a></li>
-							<li class="active"><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Tees</a></li>
-							<li><a href="#">Shorts</a></li>
-							<li><a href="#">New Arrivals</a></li>
-							<li><a href="#">Collection</a></li>
-						</ul>
-					</div>
+
 					<!-- Price Range Filtering -->
 					<div class="sidebar_section">
 						<div class="sidebar_title">
@@ -205,16 +162,14 @@
 
 									<!-- Product 1 -->
 
-									<div class="product-item men" data-id="1">
+									<div class="product-item tees" data-id="1">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
                                                 <img src="images/product_1.png" alt="">
                                             </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Fujifilm X100T 16 MP Digital Camera (Silver)</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Let's Get High (Black)</a></h6>
+                                                <div class="product_price">₱700.00</div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
@@ -222,57 +177,140 @@
 
 									<!-- Product 2 -->
 
-									<div class="product-item men" data-id="2">
+									<div class="product-item tees" data-id="2">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
                                                 <img src="images/product_1.png" alt="">
                                             </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Fujifilm X100T 16 MP Digital Camera (Silver)</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Brigade Clothing - Lucky (Black)</a></h6>
+                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
-
-									<!-- Product 3 -->
-
-									<div class="product-item men" data-id="3">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Fujifilm X100T 16 MP Digital Camera (Silver)</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-
-									<!-- Product 4 -->
-
-									<div class="product-item men" data-id="4">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Fujifilm X100T 16 MP Digital Camera (Silver)</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-
 									
+                                    <div class="product-item tees" data-id="3">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Chase Dream (Blue)</a></h6>
+                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
 
+                                    <div class="product-item tees" data-id="4">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Coldest (Blue)</a></h6>
+                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+
+                                    <div class="product-item tees" data-id="5">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Word of Knives (Black)</a></h6>
+                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+                                    <div class="product-item tees" data-id="6">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Chase Dream (White)</a></h6>
+                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+                                    <div class="product-item tees" data-id="7">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Multiverse (White)</a></h6>
+                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+                                    <div class="product-item tees" data-id="8">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Global Terror (White)</a></h6>
+                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+                                    <div class="product-item tees" data-id="9">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Cyberpunk (Longsleeve)</a></h6>
+                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+                                    <div class="product-item tees" data-id="10">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Daily (Longsleeve)</a></h6>
+                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+                                    <div class="product-item tees" data-id="11">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="images/product_1.png" alt="">
+                                            </div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Cookies (Longsleeve)</a></h6>
+                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+								</div>
 						
 							</div>
 						</div>
@@ -291,8 +329,8 @@
 					<div class="benefit_item d-flex flex-row align-items-center">
 						<div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
 						<div class="benefit_content">
-							<h6>free shipping</h6>
-							<p>Suffered Alteration in Some Form</p>
+							<h6>shipping nationwide</h6>
+							<p>Fast and reliable.</p>
 						</div>
 					</div>
 				</div>
@@ -300,8 +338,8 @@
 					<div class="benefit_item d-flex flex-row align-items-center">
 						<div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
 						<div class="benefit_content">
-							<h6>cach on delivery</h6>
-							<p>The Internet Tend To Repeat</p>
+							<h6>cash on delivery</h6>
+							<p>Pay conveniently at your doorstep.</p>
 						</div>
 					</div>
 				</div>
@@ -310,7 +348,7 @@
 						<div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
 						<div class="benefit_content">
 							<h6>45 days return</h6>
-							<p>Making it Look Like Readable</p>
+							<p>Hassle-free returns within 45 days.</p>
 						</div>
 					</div>
 				</div>
@@ -318,8 +356,8 @@
 					<div class="benefit_item d-flex flex-row align-items-center">
 						<div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
 						<div class="benefit_content">
-							<h6>opening all week</h6>
-							<p>8AM - 09PM</p>
+							<h6>open everyday</h6>
+							<p>10:00AM - 8:00PM</p>
 						</div>
 					</div>
 				</div>
@@ -427,6 +465,19 @@
     // Update cart count on page load
     updateCart();
 </script>
+<script>
+    // JavaScript to make the navbar opaque when scrolling
+    window.addEventListener('scroll', function() {
+        const mainNav = document.querySelector('.main_nav_container');
+        
+        if (window.scrollY > 50) { // Adjust the scroll threshold as needed
+            mainNav.classList.add('opaque');
+        } else {
+            mainNav.classList.remove('opaque');
+        }
+    });
+</script>
+
 </body>
 
 </html>

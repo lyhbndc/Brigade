@@ -12,7 +12,7 @@
     <style>
         .checkout-container {
             max-width: 600px;
-            margin: 50px auto;
+            margin: 5px auto;
             padding: 20px;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -33,6 +33,36 @@
             border: none;
             border-radius: 5px;
         }
+        .order-summary {
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.order-summary h4 {
+    font-size: 1.25em;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.summary-line-item, .summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    font-size: 1em;
+}
+
+.summary-total {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.summary-divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 15px 0;
+}
+
     </style>
 </head>
 
@@ -40,24 +70,6 @@
 
     <div class="super_container">
         <header class="header trans_300">
-            <!-- Top Navigation -->
-            <div class="top_nav">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="top_nav_left">
-                                <div class="marquee">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 text-right">
-                            <div class="top_nav_right">
-                               
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <!-- Main Navigation -->
             <div class="main_nav_container">
                 <div class="container">
@@ -124,7 +136,23 @@
                 <div class="col">
                     <div class="checkout-container">
                         <div class="checkout-header">Checkout</div>
-                    
+                        <div class="order-summary">
+    <h4>Order Summary</h4>
+    <div class="summary-line-item">
+        <span>Subtotal</span>
+        <span id="order-subtotal">₱0.00</span>
+    </div>
+    <div class="summary-line-item">
+        <span>Estimated Delivery & Handling</span>
+        <span id="order-shipping">₱0.00</span>
+    </div>
+    <hr class="summary-divider">
+    <div class="summary-total">
+        <span>Total</span>
+        <span id="order-total"><strong>₱0.00</strong></span>
+    </div>
+</div>
+
                         <form>
                             <!-- Personal Information -->
                             <div class="form-group">
@@ -276,9 +304,43 @@
             alert(`${productName} has been added to your cart!`);
         });
     });
+    function calculateOrderSummary() {
+    const shippingCost = 250; // Flat-rate shipping cost
+    const freeShippingThreshold = 1500; // Free shipping for orders above this threshold
+
+    // Calculate subtotal
+    const subtotal = cartItems.reduce((total, item) => total + parseFloat(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
+
+    // Determine shipping cost based on subtotal
+    const shipping = subtotal >= freeShippingThreshold ? 0 : shippingCost;
+
+    // Calculate total
+    const total = subtotal + shipping;
+
+    // Display the calculated amounts in the summary section
+    document.getElementById('order-subtotal').textContent = `₱${subtotal.toFixed(2)}`;
+    document.getElementById('order-shipping').textContent = `₱${shipping.toFixed(2)}`;
+    document.getElementById('order-total').textContent = `₱${total.toFixed(2)}`;
+}
+
+// Call calculateOrderSummary to display the order summary when the page loads
+document.addEventListener('DOMContentLoaded', calculateOrderSummary);
+
 
     // Update cart count on page load
     updateCart();
+</script>
+<script>
+    // JavaScript to make the navbar opaque when scrolling
+    window.addEventListener('scroll', function() {
+        const mainNav = document.querySelector('.main_nav_container');
+        
+        if (window.scrollY > 50) { // Adjust the scroll threshold as needed
+            mainNav.classList.add('opaque');
+        } else {
+            mainNav.classList.remove('opaque');
+        }
+    });
 </script>
 </body>
 </html>

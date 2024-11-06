@@ -10,15 +10,32 @@
     <link rel="stylesheet" type="text/css" href="styles/single_styles.css">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
     <style>
-        .cart-container {
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .cart-header {
+        .cart-page-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    max-width: 800px;
+    margin: 50px auto;
+}
+
+.cart-container {
+    flex-grow: 1; /* Allows the cart items container to take remaining space */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.summary-container {
+    width: 300px; /* Fixed width for the summary container */
+    height: 320px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+        .cart-header, .summary-header {
             font-weight: bold;
             font-size: 1.5em;
             text-align: center;
@@ -58,10 +75,6 @@
             text-align: center;
             margin: 0 5px;
         }
-        .cart-footer {
-            text-align: center;
-            margin-top: 20px;
-        }
         .checkout-button {
             width: 100%;
             padding: 12px;
@@ -72,19 +85,23 @@
             border-radius: 5px;
         }
         .checkout-button:hover {
-    background-color: #555; 
-    cursor: pointer;
-}
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+            background-color: #555; 
+            cursor: pointer;
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+        .summary-total {
+    font-weight: bold;
+    font-size: 1.1em;
 }
 
-input[type="number"] {
-    -moz-appearance: textfield;
-    appearance: textfield;
-}
     </style>
 </head>
 
@@ -170,22 +187,32 @@ input[type="number"] {
                 </ul>
             </div>
         </div>
-
+        
         <div class="container single_product_container">
-        <div class="row">
-            <div class="col">
-                <div class="cart-container">
-                    <div class="cart-header">Cart</div>
-                    <div id="cart-items-container"></div>
-                    <div class="cart-footer">
-                        <p>Shipping & taxes calculated at checkout</p>
-                        <a href="checkout.html"><button class="checkout-button">CHECK OUT</button></a>
-                    </div>
+            <div class="row">
+                <div class="col">
+                <div class="container cart-page-container">
+            <!-- Cart Items Container -->
+            <div class="cart-container">
+                <div class="cart-header">Cart</div>
+                <div id="cart-items-container"></div>
+            </div>
+
+                        <!-- Order Summary -->
+                        <div class="summary-container">
+                <div class="summary-header">Order Summary</div>
+                <p id="order-subtotal">Subtotal: ₱0.00</p>
+                <p id="order-shipping">Estimated Delivery & Handling: ₱0.00</p>
+                <hr class="summary-divider">
+    <div class="summary-total">
+        <span id="order-total"><strong>₱0.00</strong></span>
+        <hr class="summary-divider">
+                <div class="cart-footer">
+                    <a href="checkout.html"><button class="checkout-button">CHECK OUT</button></a>
                 </div>
             </div>
         </div>
-    </div>
-
+        </div>
                     </div>
                     </div>
                     </div>
@@ -247,14 +274,17 @@ input[type="number"] {
         </footer>
     </div>
     <script>
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+     const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
     const cartItemsContainer = document.getElementById('cart-items-container');
+    const shippingCost = 100; // Flat-rate shipping cost
+    const freeShippingThreshold = 1500; // Threshold for free shipping
 
     function renderCartItems() {
         cartItemsContainer.innerHTML = ''; // Clear the container
         if (cartItems.length === 0) {
             cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
             updateCartCount();
+            calculateSummary();
             return;
         }
 
@@ -265,7 +295,7 @@ input[type="number"] {
                 <img src="${item.image}" alt="Product Image">
                 <div class="cart-item-info">
                     <h6>${item.name}</h6>
-                    <p>${item.price}</p>
+                    <p>₱${item.price}</p>
                 </div>
                 <div class="cart-item-quantity">
                     <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, -1)">-</button>
@@ -276,7 +306,20 @@ input[type="number"] {
             `;
             cartItemsContainer.appendChild(cartItemDiv);
         });
+
         updateCartCount();
+        calculateSummary();
+    }
+
+    function calculateSummary() {
+        const subtotal = cartItems.reduce((total, item) => total + parseFloat(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
+        const shipping = subtotal >= freeShippingThreshold ? 0 : shippingCost;
+        const total = subtotal + shipping;
+
+        // Display the summary
+        document.getElementById('order-subtotal').textContent = `Subtotal: ₱${subtotal.toFixed(2)}`;
+        document.getElementById('order-shipping').textContent = `Shipping: ₱${shipping.toFixed(2)}`;
+        document.getElementById('order-total').textContent = `Total    ₱${total.toFixed(2)}`;
     }
 
     function changeQuantity(index, delta) {
@@ -292,6 +335,7 @@ input[type="number"] {
         // Update local storage
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
         updateCartCount(); // Update the cart count in the header
+        calculateSummary();
     }
 
     function removeItem(index) {
@@ -311,6 +355,18 @@ input[type="number"] {
 
     // Call the function to render cart items
     renderCartItems();
+</script>
+<script>
+    // JavaScript to make the navbar opaque when scrolling
+    window.addEventListener('scroll', function() {
+        const mainNav = document.querySelector('.main_nav_container');
+        
+        if (window.scrollY > 50) { // Adjust the scroll threshold as needed
+            mainNav.classList.add('opaque');
+        } else {
+            mainNav.classList.remove('opaque');
+        }
+    });
 </script>
 </body>
 </html>

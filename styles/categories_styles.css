@@ -495,12 +495,22 @@ section
 3.4 Main Navigation
 *********************************/
 
-.main_nav_container
-{
+.main_nav_container {
 	width: 100%;
-	background: black;
+	background-color: rgba(0, 0, 0, 1); 
 	box-shadow: 0 0 16px rgba(0, 0, 0, 0.15);
+	padding: 20px 0;
+	transition: background-color 0.3s ease;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
 }
+
+.main_nav_container.opaque {
+	background-color: rgba(0, 0, 0, 0.7); /* Transparent background */ /* Solid background when scrolling */
+}
+
 .navbar
 {
 	width: auto;
@@ -585,7 +595,7 @@ section
 	width: 20px;
 	height: 20px;
 	border-radius: 50%;
-	background: #fe4c50;
+	background: #AD0000;
 	font-size: 12px;
 	color: #FFFFFF;
 }
@@ -771,7 +781,7 @@ section
 
 .logo_container img {
 	width: 100%;     /* Adjusts to the container width */
-	max-width: 150px; /* Limits the max width on larger screens */
+	max-width: 170px; /* Limits the max width on larger screens */
 	height: auto;
 }
 .logo_container a
@@ -783,7 +793,7 @@ section
 }
 .logo_container a span
 {
-	color: #fe4c50;
+	color: #AD0000;
 }
 .red_button
 {
@@ -856,7 +866,7 @@ section
 	transform: translateX(-50%);
 	width: 60px;
 	height: 5px;
-	background: #fe4c50;
+	background:#AD0000;
 	content: '';
 }
 
@@ -985,7 +995,7 @@ section
 }
 .product_sorting_container_bottom .pages .page_current
 {
-	background: #fe4c50;
+	background: #AD0000;
 	border: none;
 }
 .page_current span
@@ -1139,11 +1149,11 @@ section
 }
 .sidebar_categories li.active a
 {
-	color: #fe4c50;
+	color: #AD0000;
 }
 .sidebar_categories li.active:hover a
 {
-	color: #fe4c50;
+	color: #AD0000;
 }
 .sidebar_categories li a
 {
@@ -1203,7 +1213,7 @@ section
 }
 .checkboxes li.active i
 {
-	color: #fe4c50;
+	color: #AD0000;
 	margin-right: 21px;
 }
 .checkboxes li.active i::after
@@ -1247,7 +1257,7 @@ section
 {
 	height: 40px;
 	line-height: 40px;
-	color: #fe4c50;
+	color: #AD0000;
 }
 .show_more span:first-child
 {
@@ -1339,7 +1349,7 @@ section
 .product_price
 {
 	font-size: 16px;
-	color: #FF6503;
+	color: #AD0000;
 	font-weight: 600;
 }
 .product_price span
@@ -1461,7 +1471,7 @@ section
 {
 	font-family: 'FontAwesome';
 	content:'\f004';
-	color: #fe4c50;
+	color: #AD0000;
 }
 .favorite::after
 {
@@ -1470,7 +1480,7 @@ section
 }
 .favorite:hover::after
 {
-	color: #fe4c50;
+	color: #AD0000;
 }
 
 /*********************************
@@ -1505,7 +1515,7 @@ section
 .benefit_icon i
 {
 	font-size: 30px;
-	color: #FF6503;
+	color: #AD0000;
 }
 .benefit_content
 {
@@ -1607,7 +1617,7 @@ section
 	width: 160px;
 	height: 46px;
 	border: none;
-	background: #fe4c50;
+	background: #AD0000;
 	color: #FFFFFF;
 	font-size: 14px;
 	font-weight: 500;
@@ -1616,7 +1626,7 @@ section
 }
 .newsletter_submit_btn:hover
 {
-	background: #FE7C7F;
+	background: #AD0000;
 }
 
 /*********************************
@@ -1653,7 +1663,7 @@ section
 }
 .footer_nav li a:hover, .cr a, .cr i
 {
-	color: #fe4c50;
+	color: #AD0000;
 }
 .footer_social
 {
@@ -1684,7 +1694,7 @@ section
 }
 .footer_social ul li a:hover
 {
-	color: #fe4c50;
+	color: #AD0000;
 }
 .footer-logo {
     width: 200px; 

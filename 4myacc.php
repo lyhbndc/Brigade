@@ -302,5 +302,17 @@ mysqli_close($conn);
     // Update cart count on page load
     updateCart();
 </script> 
+<script>
+    // JavaScript to make the navbar opaque when scrolling
+    window.addEventListener('scroll', function() {
+        const mainNav = document.querySelector('.main_nav_container');
+        
+        if (window.scrollY > 50) { // Adjust the scroll threshold as needed
+            mainNav.classList.add('opaque');
+        } else {
+            mainNav.classList.remove('opaque');
+        }
+    });
+</script>
 </body>
 </html>

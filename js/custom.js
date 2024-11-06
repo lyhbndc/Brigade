@@ -436,3 +436,9 @@ jQuery(document).ready(function($)
     	}
     }
 });
+// Opaque navbar on scroll
+if ($(window).scrollTop() > 50) {
+	mainNavContainer.addClass('opaque');
+} else {
+	mainNavContainer.removeClass('opaque');
+}
