@@ -1,5 +1,6 @@
 <?php
-session_start(); // Start the session
+session_start(); 
+$user = $_SESSION['user'];
 
 ?>
 
@@ -49,6 +50,7 @@ session_start(); // Start the session
 								<li><a href="3shop.php">shop</a></li>
 								<li><a href="3new.php">new</a></li>
 								<li><a href="3onsale.php">on sale</a></li>
+								<li><a href="logout.php">logout</a></li>
 							</ul>
 							<ul class="navbar_user">
 								<li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
@@ -629,17 +631,19 @@ session_start(); // Start the session
 <script src="plugins/easing/easing.js"></script>
 <script src="js/custom.js"></script>
 <script>
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`; // User-specific key
+    const cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
 
     function updateCart() {
         const cartCountElement = document.getElementById('checkout_items');
         cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        localStorage.setItem(cartKey, JSON.stringify(cartItems)); // Save to user-specific cart
     }
 
     document.querySelectorAll('.add-to-cart').forEach(button => {
         button.addEventListener('click', function(event) {
             event.preventDefault(); // Prevent the default anchor click behavior
+
             const productItem = button.closest('.product-item');
             const productId = productItem.getAttribute('data-id');
             const productName = productItem.querySelector('.product_name a').textContent;
@@ -664,6 +668,7 @@ session_start(); // Start the session
     // Update cart count on page load
     updateCart();
 </script>
+
 <script>
     // JavaScript to make the navbar opaque when scrolling
     window.addEventListener('scroll', function() {

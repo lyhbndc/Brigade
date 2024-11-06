@@ -1,7 +1,8 @@
 <?php
-session_start(); // Start the session
-
+session_start();
+$isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +19,11 @@ session_start(); // Start the session
 <link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
 <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/responsive.css">
+<script>
+        // Pass PHP variable to JavaScript
+        const isLoggedIn = <?php echo json_encode($isLoggedIn); ?>;
+    </script>
+	
 </head>
 
 <body>
@@ -631,41 +637,49 @@ session_start(); // Start the session
 <script src="plugins/easing/easing.js"></script>
 <script src="js/custom.js"></script>
 <script>
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
-    function updateCart() {
-        const cartCountElement = document.getElementById('checkout_items');
-        cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }
+        function updateCart() {
+            const cartCountElement = document.getElementById('checkout_items');
+            cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        }
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default anchor click behavior
-            const productItem = button.closest('.product-item');
-            const productId = productItem.getAttribute('data-id');
-            const productName = productItem.querySelector('.product_name a').textContent;
-            const productImage = productItem.querySelector('.product_image img').src;
-            const productPrice = productItem.querySelector('.product_price').textContent;
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default anchor click behavior
 
-            // Check if item already exists in the cart
-            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
-            if (existingItemIndex > -1) {
-                // Increase quantity if it already exists
-                cartItems[existingItemIndex].quantity += 1;
-            } else {
-                // Add new item to cart with a default quantity of 1
-                cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
-            }
+                // Redirect to login page if not logged in
+                if (!isLoggedIn) {
+                    window.location.href = '4login.php';
+                    return;
+                }
 
-            updateCart(); // Update the cart display
-            alert(`${productName} has been added to your cart!`);
+                // Continue with add-to-cart logic if user is logged in
+                const productItem = button.closest('.product-item');
+                const productId = productItem.getAttribute('data-id');
+                const productName = productItem.querySelector('.product_name a').textContent;
+                const productImage = productItem.querySelector('.product_image img').src;
+                const productPrice = productItem.querySelector('.product_price').textContent;
+
+                // Check if item already exists in the cart
+                const existingItemIndex = cartItems.findIndex(item => item.id === productId);
+                if (existingItemIndex > -1) {
+                    // Increase quantity if it already exists
+                    cartItems[existingItemIndex].quantity += 1;
+                } else {
+                    // Add new item to cart with a default quantity of 1
+                    cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
+                }
+
+                updateCart(); // Update the cart display
+                alert(`${productName} has been added to your cart!`);
+            });
         });
-    });
 
-    // Update cart count on page load
-    updateCart();
-</script>
+        // Update cart count on page load
+        updateCart();
+    </script>
 <script>
     // JavaScript to make the navbar opaque when scrolling
     window.addEventListener('scroll', function() {

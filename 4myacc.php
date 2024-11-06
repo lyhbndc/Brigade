@@ -7,6 +7,12 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
+if (!isset($_SESSION['user'])) {
+    // Redirect to login page if the user is not logged in
+    header("Location: 4login.php");
+    exit();
+}
+
 $fullname = ""; // Initialize $fullname variable
 
 $query = "SELECT * FROM user WHERE Username = '$user'";
@@ -141,8 +147,8 @@ mysqli_close($conn);
                             </div>
                             <nav class="navbar">
                                 <ul class="navbar_menu">
-                                    <li><a href="#">home</a></li>
-                                    <li><a href="#">shop</a></li>
+                                    <li><a href="1homepage.php">home</a></li>
+                                    <li><a href="3shop.php">shop</a></li>
                                     <li><a href="#">new</a></li>
                                     <li><a href="#">on sale</a></li>
                                 </ul>
@@ -155,6 +161,9 @@ mysqli_close($conn);
                                             <span id="checkout_items" class="checkout_items">0</span>
                                         </a>
                                     </li>
+                                    <li>
+        <a href="logout.php" class="logout">Logout</a> <!-- Added Logout Button beside the cart icon -->
+    </li>
                                 </ul>
                                 <div class="hamburger_container">
                                     <i class="fa fa-bars" aria-hidden="true"></i>
@@ -204,7 +213,6 @@ mysqli_close($conn);
     <p><strong>Address:</strong> <span><?php echo $address; ?></span></p>
     <p><strong>City:</strong> <span><?php echo $city; ?></span></p>
         <p><strong>Country:</strong> <span>Philippines</span></p>
-        <p><strong>Address:</strong> <span>1234 Example Street, City Name, Region, Postal Code</span></p>
     </div>
 </div>
                     </div>

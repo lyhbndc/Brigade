@@ -19,7 +19,7 @@ if (isset($_POST['login'])) {
             $id = $row['ID'];
             $_SESSION['user'] = $user; // Save user data to session
             $_SESSION['id'] = $id;
-            header("Location: /Brigade/1index.php");
+            header("Location: /Brigade/1homepage.php");
             exit;
         } else {
             echo "Invalid username or password";

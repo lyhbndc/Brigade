@@ -1,3 +1,15 @@
+<?php
+session_start();
+$user = $_SESSION['user'] ?? null; // Handle cases where user might not be set
+
+if (!$user) {
+    // Redirect to login page if the user is not logged in
+    header("Location: 4login.php");
+    exit();
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -137,10 +149,11 @@
                             </div>
                             <nav class="navbar">
                                 <ul class="navbar_menu">
-                                    <li><a href="index.html">home</a></li>
-                                    <li><a href="#">shop</a></li>
-                                    <li><a href="#">new</a></li>
-                                    <li><a href="#">on sale</a></li>
+                                    <li><a href="1homepage.php">home</a></li>
+                                    <li><a href="3shop.php">shop</a></li>
+                                    <li><a href="3new.php">new</a></li>
+                                    <li><a href="3onsale.php">on sale</a></li>
+                                    <li><a href="logout.php">logout</a></li>
                                 </ul>
                                 <ul class="navbar_user">
                                     <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
@@ -180,10 +193,10 @@
                             <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
                         </ul>
                     </li>
-                    <li class="menu_item"><a href="#">home</a></li>
-                    <li class="menu_item"><a href="#">shop</a></li>
-                    <li class="menu_item"><a href="#">new</a></li>
-                    <li class="menu_item"><a href="#">on sale</a></li>
+                    <li class="menu_item"><a href="1homepage.php">home</a></li>
+                    <li class="menu_item"><a href="3shop.php">shop</a></li>
+                    <li class="menu_item"><a href="3new.php">new</a></li>
+                    <li class="menu_item"><a href="3onsale.php">on sale</a></li>
                 </ul>
             </div>
         </div>
@@ -273,8 +286,15 @@
             <br><br>
         </footer>
     </div>
-    <script>
-     const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    <!-- Other HTML content -->
+
+<!-- Add this before the closing body tag -->
+<script>
+    // Initialize cart with a user-specific key
+    const user = <?php echo json_encode($user); ?>; // Get the current user from PHP
+    const cartKey = `cartItems_${user}`; // Create a unique key for this user's cart items
+    const cartItems = JSON.parse(localStorage.getItem(cartKey)) || []; // Fetch items from user-specific key
+
     const cartItemsContainer = document.getElementById('cart-items-container');
     const shippingCost = 100; // Flat-rate shipping cost
     const freeShippingThreshold = 1500; // Threshold for free shipping
@@ -332,11 +352,44 @@
 
         // Update the item in the cartItems array
         cartItems[index].quantity = quantity;
-        // Update local storage
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        // Update user-specific local storage
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
         updateCartCount(); // Update the cart count in the header
         calculateSummary();
+    }
+
+    function removeItem(index) {
+        // Remove the item from the cart items array
+        cartItems.splice(index, 1);
+        // Update user-specific local storage
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        // Re-render the cart items
+        renderCartItems();
+        updateCartCount();
+    }
+
+    function updateCartCount() {
+        const cartCountElement = document.getElementById('checkout_items');
+        cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
+    }
+
+    // Call the function to render cart items
+    renderCartItems();
+</script>
+
+<script>
+    // JavaScript to make the navbar opaque when scrolling
+    window.addEventListener('scroll', function() {
+        const mainNav = document.querySelector('.main_nav_container');
+        
+        if (window.scrollY > 50) { // Adjust the scroll threshold as needed
+            mainNav.classList.add('opaque');
+        } else {
+            mainNav.classList.remove('opaque');
+        }
+    });
 </script>
 </body>
+
 </html>
 

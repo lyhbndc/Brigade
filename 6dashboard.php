@@ -282,6 +282,8 @@
         }
     });
 
+    
+
     // Order Status Pie Chart
     const orderStatusChartCtx = document.getElementById('orderStatusChart').getContext('2d');
     new Chart(orderStatusChartCtx, {

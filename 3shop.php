@@ -1,3 +1,9 @@
+<?php
+session_start(); 
+$user = $_SESSION['user'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -534,12 +540,15 @@
 <script src="plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 <script src="js/categories_custom.js"></script>
 <script>
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    // Initialize cart with a user-specific key
+    const user = <?php echo json_encode($user); ?>; // Get the current user from PHP
+    const cartKey = `cartItems_${user}`; // Create a unique key for this user's cart items
+    const cartItems = JSON.parse(localStorage.getItem(cartKey)) || []; // Fetch items from user-specific key
 
     function updateCart() {
         const cartCountElement = document.getElementById('checkout_items');
         cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
     }
 
     document.querySelectorAll('.add-to-cart').forEach(button => {
@@ -569,6 +578,7 @@
     // Update cart count on page load
     updateCart();
 </script>
+
 <script>
     // JavaScript to make the navbar opaque when scrolling
     window.addEventListener('scroll', function() {

@@ -1,3 +1,14 @@
+<?php
+session_start();
+$user = $_SESSION['user'] ?? null; // Handle cases where user might not be set
+
+if (!$user) {
+    // Redirect to login page if the user is not logged in
+    header("Location: 4login.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -273,74 +284,43 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        const user = <?php echo json_encode($user); ?>; // Get the current user from PHP
+        const cartKey = `cartItems_${user}`; // Create a unique key for this user's cart items
+        const cartItems = JSON.parse(localStorage.getItem(cartKey)) || []; // Fetch items from user-specific key
 
-    function updateCart() {
-        const cartCountElement = document.getElementById('checkout_items');
-        cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }
+        function calculateOrderSummary() {
+            const shippingCost = 100; // Flat-rate shipping cost
+            const freeShippingThreshold = 1500; // Free shipping for orders above this threshold
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default anchor click behavior
-            const productItem = button.closest('.product-item');
-            const productId = productItem.getAttribute('data-id');
-            const productName = productItem.querySelector('.product_name a').textContent;
-            const productImage = productItem.querySelector('.product_image img').src;
-            const productPrice = productItem.querySelector('.product_price').textContent;
+            // Calculate subtotal
+            const subtotal = cartItems.reduce((total, item) => total + parseFloat(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
 
-            // Check if item already exists in the cart
-            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
-            if (existingItemIndex > -1) {
-                // Increase quantity if it already exists
-                cartItems[existingItemIndex].quantity += 1;
-            } else {
-                // Add new item to cart with a default quantity of 1
-                cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
-            }
+            // Determine shipping cost based on subtotal
+            const shipping = subtotal >= freeShippingThreshold ? 0 : shippingCost;
 
-            updateCart(); // Update the cart display
-            alert(`${productName} has been added to your cart!`);
-        });
-    });
-    function calculateOrderSummary() {
-    const shippingCost = 250; // Flat-rate shipping cost
-    const freeShippingThreshold = 1500; // Free shipping for orders above this threshold
+            // Calculate total
+            const total = subtotal + shipping;
 
-    // Calculate subtotal
-    const subtotal = cartItems.reduce((total, item) => total + parseFloat(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
-
-    // Determine shipping cost based on subtotal
-    const shipping = subtotal >= freeShippingThreshold ? 0 : shippingCost;
-
-    // Calculate total
-    const total = subtotal + shipping;
-
-    // Display the calculated amounts in the summary section
-    document.getElementById('order-subtotal').textContent = `₱${subtotal.toFixed(2)}`;
-    document.getElementById('order-shipping').textContent = `₱${shipping.toFixed(2)}`;
-    document.getElementById('order-total').textContent = `₱${total.toFixed(2)}`;
-}
-
-// Call calculateOrderSummary to display the order summary when the page loads
-document.addEventListener('DOMContentLoaded', calculateOrderSummary);
-
-
-    // Update cart count on page load
-    updateCart();
-</script>
-<script>
-    // JavaScript to make the navbar opaque when scrolling
-    window.addEventListener('scroll', function() {
-        const mainNav = document.querySelector('.main_nav_container');
-        
-        if (window.scrollY > 50) { // Adjust the scroll threshold as needed
-            mainNav.classList.add('opaque');
-        } else {
-            mainNav.classList.remove('opaque');
+            // Display the calculated amounts in the summary section
+            document.getElementById('order-subtotal').textContent = `₱${subtotal.toFixed(2)}`;
+            document.getElementById('order-shipping').textContent = `₱${shipping.toFixed(2)}`;
+            document.getElementById('order-total').textContent = `₱${total.toFixed(2)}`;
         }
-    });
-</script>
+
+        // Call calculateOrderSummary to display the order summary when the page loads
+        document.addEventListener('DOMContentLoaded', calculateOrderSummary);
+    </script>
+    <script>
+        // JavaScript to make the navbar opaque when scrolling
+        window.addEventListener('scroll', function() {
+            const mainNav = document.querySelector('.main_nav_container');
+            
+            if (window.scrollY > 50) { // Adjust the scroll threshold as needed
+                mainNav.classList.add('opaque');
+            } else {
+                mainNav.classList.remove('opaque');
+            }
+        });
+    </script>
 </body>
 </html>
