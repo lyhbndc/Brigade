@@ -27,6 +27,8 @@ if ($result && mysqli_num_rows($result) > 0) {
         $fullname = $row["FirstName"] . ' ' . $row["LastName"];
     }
 } 
+$orderQuery = "SELECT * FROM `order` WHERE Customer = '$fullname' ORDER BY Date DESC";
+$orderResult = mysqli_query($conn, $orderQuery);
 
 mysqli_close($conn);
 ?>
@@ -206,7 +208,43 @@ mysqli_close($conn);
                         <div class="account-content">
                             <div class="order-history">
                                 <h2>Order History</h2>
-                                <p>You haven't placed any orders yet.</p>
+                               <!-- Recent Orders Table -->
+<table class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                                <th>Total</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if ($orderResult && mysqli_num_rows($orderResult) > 0): ?>
+                                <?php while ($orderRow = mysqli_fetch_assoc($orderResult)): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($orderRow['OrderID']); ?></td>
+                                        <td><?php echo htmlspecialchars($orderRow['Product']); ?></td>
+                                        <td><?php echo htmlspecialchars($orderRow['Quantity']); ?></td>
+                                        <td>
+                                            <?php if ($orderRow['Status'] == "Shipped"): ?>
+                                                <span class="badge badge-success"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
+                                            <?php else: ?>
+                                                <span class="badge badge-warning"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><?php echo htmlspecialchars($orderRow['Total']); ?></td>
+                                        <td><?php echo htmlspecialchars($orderRow['Date']); ?></td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="6" class="text-center">No orders found</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                     </div>
                     <div class="account-details">
     <h2>Account Details</h2>
@@ -277,41 +315,93 @@ mysqli_close($conn);
         </footer>
     </div>
     <script>
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    // Initialize cart with a user-specific key
+    const user = <?php echo json_encode($user); ?>; // Get the current user from PHP
+    const cartKey = `cartItems_${user}`; // Create a unique key for this user's cart items
+    const cartItems = JSON.parse(localStorage.getItem(cartKey)) || []; // Fetch items from user-specific key
 
-    function updateCart() {
-        const cartCountElement = document.getElementById('checkout_items');
-        cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const shippingCost = 100; // Flat-rate shipping cost
+    const freeShippingThreshold = 1500; // Threshold for free shipping
+
+    function renderCartItems() {
+        cartItemsContainer.innerHTML = ''; // Clear the container
+        if (cartItems.length === 0) {
+            cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+            updateCartCount();
+            calculateSummary();
+            return;
+        }
+
+        cartItems.forEach((item, index) => {
+            const cartItemDiv = document.createElement('div');
+            cartItemDiv.className = 'cart-item';
+            cartItemDiv.innerHTML = `
+                <img src="${item.image}" alt="Product Image">
+                <div class="cart-item-info">
+                    <h6> ${item.name}</h6>
+                    <p>₱ ${item.price}</p>
+                </div>
+                <div class="cart-item-quantity">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, -1)">-</button>
+                    <input type="number" value="${item.quantity || 1}" min="1" id="quantity-${index}">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, 1)">+</button>
+                </div>
+                <button class="btn btn-link text-danger" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button>
+            `;
+            cartItemsContainer.appendChild(cartItemDiv);
+        });
+
+        updateCartCount();
+        calculateSummary();
     }
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default anchor click behavior
-            const productItem = button.closest('.product-item');
-            const productId = productItem.getAttribute('data-id');
-            const productName = productItem.querySelector('.product_name a').textContent;
-            const productImage = productItem.querySelector('.product_image img').src;
-            const productPrice = productItem.querySelector('.product_price').textContent;
+    function calculateSummary() {
+        const subtotal = cartItems.reduce((total, item) => total + parseInt(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
+        const shipping = subtotal >= freeShippingThreshold ? 0 : shippingCost;
+        const total = subtotal + shipping;
 
-            // Check if item already exists in the cart
-            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
-            if (existingItemIndex > -1) {
-                // Increase quantity if it already exists
-                cartItems[existingItemIndex].quantity += 1;
-            } else {
-                // Add new item to cart with a default quantity of 1
-                cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
-            }
+        // Display the summary
+        document.getElementById('order-subtotal').textContent = `Subtotal: ₱ ${subtotal.toFixed(2)}`;
+        document.getElementById('order-shipping').textContent = `Shipping: ₱ ${shipping.toFixed(2)}`;
+        document.getElementById('order-total').textContent = `Total    ₱ ${total.toFixed(2)}`;
+    }
 
-            updateCart(); // Update the cart display
-            alert(`${productName} has been added to your cart!`);
-        });
-    });
+    function changeQuantity(index, delta) {
+        const quantityInput = document.getElementById(`quantity-${index}`);
+        let quantity = parseInt(quantityInput.value) + delta;
+        if (quantity < 1) {
+            quantity = 1; // Minimum quantity is 1
+        }
+        quantityInput.value = quantity;
 
-    // Update cart count on page load
-    updateCart();
-</script> 
+        // Update the item in the cartItems array
+        cartItems[index].quantity = quantity;
+        // Update user-specific local storage
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        updateCartCount(); // Update the cart count in the header
+        calculateSummary();
+    }
+
+    function removeItem(index) {
+        // Remove the item from the cart items array
+        cartItems.splice(index, 1);
+        // Update user-specific local storage
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        // Re-render the cart items
+        renderCartItems();
+        updateCartCount();
+    }
+
+    function updateCartCount() {
+        const cartCountElement = document.getElementById('checkout_items');
+        cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
+    }
+
+    // Call the function to render cart items
+    renderCartItems();
+</script>
+
 <script>
     // JavaScript to make the navbar opaque when scrolling
     window.addEventListener('scroll', function() {
