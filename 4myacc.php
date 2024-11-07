@@ -24,6 +24,7 @@ if ($result && mysqli_num_rows($result) > 0) {
         $city = $row["City"];
         $email = $row["Email"];
         $address = $row["Address"];
+        $fullname = $row["FirstName"] . ' ' . $row["LastName"];
     }
 } 
 
@@ -209,6 +210,7 @@ mysqli_close($conn);
                     </div>
                     <div class="account-details">
     <h2>Account Details</h2>
+    <p><strong>Name:</strong> <span><?php echo $fullname; ?></span></p>
     <p><strong>Email:</strong> <span><?php echo $email; ?></span></p>
     <p><strong>Address:</strong> <span><?php echo $address; ?></span></p>
     <p><strong>City:</strong> <span><?php echo $city; ?></span></p>

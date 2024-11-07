@@ -7,7 +7,7 @@ if (!$conn) {
 }
 
 if (isset($_POST['next'])) {
-    if (isset($_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['password'], $_POST['city'],$_POST['zip_code'], $_POST['contact_no'], $_POST['email'], $_POST['username']) && !empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['zip_code']) && !empty($_POST['contact_no']) && !empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['password'])) {
+    if (isset($_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['password'], $_POST['city'],$_POST['zip_code'], $_POST['contact_no'], $_POST['email'], $_POST['username'], $_POST['state']) && !empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['zip_code']) && !empty($_POST['contact_no']) && !empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['state'])) {
 
         $firstname = $_POST['first_name'];
         $lastname = $_POST['last_name'];
@@ -18,8 +18,9 @@ if (isset($_POST['next'])) {
         $email = $_POST['email'];
         $user = $_POST['username'];
         $pass = $_POST['password'];
+        $state = $_POST['state'];
 
-        $query = "INSERT INTO user (firstname, lastname, address, city,zip, contact, email, username, password) VALUES ('$firstname', '$lastname', '$address', '$city','$zip', '$contact', '$email', '$user', '$pass')";
+        $query = "INSERT INTO user (firstname, lastname, address, city,zip, contact, email, username, password, state) VALUES ('$firstname', '$lastname', '$address', '$city','$zip', '$contact', '$email', '$user', '$pass', '$state')";
         $result = mysqli_query($conn, $query);
 
         if ($result) {

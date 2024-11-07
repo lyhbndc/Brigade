@@ -314,8 +314,8 @@ if (!$user) {
             cartItemDiv.innerHTML = `
                 <img src="${item.image}" alt="Product Image">
                 <div class="cart-item-info">
-                    <h6>${item.name}</h6>
-                    <p>₱${item.price}</p>
+                    <h6> ${item.name}</h6>
+                    <p>₱ ${item.price}</p>
                 </div>
                 <div class="cart-item-quantity">
                     <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, -1)">-</button>
@@ -332,14 +332,14 @@ if (!$user) {
     }
 
     function calculateSummary() {
-        const subtotal = cartItems.reduce((total, item) => total + parseFloat(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
+        const subtotal = cartItems.reduce((total, item) => total + parseInt(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
         const shipping = subtotal >= freeShippingThreshold ? 0 : shippingCost;
         const total = subtotal + shipping;
 
         // Display the summary
-        document.getElementById('order-subtotal').textContent = `Subtotal: ₱${subtotal.toFixed(2)}`;
-        document.getElementById('order-shipping').textContent = `Shipping: ₱${shipping.toFixed(2)}`;
-        document.getElementById('order-total').textContent = `Total    ₱${total.toFixed(2)}`;
+        document.getElementById('order-subtotal').textContent = `Subtotal: ₱ ${subtotal.toFixed(2)}`;
+        document.getElementById('order-shipping').textContent = `Shipping: ₱ ${shipping.toFixed(2)}`;
+        document.getElementById('order-total').textContent = `Total    ₱ ${total.toFixed(2)}`;
     }
 
     function changeQuantity(index, delta) {

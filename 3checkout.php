@@ -1,11 +1,61 @@
 <?php
 session_start();
-$user = $_SESSION['user'] ?? null; // Handle cases where user might not be set
+$user = $_SESSION['user'];
+$conn = mysqli_connect("localhost", "root", "", "brigade");
 
 if (!$user) {
     // Redirect to login page if the user is not logged in
     header("Location: 4login.php");
     exit();
+}
+
+// Fetch user details
+$query = "SELECT * FROM user WHERE Username = '$user'";
+$result = mysqli_query($conn, $query);
+
+if ($result && mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $fullname = $row["FirstName"] . ' ' . $row["LastName"];
+        $email = $row["Email"];
+        $address = $row["Address"];
+        $contact = $row["Contact"];
+        $city = $row["City"];
+        $state = $row["State"];
+        $zip = $row["Zip"];
+    }
+}
+
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $cartData = json_decode($_POST['cartData'], true); // Decode JSON to an array
+    $status = "On Process"; // Set the initial status
+
+    // Generate a unique Order ID (4 digits)
+    do {
+        $orderID = sprintf('%04d', rand(0, 9999)); // Random number between 0000 to 9999
+        $checkQuery = "SELECT * FROM `order` WHERE OrderID = '$orderID'";
+        $checkResult = mysqli_query($conn, $checkQuery);
+    } while (mysqli_num_rows($checkResult) > 0); // Ensure uniqueness
+
+    if (is_array($cartData)) {
+        foreach ($cartData as $item) {
+            $product = mysqli_real_escape_string($conn, $item['name']);
+            $quantity = (int)$item['quantity'];
+            $price = floatval(preg_replace('/[^\d.-]/', '', $item['price'])); // Clean price and ensure it's a float
+            $total = $price * $quantity; // Calculate total based on price and quantity
+
+            // Insert order details into the database
+            $query = "INSERT INTO `order` (OrderID, Customer, Product, Quantity, Status, Total, Date) VALUES ('$orderID', '$fullname', '$product', '$quantity', '$status', '$total', NOW())";
+            $result = mysqli_query($conn, $query);
+        }
+        // Clear cart items from local storage after successful order
+        echo "<script>
+                alert('Order placed successfully!'); 
+                localStorage.removeItem('cartItems_" . addslashes($user) . "'); // Clear items from local storage
+                window.location.href='1homepage.php'; 
+              </script>";
+        exit();
+    }
 }
 ?>
 
@@ -45,35 +95,30 @@ if (!$user) {
             border-radius: 5px;
         }
         .order-summary {
-    margin-bottom: 20px;
-    font-family: Arial, sans-serif;
-}
-
-.order-summary h4 {
-    font-size: 1.25em;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-.summary-line-item, .summary-total {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 0;
-    font-size: 1em;
-}
-
-.summary-total {
-    font-weight: bold;
-    font-size: 1.1em;
-}
-
-.summary-divider {
-    border: none;
-    border-top: 1px solid #ddd;
-    margin: 15px 0;
-}
-
+            margin-bottom: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .order-summary h4 {
+            font-size: 1.25em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .summary-line-item, .summary-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            font-size: 1em;
+        }
+        .summary-total {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .summary-divider {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 15px 0;
+        }
     </style>
 </head>
 
@@ -81,7 +126,6 @@ if (!$user) {
 
     <div class="super_container">
         <header class="header trans_300">
-            <!-- Main Navigation -->
             <div class="main_nav_container">
                 <div class="container">
                     <div class="row">
@@ -114,12 +158,10 @@ if (!$user) {
                     </div>
                 </div>
             </div>
-    
         </header>
-    
+
         <div class="fs_menu_overlay"></div>
-    
-        <!-- Hamburger Menu -->
+
         <div class="hamburger_menu">
             <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
             <div class="hamburger_menu_content text-right">
@@ -148,66 +190,74 @@ if (!$user) {
                     <div class="checkout-container">
                         <div class="checkout-header">Checkout</div>
                         <div class="order-summary">
-    <h4>Order Summary</h4>
-    <div class="summary-line-item">
-        <span>Subtotal</span>
-        <span id="order-subtotal">₱0.00</span>
-    </div>
-    <div class="summary-line-item">
-        <span>Estimated Delivery & Handling</span>
-        <span id="order-shipping">₱0.00</span>
-    </div>
-    <hr class="summary-divider">
-    <div class="summary-total">
-        <span>Total</span>
-        <span id="order-total"><strong>₱0.00</strong></span>
-    </div>
-</div>
+                            <h4>Order Summary</h4>
+                            <div class="summary-line-item">
+                                <span>Subtotal</span>
+                                <span id="order-subtotal">₱0.00</span>
+                            </div>
+                            <div class="summary-line-item">
+                                <span>Estimated Delivery & Handling</span>
+                                <span id="order-shipping">₱0.00</span>
+                            </div>
+                            <hr class="summary-divider">
+                            <div class="summary-total">
+                                <span>Total</span>
+                                <span id="order-total"><strong>₱0.00</strong></span>
+                            </div>
+                        </div>
 
-                        <form>
+                        <form method="POST" action="">
+                             <!-- Add hidden input to pass cart data -->
+                             <input type="hidden" id="cartData" name="cartData">
+
                             <!-- Personal Information -->
                             <div class="form-group">
                                 <label for="name">Full Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Enter your full name" required>
+                                <input type="text" class="form-control" id="name" placeholder="Enter your full name" value="<?php echo htmlspecialchars($fullname); ?>" required>
                             </div>
                             
                             <div class="form-group">
                                 <label for="email">Email Address</label>
-                                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                                <input type="email" class="form-control" id="email" placeholder="Enter your email" value="<?php echo htmlspecialchars($email); ?>" required>
                             </div>
-                    
+
                             <!-- Shipping Address -->
                             <div class="form-group">
                                 <label for="address">Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+                                <input type="text" class="form-control" id="address" placeholder="1234 Main St" value="<?php echo htmlspecialchars($address); ?>" required>
                             </div>
                             
+                            <div class="form-group">
+                                <label for="contact">Contact</label>
+                                <input type="text" class="form-control" id="contact" placeholder="Enter your contact number" value="<?php echo htmlspecialchars($contact); ?>" required>
+                            </div>
+
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="city">City</label>
-                                    <input type="text" class="form-control" id="city" required>
+                                    <input type="text" class="form-control" id="city" value="<?php echo htmlspecialchars($city); ?>" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="state">State</label>
-                                    <input type="text" class="form-control" id="state" required>
+                                    <input type="text" class="form-control" id="state" value="<?php echo htmlspecialchars($state); ?>" required>
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label for="zip">Zip</label>
-                                    <input type="text" class="form-control" id="zip" required>
+                                    <input type="text" class="form-control" id="zip" value="<?php echo htmlspecialchars($zip); ?>" required>
                                 </div>
                             </div>
-                    
+
                             <!-- Payment Information -->
                             <div class="form-group">
                                 <label for="cardName">Name on Card</label>
                                 <input type="text" class="form-control" id="cardName" placeholder="Name as it appears on card" required>
                             </div>
-                    
+
                             <div class="form-group">
                                 <label for="cardNumber">Credit Card Number</label>
                                 <input type="text" class="form-control" id="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX" required>
                             </div>
-                    
+
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="expiry">Expiration Date</label>
@@ -218,14 +268,13 @@ if (!$user) {
                                     <input type="text" class="form-control" id="cvv" placeholder="XXX" required>
                                 </div>
                             </div>
-                    
+
                             <button type="submit" class="checkout-button">Place Order</button>
                         </form>
                     </div>
-                    </div>
-                    </div>
-                    </div>
-
+                </div>
+            </div>
+        </div>
 
         <!-- Footer -->
         <br><br><br><br>
@@ -280,10 +329,11 @@ if (!$user) {
             <br><br>
         </footer>
     </div>
+    
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
         const user = <?php echo json_encode($user); ?>; // Get the current user from PHP
         const cartKey = `cartItems_${user}`; // Create a unique key for this user's cart items
         const cartItems = JSON.parse(localStorage.getItem(cartKey)) || []; // Fetch items from user-specific key
@@ -293,7 +343,7 @@ if (!$user) {
             const freeShippingThreshold = 1500; // Free shipping for orders above this threshold
 
             // Calculate subtotal
-            const subtotal = cartItems.reduce((total, item) => total + parseFloat(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
+            const subtotal = cartItems.reduce((total, item) => total + parseInt(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
 
             // Determine shipping cost based on subtotal
             const shipping = subtotal >= freeShippingThreshold ? 0 : shippingCost;
@@ -308,13 +358,16 @@ if (!$user) {
         }
 
         // Call calculateOrderSummary to display the order summary when the page loads
-        document.addEventListener('DOMContentLoaded', calculateOrderSummary);
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateOrderSummary();
+            document.getElementById('cartData').value = JSON.stringify(cartItems); // Populate hidden input with cart data
+        });
     </script>
     <script>
         // JavaScript to make the navbar opaque when scrolling
         window.addEventListener('scroll', function() {
             const mainNav = document.querySelector('.main_nav_container');
-            
+
             if (window.scrollY > 50) { // Adjust the scroll threshold as needed
                 mainNav.classList.add('opaque');
             } else {
