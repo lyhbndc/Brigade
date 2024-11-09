@@ -1,3 +1,68 @@
+<?php
+session_start();
+
+$user = $_SESSION['user'];
+$conn = mysqli_connect("localhost", "root", "", "brigade");
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// Fetch today's date
+$currentDate = date('Y-m-d');
+
+// Initialize variables
+$dailySales = 0;
+$monthlyOrders = 0;
+
+// Calculate daily sales
+$sqlDailySales = "SELECT SUM(Total) as daily_total FROM `order` WHERE Date = '$currentDate'";
+$resultDailySales = $conn->query($sqlDailySales);
+if ($resultDailySales->num_rows > 0) {
+    $row = $resultDailySales->fetch_assoc();
+    $dailySales = $row['daily_total'] ?? 0;
+}
+
+// Calculate number of orders for the current month
+$currentMonth = date('Y-m');
+$sqlMonthlyOrders = "SELECT COUNT(*) as order_count FROM `order` WHERE DATE_FORMAT(Date, '%Y-%m') = '$currentMonth'";
+$resultMonthlyOrders = $conn->query($sqlMonthlyOrders);
+if ($resultMonthlyOrders->num_rows > 0) {
+    $row = $resultMonthlyOrders->fetch_assoc();
+    $monthlyOrders = $row['order_count'] ?? 0;
+}
+
+$sqlMonthlySales = "SELECT SUM(Total) as monthly_total FROM `order` WHERE DATE_FORMAT(Date, '%Y-%m') = '$currentMonth'";
+$resultMonthlySales = $conn->query($sqlMonthlySales);
+if ($resultMonthlySales->num_rows > 0) {
+    $row = $resultMonthlySales->fetch_assoc();
+    $monthlySales = $row['monthly_total'] ?? 0;
+}
+
+// Fetch order summary for the pie chart
+$orderSummary = [];
+$sqlOrders = "SELECT Status, COUNT(*) as count FROM `order` GROUP BY Status";
+$resultOrders = $conn->query($sqlOrders);
+if ($resultOrders->num_rows > 0) {
+    while ($row = $resultOrders->fetch_assoc()) {
+        $orderSummary[$row['Status']] = $row['count'];
+    }
+}
+
+$monthlySalesData = array_fill_keys(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], 0);
+$sqlMonthlyData = "SELECT DATE_FORMAT(Date, '%Y-%m') as month, SUM(Total) as total FROM `order` GROUP BY month ORDER BY month ASC";
+$resultMonthlyData = $conn->query($sqlMonthlyData);
+if ($resultMonthlyData->num_rows > 0) {
+    while ($row = $resultMonthlyData->fetch_assoc()) {
+        $dateObj = DateTime::createFromFormat('Y-m', $row['month']);
+        $monthName = $dateObj->format('M'); // Convert month to short month name (e.g., 'Jan')
+        $monthlySalesData[$monthName] = $row['total'];
+    }
+}
+
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -161,7 +226,7 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Daily Sales</h6>
-                    <p class="card-text">$1,200</p>
+                    <p class="card-text">₱ <?php echo number_format($dailySales, 2); ?></p>
                 </div>
             </div>
         </div>
@@ -169,7 +234,7 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Sales This Month</h6>
-                    <p class="card-text">$18,000</p>
+                    <p class="card-text">₱ <?php echo number_format($monthlySales, 2); ?></p>
                 </div>
             </div>
         </div>
@@ -177,7 +242,7 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Orders</h6>
-                    <p class="card-text">150</p>
+                    <p class="card-text"><?php echo $monthlyOrders; ?></p>
                 </div>
             </div>
         </div>
@@ -189,7 +254,6 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Monthly Sales</h6>
-                    <p class="card-text">$24,000</p>
                     <div class="chart-container">
                         <canvas id="salesChart"></canvas>
                     </div>
@@ -261,42 +325,63 @@
         }
     });
 
-    // Monthly Sales Chart
-    const salesChartCtx = document.getElementById('salesChart').getContext('2d');
-    new Chart(salesChartCtx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-            datasets: [{
-                label: 'Monthly Sales',
-                data: [5000, 7000, 8000, 10000, 15000, 20000, 25000],
-                backgroundColor: 'rgba(0, 123, 255, 0.5)',
-                borderColor: 'rgba(0, 123, 255, 1)',
-                borderWidth: 1.5,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
-        }
-    });
+    // Monthly Sales Data from PHP
+const monthlySalesData = <?php echo json_encode($monthlySalesData); ?>;
+const months = Object.keys(monthlySalesData);
+const sales = Object.values(monthlySalesData);
 
+// Render the Monthly Sales Chart as a Line Chart
+const salesChartCtx = document.getElementById('salesChart').getContext('2d');
+new Chart(salesChartCtx, {
+    type: 'line',
+    data: {
+        labels: months,
+        datasets: [{
+            label: 'Monthly Sales',
+            data: sales,
+            backgroundColor: 'rgba(0, 123, 255, 0.2)',
+            borderColor: 'rgba(0, 123, 255, 1)',
+            borderWidth: 1.5,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Sales (Total)'
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Month'
+                }
+            }
+        }
+    }
+});
     
+
+    const orderSummary = <?php echo json_encode($orderSummary); ?>;
 
     // Order Status Pie Chart
     const orderStatusChartCtx = document.getElementById('orderStatusChart').getContext('2d');
     new Chart(orderStatusChartCtx, {
         type: 'pie',
         data: {
-            labels: ['Pending', 'Processing', 'Shipped', 'Delivered'],
+            labels: Object.keys(orderSummary),
             datasets: [{
-                data: [10, 20, 30, 40],
+                data: Object.values(orderSummary),
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.5)',
-                    'rgba(54, 162, 235, 0.5)',
-                    'rgba(255, 206, 86, 0.5)',
-                    'rgba(75, 192, 192, 0.5)'
+                    'rgba(255, 99, 132, 0.5)', // Pending
+                    'rgba(54, 162, 235, 0.5)', // Processing
+                    'rgba(255, 206, 86, 0.5)', // Shipped
+                    'rgba(75, 192, 192, 0.5)'  // Delivered
                 ],
                 borderWidth: 1
             }]

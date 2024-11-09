@@ -637,49 +637,93 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 <script src="plugins/easing/easing.js"></script>
 <script src="js/custom.js"></script>
 <script>
-        const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    // Initialize cart with a user-specific key
+    const user = <?php echo json_encode($user); ?>; // Get the current user from PHP
+    const cartKey = `cartItems_${user}`; // Create a unique key for this user's cart items
+    const cartItems = JSON.parse(localStorage.getItem(cartKey)) || []; // Fetch items from user-specific key
 
-        function updateCart() {
-            const cartCountElement = document.getElementById('checkout_items');
-            cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
-            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const shippingCost = 100; // Flat-rate shipping cost
+    const freeShippingThreshold = 1500; // Threshold for free shipping
+
+    function renderCartItems() {
+        cartItemsContainer.innerHTML = ''; // Clear the container
+        if (cartItems.length === 0) {
+            cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+            updateCartCount();
+            calculateSummary();
+            return;
         }
 
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent default anchor click behavior
-
-                // Redirect to login page if not logged in
-                if (!isLoggedIn) {
-                    window.location.href = '4login.php';
-                    return;
-                }
-
-                // Continue with add-to-cart logic if user is logged in
-                const productItem = button.closest('.product-item');
-                const productId = productItem.getAttribute('data-id');
-                const productName = productItem.querySelector('.product_name a').textContent;
-                const productImage = productItem.querySelector('.product_image img').src;
-                const productPrice = productItem.querySelector('.product_price').textContent;
-
-                // Check if item already exists in the cart
-                const existingItemIndex = cartItems.findIndex(item => item.id === productId);
-                if (existingItemIndex > -1) {
-                    // Increase quantity if it already exists
-                    cartItems[existingItemIndex].quantity += 1;
-                } else {
-                    // Add new item to cart with a default quantity of 1
-                    cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
-                }
-
-                updateCart(); // Update the cart display
-                alert(`${productName} has been added to your cart!`);
-            });
+        cartItems.forEach((item, index) => {
+            const cartItemDiv = document.createElement('div');
+            cartItemDiv.className = 'cart-item';
+            cartItemDiv.innerHTML = `
+                <img src="${item.image}" alt="Product Image">
+                <div class="cart-item-info">
+                    <h6> ${item.name}</h6>
+                    <p>₱ ${item.price}</p>
+                </div>
+                <div class="cart-item-quantity">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, -1)">-</button>
+                    <input type="number" value="${item.quantity || 1}" min="1" id="quantity-${index}">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, 1)">+</button>
+                </div>
+                <button class="btn btn-link text-danger" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button>
+            `;
+            cartItemsContainer.appendChild(cartItemDiv);
         });
 
-        // Update cart count on page load
-        updateCart();
-    </script>
+        updateCartCount();
+        calculateSummary();
+    }
+
+    function calculateSummary() {
+        const subtotal = cartItems.reduce((total, item) => total + parseInt(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
+        const shipping = subtotal >= freeShippingThreshold ? 0 : shippingCost;
+        const total = subtotal + shipping;
+
+        // Display the summary
+        document.getElementById('order-subtotal').textContent = `Subtotal: ₱ ${subtotal.toFixed(2)}`;
+        document.getElementById('order-shipping').textContent = `Shipping: ₱ ${shipping.toFixed(2)}`;
+        document.getElementById('order-total').textContent = `Total    ₱ ${total.toFixed(2)}`;
+    }
+
+    function changeQuantity(index, delta) {
+        const quantityInput = document.getElementById(`quantity-${index}`);
+        let quantity = parseInt(quantityInput.value) + delta;
+        if (quantity < 1) {
+            quantity = 1; // Minimum quantity is 1
+        }
+        quantityInput.value = quantity;
+
+        // Update the item in the cartItems array
+        cartItems[index].quantity = quantity;
+        // Update user-specific local storage
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        updateCartCount(); // Update the cart count in the header
+        calculateSummary();
+    }
+
+    function removeItem(index) {
+        // Remove the item from the cart items array
+        cartItems.splice(index, 1);
+        // Update user-specific local storage
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        // Re-render the cart items
+        renderCartItems();
+        updateCartCount();
+    }
+
+    function updateCartCount() {
+        const cartCountElement = document.getElementById('checkout_items');
+        cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
+    }
+
+    // Call the function to render cart items
+    renderCartItems();
+</script>
+
 <script>
     // JavaScript to make the navbar opaque when scrolling
     window.addEventListener('scroll', function() {
