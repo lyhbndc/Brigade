@@ -353,7 +353,7 @@ mysqli_close($conn);
     <div class="button-container">
     <button class="btn btn-success btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Received">Received</button>
     <button class="btn btn-warning btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Refund">Refund</button>
-    <button class="btn btn-danger btn-sm action-button data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Cancel">Cancel</button>
+    <button class="btn btn-danger btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Cancel">Cancel</button>
 </td>
             </tr>
         <?php endwhile; ?>
