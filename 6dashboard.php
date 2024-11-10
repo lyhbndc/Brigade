@@ -14,24 +14,25 @@ $currentDate = date('Y-m-d');
 $dailySales = 0;
 $monthlyOrders = 0;
 
-// Calculate daily sales
-$sqlDailySales = "SELECT SUM(Total) as daily_total FROM `order` WHERE Date = '$currentDate'";
+// Calculate daily sales for completed orders only
+$sqlDailySales = "SELECT SUM(Total) as daily_total FROM `order` WHERE Date = '$currentDate' AND Status = 'Order Completed'";
 $resultDailySales = $conn->query($sqlDailySales);
 if ($resultDailySales->num_rows > 0) {
     $row = $resultDailySales->fetch_assoc();
     $dailySales = $row['daily_total'] ?? 0;
 }
 
-// Calculate number of orders for the current month
+// Calculate number of completed orders for the current month
 $currentMonth = date('Y-m');
-$sqlMonthlyOrders = "SELECT COUNT(*) as order_count FROM `order` WHERE DATE_FORMAT(Date, '%Y-%m') = '$currentMonth'";
+$sqlMonthlyOrders = "SELECT COUNT(*) as order_count FROM `order` WHERE DATE_FORMAT(Date, '%Y-%m') = '$currentMonth' AND Status = 'Order Completed'";
 $resultMonthlyOrders = $conn->query($sqlMonthlyOrders);
 if ($resultMonthlyOrders->num_rows > 0) {
     $row = $resultMonthlyOrders->fetch_assoc();
     $monthlyOrders = $row['order_count'] ?? 0;
 }
 
-$sqlMonthlySales = "SELECT SUM(Total) as monthly_total FROM `order` WHERE DATE_FORMAT(Date, '%Y-%m') = '$currentMonth'";
+// Calculate monthly sales for completed orders only
+$sqlMonthlySales = "SELECT SUM(Total) as monthly_total FROM `order` WHERE DATE_FORMAT(Date, '%Y-%m') = '$currentMonth' AND Status = 'Order Completed'";
 $resultMonthlySales = $conn->query($sqlMonthlySales);
 if ($resultMonthlySales->num_rows > 0) {
     $row = $resultMonthlySales->fetch_assoc();
@@ -49,7 +50,7 @@ if ($resultOrders->num_rows > 0) {
 }
 
 $monthlySalesData = array_fill_keys(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], 0);
-$sqlMonthlyData = "SELECT DATE_FORMAT(Date, '%Y-%m') as month, SUM(Total) as total FROM `order` GROUP BY month ORDER BY month ASC";
+$sqlMonthlyData = "SELECT DATE_FORMAT(Date, '%Y-%m') as month, SUM(Total) as total FROM `order` WHERE Status = 'Order Completed' GROUP BY month ORDER BY month ASC";
 $resultMonthlyData = $conn->query($sqlMonthlyData);
 if ($resultMonthlyData->num_rows > 0) {
     while ($row = $resultMonthlyData->fetch_assoc()) {
@@ -59,9 +60,9 @@ if ($resultMonthlyData->num_rows > 0) {
     }
 }
 
-
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
