@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-    $user = $_SESSION['user'];
-    $conn = mysqli_connect("localhost", "root", "", "brigade");
+$user = $_SESSION['user'];
+$conn = mysqli_connect("localhost", "root", "", "brigade");
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
@@ -19,19 +19,130 @@ $query = "SELECT * FROM user WHERE Username = '$user'";
 $result = mysqli_query($conn, $query);
 
 if ($result && mysqli_num_rows($result) > 0) {
-    // Output data of each row
     while ($row = mysqli_fetch_assoc($result)) {
         $city = $row["City"];
         $email = $row["Email"];
         $address = $row["Address"];
         $fullname = $row["FirstName"] . ' ' . $row["LastName"];
     }
-} 
+}
+
 $orderQuery = "SELECT * FROM `order` WHERE Customer = '$fullname' ORDER BY Date DESC";
 $orderResult = mysqli_query($conn, $orderQuery);
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $orderId = mysqli_real_escape_string($conn, $_POST['orderId']);
+    $product = mysqli_real_escape_string($conn, $_POST['product']); // Get product from POST data
+    $action = mysqli_real_escape_string($conn, $_POST['action']);
+
+    // Determine the new status based on the action
+    $newStatus = '';
+    switch ($action) {
+        case 'Received':
+            $newStatus = 'Order Completed';
+            break;
+        case 'Refund':
+            $newStatus = 'Refunded';
+            break;
+        case 'Cancel':
+            $newStatus = 'Cancelled';
+            break;
+        default:
+            echo 'Invalid action';
+            exit();
+    }
+
+    // Update the order status in the database using both OrderID and Product
+    $query = "UPDATE `order` SET Status = '$newStatus' WHERE OrderID = '$orderId' AND Product = '$product'";
+    if (mysqli_query($conn, $query)) {
+        echo "Order status updated to '$newStatus'";
+    } else {
+        echo "Error updating order: " . mysqli_error($conn);
+    }
+
+    // Additional actions based on the type of request
+    if ($action === 'Cancel') {
+        // Fetch the order details before inserting into the `cancel_order` table
+        $fetchOrderQuery = "SELECT * FROM `order` WHERE OrderID = '$orderId' AND Product = '$product'";
+        $fetchOrderResult = mysqli_query($conn, $fetchOrderQuery);
+
+        if ($fetchOrderResult && mysqli_num_rows($fetchOrderResult) > 0) {
+            $orderDetails = mysqli_fetch_assoc($fetchOrderResult);
+            $quantity = mysqli_real_escape_string($conn, $orderDetails['Quantity']);
+            $total = mysqli_real_escape_string($conn, $orderDetails['Total']);
+            $date = mysqli_real_escape_string($conn, $orderDetails['Date']);
+
+            // Insert canceled order into the `cancel_order` table
+            $insertQuery = "
+                INSERT INTO `cancel_order` (OrderID, Customer, Product, Quantity, Status, Total, Date)
+                VALUES ('$orderId', '$fullname', '$product', '$quantity', 'Order Cancelled', '$total', '$date')
+            ";
+            if (mysqli_query($conn, $insertQuery)) {
+                echo "Order successfully inserted into `cancel_order`.";
+            } else {
+                echo "Error inserting order into `cancel_order`: " . mysqli_error($conn);
+            }
+        } else {
+            echo "Error: Order not found.";
+        }
+    }
+
+    if ($action === 'Received') {
+        // Fetch the order details before inserting into the `complete_order` table
+        $fetchOrderQuery = "SELECT * FROM `order` WHERE OrderID = '$orderId' AND Product = '$product'";
+        $fetchOrderResult = mysqli_query($conn, $fetchOrderQuery);
+
+        if ($fetchOrderResult && mysqli_num_rows($fetchOrderResult) > 0) {
+            $orderDetails = mysqli_fetch_assoc($fetchOrderResult);
+            $quantity = mysqli_real_escape_string($conn, $orderDetails['Quantity']);
+            $total = mysqli_real_escape_string($conn, $orderDetails['Total']);
+            $date = mysqli_real_escape_string($conn, $orderDetails['Date']);
+
+            // Insert completed order into the `complete_order` table
+            $insertQuery = "
+                INSERT INTO `complete_order` (OrderID, Customer, Product, Quantity, Status, Total, Date)
+                VALUES ('$orderId', '$fullname', '$product', '$quantity', 'Order Completed', '$total', '$date')
+            ";
+            if (mysqli_query($conn, $insertQuery)) {
+                echo "Order successfully inserted into `complete_order`.";
+            } else {
+                echo "Error inserting order into `complete_order`: " . mysqli_error($conn);
+            }
+        } else {
+            echo "Error: Order not found.";
+        }
+    }
+
+    if ($action === 'Refund') {
+        // Fetch the order details before inserting into the `refund_order` table
+        $fetchOrderQuery = "SELECT * FROM `order` WHERE OrderID = '$orderId' AND Product = '$product'";
+        $fetchOrderResult = mysqli_query($conn, $fetchOrderQuery);
+
+        if ($fetchOrderResult && mysqli_num_rows($fetchOrderResult) > 0) {
+            $orderDetails = mysqli_fetch_assoc($fetchOrderResult);
+            $quantity = mysqli_real_escape_string($conn, $orderDetails['Quantity']);
+            $total = mysqli_real_escape_string($conn, $orderDetails['Total']);
+            $date = mysqli_real_escape_string($conn, $orderDetails['Date']);
+
+            // Insert refunded order into the `refund_order` table
+            $insertQuery = "
+                INSERT INTO `refund_order` (OrderID, Customer, Product, Quantity, Status, Total, Date)
+                VALUES ('$orderId', '$fullname', '$product', '$quantity', 'Order Refunded', '$total', '$date')
+            ";
+            if (mysqli_query($conn, $insertQuery)) {
+                echo "Order successfully inserted into `refund_order`.";
+            } else {
+                echo "Error inserting order into `refund_order`: " . mysqli_error($conn);
+            }
+        } else {
+            echo "Error: Order not found.";
+        }
+    }
+}
+
 mysqli_close($conn);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -218,34 +329,41 @@ mysqli_close($conn);
                                 <th>Status</th>
                                 <th>Total</th>
                                 <th>Date</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php if ($orderResult && mysqli_num_rows($orderResult) > 0): ?>
-                                <?php while ($orderRow = mysqli_fetch_assoc($orderResult)): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($orderRow['OrderID']); ?></td>
-                                        <td><?php echo htmlspecialchars($orderRow['Product']); ?></td>
-                                        <td><?php echo htmlspecialchars($orderRow['Quantity']); ?></td>
-                                        <td>
-                                            <?php if ($orderRow['Status'] == "Shipped"): ?>
-                                                <span class="badge badge-success"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
-                                            <?php else: ?>
-                                                <span class="badge badge-warning"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td><?php echo htmlspecialchars($orderRow['Total']); ?></td>
-                                        <td><?php echo htmlspecialchars($orderRow['Date']); ?></td>
-                                    </tr>
-                                <?php endwhile; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="6" class="text-center">No orders found</td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                    </div>
+                       <!-- Add buttons inside the table row -->
+<tbody>
+    <?php if ($orderResult && mysqli_num_rows($orderResult) > 0): ?>
+        <?php while ($orderRow = mysqli_fetch_assoc($orderResult)): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($orderRow['OrderID']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['Product']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['Quantity']); ?></td>
+                <td>
+                    <?php if ($orderRow['Status'] == "Shipped"): ?>
+                        <span class="badge badge-success"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
+                    <?php else: ?>
+                        <span class="badge badge-warning"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
+                    <?php endif; ?>
+                </td>
+                <td><?php echo htmlspecialchars($orderRow['Total']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['Date']); ?></td>
+                <td>
+    <div class="button-container">
+    <button class="btn btn-success btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Received">Received</button>
+    <button class="btn btn-warning btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Refund">Refund</button>
+    <button class="btn btn-danger btn-sm action-button data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Cancel">Cancel</button>
+</td>
+            </tr>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="7" class="text-center">No orders found</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
+</div>
                     <div class="account-details">
     <h2>Account Details</h2>
     <p><strong>Name:</strong> <span><?php echo $fullname; ?></span></p>
@@ -259,6 +377,8 @@ mysqli_close($conn);
                     <br><br><br><br><br><br><br>
                 </div>   
                 </div>   
+                    </table>
+                  
                      
             
         <!-- Footer -->
@@ -414,5 +534,36 @@ mysqli_close($conn);
         }
     });
 </script>
+
+<script>
+document.querySelectorAll('.action-button').forEach(button => {
+    button.addEventListener('click', function() {
+        const orderId = this.getAttribute('data-order-id');
+        const product = this.getAttribute('data-product'); // New line
+        const action = this.getAttribute('data-action');
+        
+        if (confirm(`Are you sure you want to ${action} this order?`)) {
+            const buttonsInRow = this.parentNode.querySelectorAll('.action-button');
+            buttonsInRow.forEach(btn => btn.disabled = true);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '4myacc.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    alert(xhr.responseText.trim());
+                    location.reload(); 
+                } else {
+                    alert('An error occurred. Please try again.');
+                    buttonsInRow.forEach(btn => btn.disabled = false);
+                }
+            };
+            xhr.send(`orderId=${encodeURIComponent(orderId)}&product=${encodeURIComponent(product)}&action=${encodeURIComponent(action)}`);
+        }
+    });
+});
+
+</script>
+
 </body>
 </html>
