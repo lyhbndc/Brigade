@@ -39,7 +39,7 @@ $result = $conn->query($sql);
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="1index2.php"><img src="assets/1.png"></a>
+							<a href="1index.php"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
 							<ul class="navbar_menu">
@@ -124,18 +124,6 @@ $result = $conn->query($sql);
 						</p>
 						<div id="slider-range"></div>
 						<div class="filter_button"><span>filter</span></div>
-					</div>
-					<div class="sidebar_section">
-						<div class="sidebar_title">
-							<h5>Sizes</h5>
-						</div>
-						<ul class="checkboxes">
-							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>S</span></li>
-							<li class="active"><i class="fa fa-square" aria-hidden="true"></i><span>M</span></li>
-							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>L</span></li>
-							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XL</span></li>
-							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XXL</span></li>
-						</ul>
 					</div>
 
 

@@ -497,11 +497,20 @@ section
 3.4 Main Navigation
 *********************************/
 
-.main_nav_container
-{
+.main_nav_container {
 	width: 100%;
-	background: black;
+	background-color: rgba(0, 0, 0, 1); 
 	box-shadow: 0 0 16px rgba(0, 0, 0, 0.15);
+	padding: 20px 0;
+	transition: background-color 0.3s ease;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+
+.main_nav_container.opaque {
+	background-color: rgba(0, 0, 0, 0.7); /* Transparent background */ /* Solid background when scrolling */
 }
 .navbar
 {
@@ -1595,18 +1604,24 @@ section
 }
 
 .size-option {
-    border: 1px solid #ccc; /* Light border */
-    padding: 10px 15px; /* Padding for clickable area */
-    cursor: pointer; /* Cursor changes to pointer on hover */
-    transition: background-color 0.3s; /* Smooth transition for background color */
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
-.size-option:hover {
-    background-color: #f0f0f0; /* Light gray on hover */
-}
-
+/* Shaded style when selected */
 .size-option.selected {
-    background-color: black; /* Background color when selected */
-    color: white; /* Text color when selected */
-    border-color: #999; /* Darker border for selected */
+    background-color: #333;
+    color: white;
+    transform: scale(1.05);  /* Slightly enlarge the selected option */
+}
+
+/* Hover effect for size options */
+.size-option:hover {
+    background-color: #e0e0e0;
 }

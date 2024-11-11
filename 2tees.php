@@ -30,11 +30,11 @@
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="1index2.php"><img src="assets/1.png"></a>
+							<a href="1index.php"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
 							<ul class="navbar_menu">
-								<li><a href="index.html">home</a></li>
+								<li><a href="1index.php">home</a></li>
 								<li><a href="3shop.php">shop</a></li>
 								<li><a href="3new.php">new</a></li>
 								<li><a href="3onsale.php">on sale</a></li>
@@ -62,29 +62,6 @@
 
 	<div class="fs_menu_overlay"></div>
 
-	<!-- Hamburger Menu -->
-
-	<div class="hamburger_menu">
-		<div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
-		<div class="hamburger_menu_content text-right">
-			<ul class="menu_top_nav">
-				<li class="menu_item has-children">
-					<a href="#">
-						My Account
-						<i class="fa fa-angle-down"></i>
-					</a>
-					<ul class="menu_selection">
-						<li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-						<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
-					</ul>
-				</li>
-				<li class="menu_item"><a href="#">home</a></li>
-				<li class="menu_item"><a href="#">shop</a></li>
-				<li class="menu_item"><a href="#">new</a></li>
-				<li class="menu_item"><a href="#">on sale</a></li>
-			</ul>
-		</div>
-	</div>
 
 	<div class="container product_section_container">
 		<div class="row">
@@ -94,7 +71,7 @@
 
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
-						<li><a href="1index2.php">Home</a></li>
+						<li><a href="1index.php">Home</a></li>
 						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Tees</a></li>
 					</ul>
 				</div>

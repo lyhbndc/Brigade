@@ -19,7 +19,7 @@ if (!$user) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="styles/single_styles.css">
+    <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
     <style>
         .cart-page-container {
@@ -27,7 +27,7 @@ if (!$user) {
     justify-content: center;
     gap: 20px;
     max-width: 800px;
-    margin: 50px auto;
+    margin: 120px auto;
 }
 
 .cart-container {
@@ -120,7 +120,6 @@ if (!$user) {
 <body>
 
     <div class="super_container">
-        <header class="header trans_300">
             <!-- Top Navigation -->
             <div class="top_nav">
                 <div class="container">
@@ -153,7 +152,6 @@ if (!$user) {
                                     <li><a href="3shop.php">shop</a></li>
                                     <li><a href="3new.php">new</a></li>
                                     <li><a href="3onsale.php">on sale</a></li>
-                                    <li><a href="logout.php">logout</a></li>
                                 </ul>
                                 <ul class="navbar_user">
                                     <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
