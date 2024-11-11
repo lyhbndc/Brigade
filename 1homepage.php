@@ -44,11 +44,11 @@ $user = $_SESSION['user'];
 						</div>
 						<nav class="navbar">
 							<ul class="navbar_menu">
-								<li><a href="#">home</a></li>
-								<li><a href="3shop.php">shop</a></li>
-								<li><a href="3new.php">new</a></li>
-								<li><a href="3onsale.php">on sale</a></li>
-								<li><a href="logout.php">logout</a></li>
+							<li><a href="3shop.php">shop</a></li>
+                                    <li><a href="#">new</a></li>
+                                    <li><a href="#">on sale</a></li>
+                                    <li><a href="4recentorders.php">Recent Orders</a></li>
+									<li><a href="logout.php" class="logout">Logout</a></li>
 							</ul>
 							<ul class="navbar_user">
 								<li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>

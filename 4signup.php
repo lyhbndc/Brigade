@@ -7,27 +7,42 @@ if (!$conn) {
 }
 
 if (isset($_POST['next'])) {
-    if (isset($_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['password'], $_POST['city'],$_POST['zip_code'], $_POST['contact_no'], $_POST['email'], $_POST['username'], $_POST['state']) && !empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['zip_code']) && !empty($_POST['contact_no']) && !empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['state'])) {
+    // Check if all required fields are set and not empty
+    if (isset($_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['password'], $_POST['confirm_password'], $_POST['city'], $_POST['zip_code'], $_POST['contact_no'], $_POST['email'], $_POST['username'], $_POST['state']) && 
+        !empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['zip_code']) && !empty($_POST['contact_no']) && 
+        !empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['confirm_password']) && !empty($_POST['state'])) {
 
         $firstname = $_POST['first_name'];
         $lastname = $_POST['last_name'];
         $address = $_POST['address'];
-        $city =  $_POST['city'];
+        $city = $_POST['city'];
         $zip = $_POST['zip_code'];
         $contact = $_POST['contact_no'];
         $email = $_POST['email'];
         $user = $_POST['username'];
         $pass = $_POST['password'];
+        $confirm_pass = $_POST['confirm_password'];
         $state = $_POST['state'];
 
-        $query = "INSERT INTO user (firstname, lastname, address, city,zip, contact, email, username, password, state) VALUES ('$firstname', '$lastname', '$address', '$city','$zip', '$contact', '$email', '$user', '$pass', '$state')";
-        $result = mysqli_query($conn, $query);
-
-        if ($result) {
-            header("Location: 4login.php");
-            exit();
+        // Check if passwords match
+        if ($pass !== $confirm_pass) {
+            echo "Passwords do not match. Please try again.";
         } else {
-            echo "Error: " . mysqli_error($conn);
+            // Check for password strength
+            if (strlen($pass) >= 8 && preg_match('/[A-Z]/', $pass) && preg_match('/[a-z]/', $pass) && preg_match('/[0-9]/', $pass) && preg_match('/[\W]/', $pass)) {
+                // Password is strong enough, proceed with insert
+                $query = "INSERT INTO user (firstname, lastname, address, city, zip, contact, email, username, password, state) VALUES ('$firstname', '$lastname', '$address', '$city', '$zip', '$contact', '$email', '$user', '$hashed_password', '$state')";
+                $result = mysqli_query($conn, $query);
+
+                if ($result) {
+                    header("Location: 4login.php"); // Redirect to login page after successful signup
+                    exit();
+                } else {
+                    echo "Error: " . mysqli_error($conn);
+                }
+            } else {
+                echo "Password is not strong enough. It must be at least 8 characters long and include uppercase, lowercase, numeric, and special characters.";
+            }
         }
     } else {
         echo "Please fill in all fields.";
@@ -36,6 +51,7 @@ if (isset($_POST['next'])) {
 
 mysqli_close($conn);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -243,11 +259,23 @@ mysqli_close($conn);
                                 <input type="text" id="username" name="username" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label for="password">Password:</label>
-                                <div style="position: relative;">
-                                    <input type="password" id="signup-password" name="password" class="form-control" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="signup-password" name="password" class="form-control" required>
+                <div style="position: relative;">
                                     <i id="toggle-signup-password-icon" class="fa fa-eye toggle-password" onclick="toggleSignupPassword()"></i>
                                 </div>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm_password" class="form-control" required>
+                <div style="position: relative;">
+                                    <i id="toggle-signup-password-icon" class="fa fa-eye toggle-password" onclick="toggleSignupPassword()"></i>
+                                </div>
+
+                <span id="password-match-status"></span>
+            </div>
+                        
                             </div>
                             <input type="submit" name ="next" value="Sign Up" class="btn btn-primary">
                         </form>
@@ -325,6 +353,24 @@ mysqli_close($conn);
             }
         }
     </script>
+
+<script>
+        // JavaScript for real-time password matching
+        const passwordField = document.getElementById('signup-password');
+        const confirmPasswordField = document.getElementById('confirm-password');
+        const passwordMatchStatus = document.getElementById('password-match-status');
+
+        confirmPasswordField.addEventListener('input', function() {
+            if (passwordField.value !== confirmPasswordField.value) {
+                passwordMatchStatus.textContent = "Passwords do not match";
+                passwordMatchStatus.style.color = "red";
+            } else {
+                passwordMatchStatus.textContent = "Passwords match";
+                passwordMatchStatus.style.color = "green";
+            }
+        });
+    </script>
+
     <script>
     // JavaScript to make the navbar opaque when scrolling
     window.addEventListener('scroll', function() {
