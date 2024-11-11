@@ -290,105 +290,82 @@ if (!$user) {
 
 <!-- Add this before the closing body tag -->
 <script>
-    // Initialize cart with a user-specific key
-    const user = <?php echo json_encode($user); ?>; // Get the current user from PHP
-    const cartKey = `cartItems_${user}`; // Create a unique key for this user's cart items
-    const cartItems = JSON.parse(localStorage.getItem(cartKey)) || []; // Fetch items from user-specific key
+        const user = <?php echo json_encode($user); ?>; // Get the current user from PHP
+        const cartKey = `cartItems_${user}`; // Unique key for this user's cart items
+        let cartItems = JSON.parse(localStorage.getItem(cartKey)) || []; // Fetch items
 
-    const cartItemsContainer = document.getElementById('cart-items-container');
-    const shippingCost = 100; // Flat-rate shipping cost
-    const freeShippingThreshold = 1500; // Threshold for free shipping
+        const cartItemsContainer = document.getElementById('cart-items-container');
+        const shippingCost = 100;
+        const freeShippingThreshold = 1500;
 
-    function renderCartItems() {
-        cartItemsContainer.innerHTML = ''; // Clear the container
-        if (cartItems.length === 0) {
-            cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+        function renderCartItems() {
+            cartItemsContainer.innerHTML = ''; // Clear the container
+            if (cartItems.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+                updateCartCount();
+                calculateSummary();
+                return;
+            }
+
+            cartItems.forEach((item, index) => {
+                const cartItemDiv = document.createElement('div');
+                cartItemDiv.className = 'cart-item';
+                cartItemDiv.innerHTML = `
+                    <img src="${item.image}" alt="Product Image">
+                    <div class="cart-item-info">
+                        <h6> ${item.name}</h6>
+                        <p> ${item.price}</p>
+                    </div>
+                    <div class="cart-item-quantity">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, -1)">-</button>
+                        <input type="number" value="${item.quantity || 1}" min="1" max="5" id="quantity-${index}">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, 1)">+</button>
+                    </div>
+                    <button class="btn btn-link text-danger" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button>
+                `;
+                cartItemsContainer.appendChild(cartItemDiv);
+            });
+
             updateCartCount();
             calculateSummary();
-            return;
         }
 
-        cartItems.forEach((item, index) => {
-            const cartItemDiv = document.createElement('div');
-            cartItemDiv.className = 'cart-item';
-            cartItemDiv.innerHTML = `
-                <img src="${item.image}" alt="Product Image">
-                <div class="cart-item-info">
-                    <h6> ${item.name}</h6>
-                    <p>₱ ${item.price}</p>
-                </div>
-                <div class="cart-item-quantity">
-    <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, -1)">-</button>
-    <input type="number" value="${item.quantity || 1}" min="1" max="5" id="quantity-${index}">
-    <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, 1)">+</button>
-</div>
-                <button class="btn btn-link text-danger" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button>
-            `;
-            cartItemsContainer.appendChild(cartItemDiv);
-        });
+        function calculateSummary() {
+            const subtotal = cartItems.reduce((total, item) => total + parseInt(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
+            const shipping = subtotal >= freeShippingThreshold ? 0 : shippingCost;
+            const total = subtotal + shipping;
 
-        updateCartCount();
-        calculateSummary();
-    }
-
-    function calculateSummary() {
-        const subtotal = cartItems.reduce((total, item) => total + parseInt(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
-        const shipping = subtotal >= freeShippingThreshold ? 0 : shippingCost;
-        const total = subtotal + shipping;
-
-        // Display the summary
-        document.getElementById('order-subtotal').textContent = `Subtotal: ₱ ${subtotal.toFixed(2)}`;
-        document.getElementById('order-shipping').textContent = `Shipping: ₱ ${shipping.toFixed(2)}`;
-        document.getElementById('order-total').textContent = `Total    ₱ ${total.toFixed(2)}`;
-    }
-
-    function changeQuantity(index, delta) {
-        const quantityInput = document.getElementById(`quantity-${index}`);
-        let quantity = parseInt(quantityInput.value) + delta;
-        if (quantity < 1) {
-            quantity = 1; // Minimum quantity is 1
+            document.getElementById('order-subtotal').textContent = `Subtotal: ₱${subtotal.toFixed(2)}`;
+            document.getElementById('order-shipping').textContent = `Shipping: ₱${shipping.toFixed(2)}`;
+            document.getElementById('order-total').textContent = `Total: ₱${total.toFixed(2)}`;
         }
-        quantityInput.value = quantity;
 
-        // Update the item in the cartItems array
-        cartItems[index].quantity = quantity;
-        // Update user-specific local storage
-        localStorage.setItem(cartKey, JSON.stringify(cartItems));
-        updateCartCount(); // Update the cart count in the header
-        calculateSummary();
-    }
+        function changeQuantity(index, delta) {
+            const quantityInput = document.getElementById(`quantity-${index}`);
+            let quantity = parseInt(quantityInput.value) + delta;
+            quantity = Math.max(1, Math.min(5, quantity)); // Clamp quantity between 1 and 5
+            quantityInput.value = quantity;
 
-    function removeItem(index) {
-        // Remove the item from the cart items array
-        cartItems.splice(index, 1);
-        // Update user-specific local storage
-        localStorage.setItem(cartKey, JSON.stringify(cartItems));
-        // Re-render the cart items
-        renderCartItems();
-        updateCartCount();
-    }
+            cartItems[index].quantity = quantity; // Update quantity in cart array
+            localStorage.setItem(cartKey, JSON.stringify(cartItems)); // Update local storage
+            renderCartItems(); // Re-render items and summary
+        }
 
-    function updateCartCount() {
-        const cartCountElement = document.getElementById('checkout_items');
-        cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
-    }
+        function removeItem(index) {
+            cartItems.splice(index, 1); // Remove item
+            localStorage.setItem(cartKey, JSON.stringify(cartItems)); // Update storage
+            renderCartItems(); // Re-render items and summary
+        }
+        
 
-    // Call the function to render cart items
-    renderCartItems();
-</script>
-
-
-<script>
-function changeQuantity(index, change) {
-    const quantityInput = document.getElementById(`quantity-${index}`);
-    let newQuantity = parseInt(quantityInput.value) + change;
-
-    // Enforce minimum of 1 and maximum of 5
-    newQuantity = Math.max(1, Math.min(5, newQuantity));
-
-    quantityInput.value = newQuantity;
+        function updateCartCount() {
+    const cartCountElement = document.getElementById('checkout_items');
+    cartCountElement.textContent = cartItems.length; // Display the count of unique items
 }
-</script>
+
+        // Initial render
+        renderCartItems();
+    </script>
 
 <script>
     // JavaScript to make the navbar opaque when scrolling

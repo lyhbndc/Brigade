@@ -334,35 +334,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        const user = <?php echo json_encode($user); ?>; // Get the current user from PHP
-        const cartKey = `cartItems_${user}`; // Create a unique key for this user's cart items
-        const cartItems = JSON.parse(localStorage.getItem(cartKey)) || []; // Fetch items from user-specific key
+    // Define the cart key based on the user session
+    const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`;
+    let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
 
-        function calculateOrderSummary() {
-            const shippingCost = 100; // Flat-rate shipping cost
-            const freeShippingThreshold = 1500; // Free shipping for orders above this threshold
+	function updateCart() {
+    // Select the cart count element
+    const cartCountElement = document.getElementById('checkout_items');
+    
+    // Display the count of unique items in the cart
+    cartCountElement.textContent = cartItems.length;
+}
 
-            // Calculate subtotal
-            const subtotal = cartItems.reduce((total, item) => total + parseInt(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
 
-            // Determine shipping cost based on subtotal
-            const shipping = subtotal >= freeShippingThreshold ? 0 : shippingCost;
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
 
-            // Calculate total
-            const total = subtotal + shipping;
+            const productItem = button.closest('.product-item');
+            const productId = productItem.getAttribute('data-id');
+            const productName = productItem.querySelector('.product_name a').textContent;
+            const productImage = productItem.querySelector('.product_image img').src;
+            const productPrice = productItem.querySelector('.product_price').textContent;
 
-            // Display the calculated amounts in the summary section
-            document.getElementById('order-subtotal').textContent = `₱${subtotal.toFixed(2)}`;
-            document.getElementById('order-shipping').textContent = `₱${shipping.toFixed(2)}`;
-            document.getElementById('order-total').textContent = `₱${total.toFixed(2)}`;
-        }
+            // Check if the item is already in the cart
+            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
+            if (existingItemIndex > -1) {
+                // Increase quantity if item already exists
+                cartItems[existingItemIndex].quantity += 1;
+            } else {
+                // Add new item with default quantity of 1
+                cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
+            }
 
-        // Call calculateOrderSummary to display the order summary when the page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            calculateOrderSummary();
-            document.getElementById('cartData').value = JSON.stringify(cartItems); // Populate hidden input with cart data
+            // Save updated cart to localStorage and update the cart display
+            localStorage.setItem(cartKey, JSON.stringify(cartItems));
+            updateCart();
+            alert(`${productName} has been added to your cart!`);
         });
-    </script>
+    });
+
+    // Update cart count on page load
+    document.addEventListener('DOMContentLoaded', updateCart);
+</script>
     <script>
         // JavaScript to make the navbar opaque when scrolling
         window.addEventListener('scroll', function() {

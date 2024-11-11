@@ -266,9 +266,7 @@ mysqli_close($conn);
                                     <li><a href="#">new</a></li>
                                     <li><a href="#">on sale</a></li>
                                     <li><a href="4recentorders.php">Recent Orders</a></li>
-                                    <li>
-        <a href="logout.php" class="logout">Logout</a> <!-- Added Logout Button beside the cart icon -->
-    </li>
+                                    <li><a href="logout.php" class="logout">Logout</a></li>
                                 </ul>
                                 <ul class="navbar_user">
                                     <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
@@ -410,18 +408,22 @@ mysqli_close($conn);
         </footer>
     </div>
     <script>
-    const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`; // User-specific key
-    const cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
+    // Define the cart key based on the user session
+    const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`;
+    let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
 
-    function updateCart() {
-        const cartCountElement = document.getElementById('checkout_items');
-        cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
-        localStorage.setItem(cartKey, JSON.stringify(cartItems)); // Save to user-specific cart
-    }
+	function updateCart() {
+    // Select the cart count element
+    const cartCountElement = document.getElementById('checkout_items');
+    
+    // Display the count of unique items in the cart
+    cartCountElement.textContent = cartItems.length;
+}
+
 
     document.querySelectorAll('.add-to-cart').forEach(button => {
         button.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default anchor click behavior
+            event.preventDefault();
 
             const productItem = button.closest('.product-item');
             const productId = productItem.getAttribute('data-id');
@@ -429,23 +431,25 @@ mysqli_close($conn);
             const productImage = productItem.querySelector('.product_image img').src;
             const productPrice = productItem.querySelector('.product_price').textContent;
 
-            // Check if item already exists in the cart
+            // Check if the item is already in the cart
             const existingItemIndex = cartItems.findIndex(item => item.id === productId);
             if (existingItemIndex > -1) {
-                // Increase quantity if it already exists
+                // Increase quantity if item already exists
                 cartItems[existingItemIndex].quantity += 1;
             } else {
-                // Add new item to cart with a default quantity of 1
+                // Add new item with default quantity of 1
                 cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
             }
 
-            updateCart(); // Update the cart display
+            // Save updated cart to localStorage and update the cart display
+            localStorage.setItem(cartKey, JSON.stringify(cartItems));
+            updateCart();
             alert(`${productName} has been added to your cart!`);
         });
     });
 
     // Update cart count on page load
-    updateCart();
+    document.addEventListener('DOMContentLoaded', updateCart);
 </script>
 
 <style>
