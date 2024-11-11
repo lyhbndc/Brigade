@@ -266,8 +266,9 @@ mysqli_close($conn);
                                     <li><a href="#">new</a></li>
                                     <li><a href="#">on sale</a></li>
                                     <li><a href="4recentorders.php">Recent Orders</a></li>
-                                    <li> <a href="logout.php" class="logout">Logout</a><li>
-                                
+                                    <li>
+        <a href="logout.php" class="logout">Logout</a> <!-- Added Logout Button beside the cart icon -->
+    </li>
                                 </ul>
                                 <ul class="navbar_user">
                                     <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
@@ -290,47 +291,68 @@ mysqli_close($conn);
             </header>
         <div class="fs_menu_overlay"></div>
 
-        <!-- Hamburger Menu -->
-        <div class="hamburger_menu">
-            <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
-            <div class="hamburger_menu_content text-right">
-                <ul class="menu_top_nav">
-                    <li class="menu_item has-children">
-                        <a href="#">
-                            My Account
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="menu_selection">
-                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                            <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
-                        </ul>
-                    </li>
-                    <li class="menu_item"><a href="#">home</a></li>
-                    <li class="menu_item"><a href="#">shop</a></li>
-                    <li class="menu_item"><a href="#">new</a></li>
-                    <li class="menu_item"><a href="#">on sale</a></li>
-                </ul>
-            </div>
-        </div>
         <br><br><br><br><br><br><br>
                     <div class="title">
                     <div class="account-container">
-                        <h1>My Account</h1>
+                        <div class="account-content">
+                            <div class="order-history">
+                            <h2>Order History</h2>
+
+<!-- Recent Orders Table -->
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Order ID</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <!-- Add buttons inside the table row -->
+    <tbody>
+        <?php if ($orderResult && mysqli_num_rows($orderResult) > 0): ?>
+            <?php while ($orderRow = mysqli_fetch_assoc($orderResult)): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($orderRow['OrderID']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['Product']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['Quantity']); ?></td>
+                    <td>
+                        <?php if ($orderRow['Status'] == "Shipped"): ?>
+                            <span class="badge badge-success"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
+                        <?php else: ?>
+                            <span class="badge badge-warning"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
+                        <?php endif; ?>
+                    </td>
+                    <td><?php echo htmlspecialchars($orderRow['Total']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['Date']); ?></td>
+                    <td>
+                        <div class="button-container">
+                            <button class="btn btn-success btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Received">Received</button>
+                            <button class="btn btn-warning btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Refund">Refund</button>
+                            <button class="btn btn-danger btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Cancel">Cancel</button>
+                        </div>
+                    </td>
+                </tr>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="7" class="text-center">No orders found</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
 </div>
-                    <div class="account-details">
-    <h2>Account Details</h2>
-    <p><strong>Name:</strong> <span><?php echo $fullname; ?></span></p>
-    <p><strong>Email:</strong> <span><?php echo $email; ?></span></p>
-    <p><strong>Address:</strong> <span><?php echo $address; ?></span></p>
-    <p><strong>City:</strong> <span><?php echo $city; ?></span></p>
-        <p><strong>Country:</strong> <span>Philippines</span></p>
-    </div>
+</table>
+                   
 </div>
                     </div>
                     <br><br><br><br><br><br><br>
                 </div>   
                 </div>   
-                    </table>
+                
                   
                      
             
@@ -425,6 +447,30 @@ mysqli_close($conn);
     // Update cart count on page load
     updateCart();
 </script>
+
+<style>
+    /* Center-align text in table headers */
+    .table th {
+        text-align: center;
+    }
+
+    /* Space between buttons */
+    .button-container .action-button {
+        margin: 0 5px; /* Horizontal space between buttons */
+    }
+    
+    /* Center-align buttons in cell */
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Additional padding for table cells */
+    .table td, .table th {
+        padding: 35px 40px; /* Increase cell padding for better readability */
+    }
+</style>
 
 <script>
     // JavaScript to make the navbar opaque when scrolling

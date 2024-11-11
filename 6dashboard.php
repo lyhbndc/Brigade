@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-$user = $_SESSION['user'];
 $conn = mysqli_connect("localhost", "root", "", "brigade");
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
@@ -210,9 +209,9 @@ $conn->close();
     <a href="1index.php">Dashboard</a>
     <a href="6inventory.php">Stocks</a>
     <a href="#">Report</a>
-    <a href="#">Orders</a>
-    <a href="#">Customers</a>
-    <a href="#">Settings</a>
+    <a href="6completeorders.php">Complete Orders</a>
+    <a href="6cancelorders.php">Cancel Orders</a>
+    <a href="6refundorders.php">Refund Orders</a>
 </div>
 
 <div class="content" id="content">
@@ -275,36 +274,6 @@ $conn->close();
             </div>
         </div>
     </div>
-
-  <!-- Recent Orders Table -->
-<h6 class="text-center">Recent Orders</h6>
-<table class="table table-striped table-bordered">
-    <thead class="thead-dark">
-        <tr>
-            <th>Order ID</th>
-            <th>Customer</th>
-            <th>Status</th>
-            <th>Total</th>
-            <th>Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1001</td>
-            <td>John Doe</td>
-            <td><span class="badge badge-success">Shipped</span></td>
-            <td>$100</td>
-            <td>2024-11-01</td>
-        </tr>
-        <tr>
-            <td>1002</td>
-            <td>Jane Smith</td>
-            <td><span class="badge badge-warning">Processing</span></td>
-            <td>$150</td>
-            <td>2024-11-01</td>
-        </tr>
-    </tbody>
-</table>
 
 
 <!-- JavaScript for Sidebar Toggle -->

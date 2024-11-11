@@ -318,10 +318,10 @@ if (!$user) {
                     <p>₱ ${item.price}</p>
                 </div>
                 <div class="cart-item-quantity">
-                    <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, -1)">-</button>
-                    <input type="number" value="${item.quantity || 1}" min="1" id="quantity-${index}">
-                    <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, 1)">+</button>
-                </div>
+    <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, -1)">-</button>
+    <input type="number" value="${item.quantity || 1}" min="1" max="5" id="quantity-${index}">
+    <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, 1)">+</button>
+</div>
                 <button class="btn btn-link text-danger" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button>
             `;
             cartItemsContainer.appendChild(cartItemDiv);
@@ -375,6 +375,19 @@ if (!$user) {
 
     // Call the function to render cart items
     renderCartItems();
+</script>
+
+
+<script>
+function changeQuantity(index, change) {
+    const quantityInput = document.getElementById(`quantity-${index}`);
+    let newQuantity = parseInt(quantityInput.value) + change;
+
+    // Enforce minimum of 1 and maximum of 5
+    newQuantity = Math.max(1, Math.min(5, newQuantity));
+
+    quantityInput.value = newQuantity;
+}
 </script>
 
 <script>

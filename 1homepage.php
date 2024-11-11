@@ -50,7 +50,8 @@ $user = $_SESSION['user'];
 								<li><a href="3shop.php">shop</a></li>
 								<li><a href="3new.php">new</a></li>
 								<li><a href="3onsale.php">on sale</a></li>
-								<li><a href="logout.php">logout</a></li>
+								<li><a href="4recentorders.php">Recent Orders</a></li>
+                                    <li> <a href="logout.php" class="logout">Logout</a><li>
 							</ul>
 							<ul class="navbar_user">
 								<li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
@@ -92,6 +93,8 @@ $user = $_SESSION['user'];
 				<li class="menu_item"><a href="3shop.php">shop</a></li>
 				<li class="menu_item"><a href="3new.php">new</a></li>
 				<li class="menu_item"><a href="3onsale.php">on sale</a></li>
+				<li><a href="4recentorders.php">Recent Orders</a></li>
+                <li> <a href="logout.php" class="logout">Logout</a><li></li>
 			</ul>
 		</div>
 	</div>
