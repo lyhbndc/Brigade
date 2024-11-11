@@ -226,6 +226,139 @@ mysqli_close($conn);
         font-weight: bold;
         margin: 0;
     }
+
+.table {
+    width: 100%;
+    border-collapse: collapse; /* Ensures borders are collapsed together */
+    margin: 20px 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #fff; /* White background */
+}
+
+.thead-dark {
+    background-color: #343a40; /* Dark background for header */
+    color: white; /* White text color */
+}
+
+.table th {
+    padding: 12px 15px;
+    font-size: 16px;
+    text-align: left;
+}
+
+
+.table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    color: #333;
+}
+
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light grey for even rows */
+}
+
+
+.table tr:hover {
+    background-color: #f1f1f1; /* Slightly darker grey on hover */
+}
+
+
+.table th, .table td {
+    border: 1px solid #ddd;
+}
+
+
+.button-container {
+    display: flex;
+    gap: 10px;
+}
+
+
+.btn {
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+
+.btn-warning {
+    background-color: #ffc107;
+    color: black;
+    border: none;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.badge {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 3px;
+}
+
+.badge-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: black;
+}
+.butn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    width: 120px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Primary Button (for Edit Account) */
+.btn-primary {
+    background-color: black;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: gray;
+    transform: scale(1.05);
+}
+
+
     </style>
 </head>
 
@@ -276,7 +409,6 @@ mysqli_close($conn);
                                         </a>
                                     </li>
                                     <li>
-        <a href="logout.php" class="logout">Logout</a> <!-- Added Logout Button beside the cart icon -->
     </li>
                                 </ul>
                                 <div class="hamburger_container">
@@ -289,29 +421,6 @@ mysqli_close($conn);
             </div>
             </header>
         <div class="fs_menu_overlay"></div>
-
-        <!-- Hamburger Menu -->
-        <div class="hamburger_menu">
-            <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
-            <div class="hamburger_menu_content text-right">
-                <ul class="menu_top_nav">
-                    <li class="menu_item has-children">
-                        <a href="#">
-                            My Account
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="menu_selection">
-                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                            <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
-                        </ul>
-                    </li>
-                    <li class="menu_item"><a href="#">home</a></li>
-                    <li class="menu_item"><a href="#">shop</a></li>
-                    <li class="menu_item"><a href="#">new</a></li>
-                    <li class="menu_item"><a href="#">on sale</a></li>
-                </ul>
-            </div>
-        </div>
         <br><br><br><br><br><br><br>
                     <div class="title">
                     <div class="account-container">
@@ -364,22 +473,25 @@ mysqli_close($conn);
     <?php endif; ?>
 </tbody>
 </div>
-                    <div class="account-details">
+</table>
+
+    <div class="account-details">
     <h2>Account Details</h2>
     <p><strong>Name:</strong> <span><?php echo $fullname; ?></span></p>
     <p><strong>Email:</strong> <span><?php echo $email; ?></span></p>
     <p><strong>Address:</strong> <span><?php echo $address; ?></span></p>
     <p><strong>City:</strong> <span><?php echo $city; ?></span></p>
-        <p><strong>Country:</strong> <span>Philippines</span></p>
+    <p><strong>Country:</strong> <span>Philippines</span></p>
     </div>
+    <a href="4logout.php"><button class="butn btn-primary">Logout</button></a>
 </div>
                     </div>
-                    <br><br><br><br><br><br><br>
+                    <br><br><br><br>
                 </div>   
                 </div>   
-                    </table>
-                  
-                     
+                    
+    </div>
+    </div>    </div>    </div> 
             
         <!-- Footer -->
         <br><br><br><br>

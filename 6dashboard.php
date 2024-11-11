@@ -206,9 +206,9 @@ $conn->close();
 <body>
 
 <div class="sidebar" id="sidebar">
-    <a><img src="assets/Untitled design.png" class="footer-logo"></a>
-    <a href="1index.php">Dashboard</a>
-    <a href="6inventory.php">Stocks</a>
+    <a href="1index.php"><img src="assets/Untitled design.png" class="footer-logo"></a>
+    <a href="6dashboard.php">Dashboard</a>
+    <a href="6inventory.php">Inventory</a>
     <a href="#">Report</a>
     <a href="#">Orders</a>
     <a href="#">Customers</a>

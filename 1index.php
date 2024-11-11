@@ -555,7 +555,6 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 	</div>
 
 <!-- Footer -->
-
 <br><br><br><br>
 <footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
 	<div class="container">
@@ -575,7 +574,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 	
 				<ul>
 					<li class="p-b-10"><a href="5about.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
-					<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
+					<li class="p-b-10"><a href="5features.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
 				</ul>
 			</div>
 			<div class="col-sm-6 col-lg-3 p-b-50">
@@ -592,11 +591,11 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 				<br>
 				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
 				<ul>
-					<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
-					<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
+					<li class="p-b-10"><a href="https://shopee.ph/brigadeclothing?originalCategoryId=11044828#product_list" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
+					<li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing?path=index.htm&lang=en&pageTypeId=1" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
 					<li class="p-b-10">
-						<a href="#"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
-						<a href="#"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
+						<a href="https://www.facebook.com/BrigadeWorld"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
+						<a href="https://www.instagram.com/brigadeclothing_official/"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
 					</li>
 				</ul>
 			</div>

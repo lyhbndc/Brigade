@@ -136,7 +136,7 @@ mysqli_close($conn);
 <body>
 
     <div class="super_container">
-        <header class="header trans_300">
+       
             <!-- Top Navigation -->
             <div class="top_nav">
                 <div class="container">
