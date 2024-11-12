@@ -374,5 +374,4 @@ $result = $conn->query($sql);
 </script>
 
 </body>
-
 </html>

@@ -374,7 +374,11 @@ mysqli_close($conn);
                 matchStatus.style.color = 'red';
             }
         }
+<<<<<<< HEAD
     </script>
     
+=======
+    </script>   
+>>>>>>> lele
 </body>
 </html>
