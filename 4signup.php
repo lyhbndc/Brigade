@@ -241,26 +241,30 @@ mysqli_close($conn);
                                 <label for="username">Username:</label>
                                 <input type="text" id="username" name="username" class="form-control" required>
                             </div>
-                            <div class="form-group">
-                                <label for="password">Password:</label>
-                                <div style="position: relative;">
-                                    <input type="password" id="signup-password" name="password" class="form-control" required oninput="checkPasswordStrength()">
-                                    <span id="password-strength" class="password-strength"></span>
-                                    <i id="toggle-signup-password-icon" class="fa fa-eye toggle-password" onclick="toggleSignupPassword()"></i>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="confirm-password">Confirm Password:</label>
-                                <div style="position: relative;">
-                                    <input type="password" id="confirm-password" class="form-control" required oninput="checkPasswordMatch()">
-                                    <i id="toggle-signup-password-icon" class="fa fa-eye toggle-password" onclick="toggleSignupPassword()"></i>
-                                    <span id="match-status" class="match-status"></span>
-                                </div>
+                          <div class="form-group">
+    <label for="password">Password:</label>
+    <div style="position: relative;">
+        <input type="password" id="signup-password" name="password" class="form-control" required oninput="checkPasswordStrength()">
+        <span id="password-strength" class="password-strength"></span>
+        <i id="toggle-password-icon" class="fa fa-eye toggle-password" onclick="togglePasswordVisibility('signup-password', 'toggle-password-icon')"></i>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="confirm-password">Confirm Password:</label>
+    <div style="position: relative;">
+        <input type="password" id="confirm-password" class="form-control" required oninput="checkPasswordMatch()">
+        <span id="match-status" class="match-status"></span>
+        <i id="toggle-confirm-password-icon" class="fa fa-eye toggle-password" onclick="togglePasswordVisibility('confirm-password', 'toggle-confirm-password-icon')"></i>
+    </div>
+    <input type="submit" name ="next" value="Sign Up" class="btn btn-primary">
+</div>
+
                                 
                                 
                                 
                             </div>
-                            <input type="submit" name ="next" value="Sign Up" class="btn btn-primary">
+                            
                             </div>
                           
                         </form>
@@ -324,19 +328,20 @@ mysqli_close($conn);
         </footer>
     </div>
     <script>
-        function toggleSignupPassword() {
-            const passwordField = document.getElementById('signup-password');
-            const toggleIcon = document.getElementById('toggle-signup-password-icon');
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        }
+        function togglePasswordVisibility(fieldId, iconId) {
+    const passwordField = document.getElementById(fieldId);
+    const toggleIcon = document.getElementById(iconId);
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordField.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+    }
+}
+
     </script>
 
 <script>

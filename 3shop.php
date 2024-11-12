@@ -48,7 +48,7 @@ $result = $conn->query($sql);
                                     <li><a href="#">new</a></li>
                                     <li><a href="#">on sale</a></li>
                                     <li><a href="4recentorders.php">Recent Orders</a></li>
-									<li><a href="logout.php" class="logout">Logout</a></li>
+									<li><a href="logout.php">Logout</a></li>
 							</ul>
 							<ul class="navbar_user">
 								<li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
