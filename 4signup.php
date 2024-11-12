@@ -7,7 +7,7 @@ if (!$conn) {
 }
 
 if (isset($_POST['next'])) {
-    if (isset($_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['password'], $_POST['city'],$_POST['zip_code'], $_POST['contact_no'], $_POST['email'], $_POST['username'], $_POST['state']) && !empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['zip_code']) && !empty($_POST['contact_no']) && !empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['state'])) {
+    if (isset($_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['password'], $_POST['city'],$_POST['zip_code'], $_POST['contact_no'], $_POST['email'], $_POST['username']) && !empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['zip_code']) && !empty($_POST['contact_no']) && !empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['password'])) {
 
         $firstname = $_POST['first_name'];
         $lastname = $_POST['last_name'];
@@ -18,9 +18,8 @@ if (isset($_POST['next'])) {
         $email = $_POST['email'];
         $user = $_POST['username'];
         $pass = $_POST['password'];
-        $state = $_POST['state'];
 
-        $query = "INSERT INTO user (firstname, lastname, address, city,zip, contact, email, username, password, state) VALUES ('$firstname', '$lastname', '$address', '$city','$zip', '$contact', '$email', '$user', '$pass', '$state')";
+        $query = "INSERT INTO user (firstname, lastname, address, city,zip, contact, email, username, password) VALUES ('$firstname', '$lastname', '$address', '$city','$zip', '$contact', '$email', '$user', '$pass')";
         $result = mysqli_query($conn, $query);
 
         if ($result) {
@@ -136,7 +135,7 @@ mysqli_close($conn);
 <body>
 
     <div class="super_container">
-       
+        <header class="header trans_300">
             <!-- Top Navigation -->
             <div class="top_nav">
                 <div class="container">
@@ -245,11 +244,25 @@ mysqli_close($conn);
                             <div class="form-group">
                                 <label for="password">Password:</label>
                                 <div style="position: relative;">
-                                    <input type="password" id="signup-password" name="password" class="form-control" required>
+                                    <input type="password" id="signup-password" name="password" class="form-control" required oninput="checkPasswordStrength()">
+                                    <span id="password-strength" class="password-strength"></span>
                                     <i id="toggle-signup-password-icon" class="fa fa-eye toggle-password" onclick="toggleSignupPassword()"></i>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm Password:</label>
+                                <div style="position: relative;">
+                                    <input type="password" id="confirm-password" class="form-control" required oninput="checkPasswordMatch()">
+                                    <i id="toggle-signup-password-icon" class="fa fa-eye toggle-password" onclick="toggleSignupPassword()"></i>
+                                    <span id="match-status" class="match-status"></span>
+                                </div>
+                                
+                                
+                                
+                            </div>
                             <input type="submit" name ="next" value="Sign Up" class="btn btn-primary">
+                            </div>
+                          
                         </form>
                         <br>
                     </div>
@@ -265,7 +278,7 @@ mysqli_close($conn);
                     <div class="col-sm-6 col-lg-3 p-b-50">
                         <br>
                         <h4 class="stext-301 cl0 p-b-30">
-                            <img src="assets/Untitled design.png" class="footer-logo">
+                            <a href="#"><img src="assets/Untitled design.png" class="footer-logo"></a>
                         </h4>
                         <p class="stext-107 cl7 size-201">
                             Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
@@ -274,9 +287,10 @@ mysqli_close($conn);
                     <div class="col-sm-6 col-lg-3 p-b-50">
                         <br>
                         <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Company</h7>
+            
                         <ul>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
+                            <li class="p-b-10"><a href="5about.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
+                            <li class="p-b-10"><a href="5features.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-6 col-lg-3 p-b-50">
@@ -284,20 +298,20 @@ mysqli_close($conn);
                         <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
                         <ul>
                             <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
+                            <li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
+                            <li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
+                            <li class="p-b-10"><a href="3onsale.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-6 col-lg-3 p-b-50">
                         <br>
                         <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
                         <ul>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
+                            <li class="p-b-10"><a href="https://shopee.ph/brigadeclothing?originalCategoryId=11044828#product_list" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
+                            <li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing?path=index.htm&lang=en&pageTypeId=1" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
                             <li class="p-b-10">
-                                <a href="#"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
-                                <a href="#"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
+                                <a href="https://www.facebook.com/BrigadeWorld"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
+                                <a href="https://www.instagram.com/brigadeclothing_official/"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
                             </li>
                         </ul>
                     </div>
@@ -325,17 +339,46 @@ mysqli_close($conn);
             }
         }
     </script>
-    <script>
-    // JavaScript to make the navbar opaque when scrolling
-    window.addEventListener('scroll', function() {
-        const mainNav = document.querySelector('.main_nav_container');
-        
-        if (window.scrollY > 50) { // Adjust the scroll threshold as needed
-            mainNav.classList.add('opaque');
-        } else {
-            mainNav.classList.remove('opaque');
+
+<script>
+        function checkPasswordStrength() {
+            const password = document.getElementById('signup-password').value;
+            const strengthIndicator = document.getElementById('password-strength');
+            let strength = 'Weak';
+            let color = 'red';
+
+            if (password.length >= 8) {
+                if (/[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password) && /[^A-Za-z0-9]/.test(password)) {
+                    strength = 'Strong';
+                    color = 'green';
+                } else if ((/[A-Za-z]/.test(password) && /\d/.test(password)) || (/[A-Za-z]/.test(password) && /[^A-Za-z0-9]/.test(password))) {
+                    strength = 'Medium';
+                    color = 'orange';
+                }
+            }
+
+            strengthIndicator.textContent = `Password is ${strength}`;
+            strengthIndicator.style.color = color;
         }
-    });
-</script>
+
+        function checkPasswordMatch() {
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const matchStatus = document.getElementById('match-status');
+
+            if (password === confirmPassword) {
+                matchStatus.textContent = 'Passwords match';
+                matchStatus.style.color = 'green';
+            } else {
+                matchStatus.textContent = 'Passwords do not match';
+                matchStatus.style.color = 'red';
+            }
+        }
+<<<<<<< HEAD
+    </script>
+    
+=======
+    </script>   
+>>>>>>> lele
 </body>
 </html>

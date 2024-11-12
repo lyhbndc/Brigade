@@ -342,60 +342,60 @@
 		</div>
 	</div>
 
-	<!-- Footer -->
+<!-- Footer -->
 
-	<br><br><br><br>
-	<footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<br>
-					<h4 class="stext-301 cl0 p-b-30">
-						<a href="#"><img src="assets/Untitled design.png" class="footer-logo"></a>
-					</h4>
-					<p class="stext-107 cl7 size-201">
-						Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
-					</p>
-				</div>
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<br>
-					<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Company</h7>
-		
-					<ul>
-						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
-						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
-					</ul>
-				</div>
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<br>
-					<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
-					<ul>
-						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
-						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
-						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
-						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
-					</ul>
-				</div>
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<br>
-					<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
-					<ul>
-						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
-						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
-						<li class="p-b-10">
-							<a href="#"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
-							<a href="#"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
-						</li>
-					</ul>
-				</div>
+<br><br><br><br>
+<footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6 col-lg-3 p-b-50">
+				<br>
+				<h4 class="stext-301 cl0 p-b-30">
+					<a href="#"><img src="assets/Untitled design.png" class="footer-logo"></a>
+				</h4>
+				<p class="stext-107 cl7 size-201">
+					Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
+				</p>
 			</div>
-			<br><br><br>
-			<div class="footer-bottom text-center">
-				<p>© 2024 Brigade Clothing. All rights reserved.</p>
+			<div class="col-sm-6 col-lg-3 p-b-50">
+				<br>
+				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Company</h7>
+	
+				<ul>
+					<li class="p-b-10"><a href="5about.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
+					<li class="p-b-10"><a href="5features.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
+				</ul>
+			</div>
+			<div class="col-sm-6 col-lg-3 p-b-50">
+				<br>
+				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
+				<ul>
+					<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
+					<li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
+					<li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
+					<li class="p-b-10"><a href="3onsale.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
+				</ul>
+			</div>
+			<div class="col-sm-6 col-lg-3 p-b-50">
+				<br>
+				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
+				<ul>
+					<li class="p-b-10"><a href="https://shopee.ph/brigadeclothing?originalCategoryId=11044828#product_list" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
+					<li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing?path=index.htm&lang=en&pageTypeId=1" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
+					<li class="p-b-10">
+						<a href="https://www.facebook.com/BrigadeWorld"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
+						<a href="https://www.instagram.com/brigadeclothing_official/"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
+					</li>
+				</ul>
 			</div>
 		</div>
-		<br><br>
-		</footer>
+		<br><br><br>
+		<div class="footer-bottom text-center">
+			<p>© 2024 Brigade Clothing. All rights reserved.</p>
+		</div>
+	</div>
+	<br><br>
+</footer>
 
 
 <script src="js/jquery-3.2.1.min.js"></script>
