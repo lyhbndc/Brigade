@@ -373,7 +373,6 @@ mysqli_close($conn);
                 matchStatus.style.color = 'red';
             }
         }
-    </script>
-    
+    </script>   
 </body>
 </html>
