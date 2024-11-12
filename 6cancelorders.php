@@ -198,7 +198,7 @@ $conn->close();
     <a><img src="assets/Untitled design.png" class="footer-logo"></a>
     <a href="6dashboard.php">Dashboard</a>
     <a href="6inventory.php">Stocks</a>
-    <a href="#">Report</a>
+    <a href="6onprocess.php">On Process</a>
     <a href="6completeorders.php">Complete Orders</a>
     <a href="6cancelorders.php">Cancel Orders</a>
     <a href="6refundorders.php">Refund Orders</a>
@@ -214,7 +214,6 @@ $conn->close();
                 <th>Status</th>
                 <th>Total</th>
                 <th>Date</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -228,11 +227,6 @@ $conn->close();
                     echo "<td><span class='badge badge-success'>" . htmlspecialchars($row['Status']) . "</span></td>";
                     echo "<td>" . htmlspecialchars($row['Total']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['Date']) . "</td>";
-                    echo "<td>
-                            <button class='btn btn-success btn-sm'>Received</button>
-                            <button class='btn btn-warning btn-sm'>Refund</button>
-                            <button class='btn btn-danger btn-sm'>Cancel</button>
-                          </td>";
                     echo "</tr>";
                 }
             } else {

@@ -5,7 +5,29 @@ $conn = mysqli_connect("localhost", "root", "", "brigade");
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
-$sql = "SELECT OrderID, Product, Quantity, Status, Total, Date FROM refund_order WHERE Status = 'Order Refunded'";
+
+// Check if the deliver button was clicked and update the order status
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deliver']) && isset($_POST['OrderID'])) {
+    $orderID = $_POST['OrderID'];
+    
+    // Prepare and execute the update statement
+    $sql = "UPDATE `order` SET Status = 'Out for Delivery' WHERE OrderID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $orderID);
+
+    if ($stmt->execute()) {
+        $_SESSION['message'] = "Order #$orderID status updated to 'Out for Delivery'";
+    } else {
+        $_SESSION['error'] = "Failed to update status for Order #$orderID.";
+    }
+
+    $stmt->close();
+}
+
+// Fetch orders with statuses "On Process" or "Out for Delivery"
+$sql = "SELECT OrderID, Customer, Product, Quantity, Status, Total, Date 
+        FROM `order` 
+        WHERE Status IN ('On Process', 'Out for Delivery')";
 $result = $conn->query($sql);
 
 $conn->close();
@@ -209,11 +231,13 @@ $conn->close();
         <thead>
             <tr>
                 <th>Order ID</th>
+                <th>Customer</th>
                 <th>Product</th>
                 <th>Quantity</th>
                 <th>Status</th>
                 <th>Total</th>
                 <th>Date</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -222,15 +246,22 @@ $conn->close();
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['OrderID']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['Customer']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['Product']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['Quantity']) . "</td>";
                     echo "<td><span class='badge badge-success'>" . htmlspecialchars($row['Status']) . "</span></td>";
                     echo "<td>" . htmlspecialchars($row['Total']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['Date']) . "</td>";
+                    echo "<td>
+                            <form method='POST' style='display:inline;'>
+                                <input type='hidden' name='OrderID' value='" . htmlspecialchars($row['OrderID']) . "'>
+                                <button type='submit' name='deliver' class='btn btn-success btn-sm'>Deliver</button>
+                            </form>
+                          </td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='7'>No Refund orders found.</td></tr>";
+                echo "<tr><td colspan='8'>No on-process orders found.</td></tr>";
             }
             ?>
         </tbody>

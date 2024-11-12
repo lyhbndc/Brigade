@@ -5,7 +5,7 @@ $conn = mysqli_connect("localhost", "root", "", "brigade");
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
-$sql = "SELECT OrderID, Product, Quantity, Status, Total, Date FROM complete_order WHERE Status = 'Order Completed'";
+$sql = "SELECT OrderID, Customer, Product, Quantity, Status, Total, Date FROM complete_order WHERE Status = 'Order Completed'";
 $result = $conn->query($sql);
 
 $conn->close();
@@ -198,7 +198,7 @@ $conn->close();
     <a><img src="assets/Untitled design.png" class="footer-logo"></a>
     <a href="6dashboard.php">Dashboard</a>
     <a href="6inventory.php">Stocks</a>
-    <a href="#">Report</a>
+    <a href="6onprocess.php">On Process</a>
     <a href="6completeorders.php">Complete Orders</a>
     <a href="6cancelorders.php">Cancel Orders</a>
     <a href="6refundorders.php">Refund Orders</a>
@@ -209,12 +209,12 @@ $conn->close();
         <thead>
             <tr>
                 <th>Order ID</th>
+                <th>Customer</th>
                 <th>Product</th>
                 <th>Quantity</th>
                 <th>Status</th>
                 <th>Total</th>
                 <th>Date</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -223,17 +223,12 @@ $conn->close();
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['OrderID']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['Customer']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['Product']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['Quantity']) . "</td>";
                     echo "<td><span class='badge badge-success'>" . htmlspecialchars($row['Status']) . "</span></td>";
                     echo "<td>" . htmlspecialchars($row['Total']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['Date']) . "</td>";
-                    echo "<td>
-                            <button class='btn btn-success btn-sm'>Received</button>
-                            <button class='btn btn-warning btn-sm'>Refund</button>
-                            <button class='btn btn-danger btn-sm'>Cancel</button>
-                          </td>";
-                    echo "</tr>";
                 }
             } else {
                 echo "<tr><td colspan='7'>No completed orders found.</td></tr>";
