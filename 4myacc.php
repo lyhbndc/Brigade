@@ -13,7 +13,12 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-$fullname = ""; // Initialize $fullname variable
+$firstname = ""; // Initialize variables to prevent undefined warnings
+$lastname = "";
+$email = "";
+$address = "";
+$city = "";
+$fullname = "";
 
 $query = "SELECT * FROM user WHERE Username = '$user'";
 $result = mysqli_query($conn, $query);
@@ -27,116 +32,24 @@ if ($result && mysqli_num_rows($result) > 0) {
     }
 }
 
-$orderQuery = "SELECT * FROM `order` WHERE Customer = '$fullname' ORDER BY Date DESC";
-$orderResult = mysqli_query($conn, $orderQuery);
+// Handle profile update
+if (isset($_POST['update_profile'])) {
+    $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
+    $lastname = mysqli_real_escape_string($conn, $_POST['lastname']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $address = mysqli_real_escape_string($conn, $_POST['address']);
+    $city = mysqli_real_escape_string($conn, $_POST['city']);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $orderId = mysqli_real_escape_string($conn, $_POST['orderId']);
-    $product = mysqli_real_escape_string($conn, $_POST['product']); // Get product from POST data
-    $action = mysqli_real_escape_string($conn, $_POST['action']);
-
-    // Determine the new status based on the action
-    $newStatus = '';
-    switch ($action) {
-        case 'Received':
-            $newStatus = 'Order Completed';
-            break;
-        case 'Refund':
-            $newStatus = 'Refunded';
-            break;
-        case 'Cancel':
-            $newStatus = 'Cancelled';
-            break;
-        default:
-            echo 'Invalid action';
-            exit();
-    }
-
-    // Update the order status in the database using both OrderID and Product
-    $query = "UPDATE `order` SET Status = '$newStatus' WHERE OrderID = '$orderId' AND Product = '$product'";
-    if (mysqli_query($conn, $query)) {
-        echo "Order status updated to '$newStatus'";
+    $updateQuery = "
+        UPDATE user 
+        SET FirstName = '$firstname', LastName = '$lastname', Email = '$email', Address = '$address', City = '$city' 
+        WHERE Username = '$user'
+    ";
+    if (mysqli_query($conn, $updateQuery)) {
+        echo "Profile updated successfully!";
+        header("Refresh:0"); // Refresh the page to show updated info
     } else {
-        echo "Error updating order: " . mysqli_error($conn);
-    }
-
-    // Additional actions based on the type of request
-    if ($action === 'Cancel') {
-        // Fetch the order details before inserting into the `cancel_order` table
-        $fetchOrderQuery = "SELECT * FROM `order` WHERE OrderID = '$orderId' AND Product = '$product'";
-        $fetchOrderResult = mysqli_query($conn, $fetchOrderQuery);
-
-        if ($fetchOrderResult && mysqli_num_rows($fetchOrderResult) > 0) {
-            $orderDetails = mysqli_fetch_assoc($fetchOrderResult);
-            $quantity = mysqli_real_escape_string($conn, $orderDetails['Quantity']);
-            $total = mysqli_real_escape_string($conn, $orderDetails['Total']);
-            $date = mysqli_real_escape_string($conn, $orderDetails['Date']);
-
-            // Insert canceled order into the `cancel_order` table
-            $insertQuery = "
-                INSERT INTO `cancel_order` (OrderID, Customer, Product, Quantity, Status, Total, Date)
-                VALUES ('$orderId', '$fullname', '$product', '$quantity', 'Order Cancelled', '$total', '$date')
-            ";
-            if (mysqli_query($conn, $insertQuery)) {
-                echo "Order successfully inserted into `cancel_order`.";
-            } else {
-                echo "Error inserting order into `cancel_order`: " . mysqli_error($conn);
-            }
-        } else {
-            echo "Error: Order not found.";
-        }
-    }
-
-    if ($action === 'Received') {
-        // Fetch the order details before inserting into the `complete_order` table
-        $fetchOrderQuery = "SELECT * FROM `order` WHERE OrderID = '$orderId' AND Product = '$product'";
-        $fetchOrderResult = mysqli_query($conn, $fetchOrderQuery);
-
-        if ($fetchOrderResult && mysqli_num_rows($fetchOrderResult) > 0) {
-            $orderDetails = mysqli_fetch_assoc($fetchOrderResult);
-            $quantity = mysqli_real_escape_string($conn, $orderDetails['Quantity']);
-            $total = mysqli_real_escape_string($conn, $orderDetails['Total']);
-            $date = mysqli_real_escape_string($conn, $orderDetails['Date']);
-
-            // Insert completed order into the `complete_order` table
-            $insertQuery = "
-                INSERT INTO `complete_order` (OrderID, Customer, Product, Quantity, Status, Total, Date)
-                VALUES ('$orderId', '$fullname', '$product', '$quantity', 'Order Completed', '$total', '$date')
-            ";
-            if (mysqli_query($conn, $insertQuery)) {
-                echo "Order successfully inserted into `complete_order`.";
-            } else {
-                echo "Error inserting order into `complete_order`: " . mysqli_error($conn);
-            }
-        } else {
-            echo "Error: Order not found.";
-        }
-    }
-
-    if ($action === 'Refund') {
-        // Fetch the order details before inserting into the `refund_order` table
-        $fetchOrderQuery = "SELECT * FROM `order` WHERE OrderID = '$orderId' AND Product = '$product'";
-        $fetchOrderResult = mysqli_query($conn, $fetchOrderQuery);
-
-        if ($fetchOrderResult && mysqli_num_rows($fetchOrderResult) > 0) {
-            $orderDetails = mysqli_fetch_assoc($fetchOrderResult);
-            $quantity = mysqli_real_escape_string($conn, $orderDetails['Quantity']);
-            $total = mysqli_real_escape_string($conn, $orderDetails['Total']);
-            $date = mysqli_real_escape_string($conn, $orderDetails['Date']);
-
-            // Insert refunded order into the `refund_order` table
-            $insertQuery = "
-                INSERT INTO `refund_order` (OrderID, Customer, Product, Quantity, Status, Total, Date)
-                VALUES ('$orderId', '$fullname', '$product', '$quantity', 'Order Refunded', '$total', '$date')
-            ";
-            if (mysqli_query($conn, $insertQuery)) {
-                echo "Order successfully inserted into `refund_order`.";
-            } else {
-                echo "Error inserting order into `refund_order`: " . mysqli_error($conn);
-            }
-        } else {
-            echo "Error: Order not found.";
-        }
+        echo "Error updating profile: " . mysqli_error($conn);
     }
 }
 
@@ -226,6 +139,12 @@ mysqli_close($conn);
         font-weight: bold;
         margin: 0;
     }
+    .edit-profile-form {
+            display: none;
+        }
+        .edit-profile-form.visible {
+            display: block;
+        }
     </style>
 </head>
 
@@ -323,8 +242,29 @@ mysqli_close($conn);
     <p><strong>Email:</strong> <span><?php echo $email; ?></span></p>
     <p><strong>Address:</strong> <span><?php echo $address; ?></span></p>
     <p><strong>City:</strong> <span><?php echo $city; ?></span></p>
-        <p><strong>Country:</strong> <span>Philippines</span></p>
+    <p><strong>Country:</strong> <span>Philippines</span></p>
+    <button onclick="toggleEditForm()">Edit Profile</button>
     </div>
+    <div class="edit-profile-form" id="editProfileForm">
+            <form method="post">
+                <label for="firstname">First Name:</label>
+                <input type="text" name="firstname" value="<?php echo htmlspecialchars($firstname); ?>" required>
+                
+                <label for="lastname">Last Name:</label>
+                <input type="text" name="lastname" value="<?php echo htmlspecialchars($lastname); ?>" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
+                
+                <label for="address">Address:</label>
+                <input type="text" name="address" value="<?php echo htmlspecialchars($address); ?>" required>
+                
+                <label for="city">City:</label>
+                <input type="text" name="city" value="<?php echo htmlspecialchars($city); ?>" required>
+
+                <button type="submit" name="update_profile">Save Changes</button>
+                <button type="button" onclick="toggleEditForm()">Cancel</button>
+            </form>
 </div>
                     </div>
                     <br><br><br><br><br><br><br>
@@ -474,6 +414,14 @@ document.querySelectorAll('.action-button').forEach(button => {
 });
 
 </script>
+
+<script>
+        // JavaScript to toggle the visibility of the edit form
+        function toggleEditForm() {
+            const form = document.getElementById('editProfileForm');
+            form.classList.toggle('visible');
+        }
+    </script>
 
 </body>
 </html>
