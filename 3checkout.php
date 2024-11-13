@@ -45,14 +45,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $total = $price * $quantity; // Calculate total based on price and quantity
 
             // Insert order details into the database
-            $query = "INSERT INTO `order` (OrderID, Customer, Product, Quantity, Status, Total, Date) VALUES ('$orderID', '$fullname', '$product', '$quantity', '$status', '$total', NOW())";
+            $query = "INSERT INTO `order` (OrderID, Customer, Product, Quantity, Status, Total, Date, Address) VALUES ('$orderID', '$fullname', '$product', '$quantity', '$status', '$total', NOW(), '$address')";
             $result = mysqli_query($conn, $query);
         }
         // Clear cart items from local storage after successful order
         echo "<script>
                 alert('Order placed successfully!'); 
                 localStorage.removeItem('cartItems_" . addslashes($user) . "'); // Clear items from local storage
-                window.location.href='1homepage.php'; 
+                window.location.href='4recentorders.php'; 
               </script>";
         exit();
     }

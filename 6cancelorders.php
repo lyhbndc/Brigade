@@ -5,7 +5,7 @@ $conn = mysqli_connect("localhost", "root", "", "brigade");
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
-$sql = "SELECT OrderID, Product, Quantity, Status, Total, Date FROM cancel_order WHERE Status = 'Cancelled'";
+$sql = "SELECT OrderID, Product, Quantity, Status, Total, Date FROM cancel_order WHERE Status = 'Order Cancelled'";
 $result = $conn->query($sql);
 
 $conn->close();

@@ -1,5 +1,7 @@
 <?php
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 $user = $_SESSION['user'];
 $conn = mysqli_connect("localhost", "root", "", "brigade");
@@ -8,7 +10,6 @@ if (!$conn) {
 }
 
 if (!isset($_SESSION['user'])) {
-    // Redirect to login page if the user is not logged in
     header("Location: 4login.php");
     exit();
 }
@@ -26,9 +27,6 @@ if ($result && mysqli_num_rows($result) > 0) {
         $fullname = $row["FirstName"] . ' ' . $row["LastName"];
     }
 }
-
-$orderQuery = "SELECT * FROM `order` WHERE Customer = '$fullname' ORDER BY Date DESC";
-$orderResult = mysqli_query($conn, $orderQuery);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $orderId = mysqli_real_escape_string($conn, $_POST['orderId']);
@@ -55,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Update the order status in the database using both OrderID and Product
     $query = "UPDATE `order` SET Status = '$newStatus' WHERE OrderID = '$orderId' AND Product = '$product'";
     if (mysqli_query($conn, $query)) {
-        echo "Order status updated to '$newStatus'";
+        //echo "Order ";
     } else {
         echo "Error updating order: " . mysqli_error($conn);
     }
@@ -78,7 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 VALUES ('$orderId', '$fullname', '$product', '$quantity', 'Order Cancelled', '$total', '$date')
             ";
             if (mysqli_query($conn, $insertQuery)) {
-                echo "Order successfully inserted into `cancel_order`.";
+                echo "Order #$orderId Cancelled!";
+                exit();
             } else {
                 echo "Error inserting order into `cancel_order`: " . mysqli_error($conn);
             }
@@ -104,7 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 VALUES ('$orderId', '$fullname', '$product', '$quantity', 'Order Completed', '$total', '$date')
             ";
             if (mysqli_query($conn, $insertQuery)) {
-                echo "Order successfully inserted into `complete_order`.";
+                echo "Order #$orderId Received! Thank you`.";
+                exit();
             } else {
                 echo "Error inserting order into `complete_order`: " . mysqli_error($conn);
             }
@@ -130,7 +130,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 VALUES ('$orderId', '$fullname', '$product', '$quantity', 'Order Refunded', '$total', '$date')
             ";
             if (mysqli_query($conn, $insertQuery)) {
-                echo "Order successfully inserted into `refund_order`.";
+                echo "Order #$orderId Return!`.";
+                exit();
             } else {
                 echo "Error inserting order into `refund_order`: " . mysqli_error($conn);
             }
@@ -139,9 +140,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+$orderQuery = "SELECT * FROM `order` WHERE Customer = '$fullname' ORDER BY Date DESC";
+$orderResult = mysqli_query($conn, $orderQuery);
 
 mysqli_close($conn);
 ?>
+
+   
 
 
 <!DOCTYPE html>
@@ -306,6 +311,7 @@ mysqli_close($conn);
             <th>Status</th>
             <th>Total</th>
             <th>Date</th>
+            <th>Address</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -327,9 +333,10 @@ mysqli_close($conn);
                     </td>
                     <td><?php echo htmlspecialchars($orderRow['Total']); ?></td>
                     <td><?php echo htmlspecialchars($orderRow['Date']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['Address']); ?></td>
                     <td>
                         <div class="button-container">
-                            <button class="btn btn-success btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Received">Received</button>
+                            <button class="btn btn-success btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Received" name ="Received">Received</button>
                             <button class="btn btn-warning btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Refund">Refund</button>
                             <button class="btn btn-danger btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Cancel">Cancel</button>
                         </div>
@@ -501,7 +508,7 @@ document.querySelectorAll('.action-button').forEach(button => {
             buttonsInRow.forEach(btn => btn.disabled = true);
 
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', '4myacc.php', true);
+            xhr.open('POST', '4recentorders.php', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function() {
                 if (xhr.status === 200) {

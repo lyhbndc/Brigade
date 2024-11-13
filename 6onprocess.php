@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deliver']) && isset($
 // Fetch orders with statuses "On Process" or "Out for Delivery"
 $sql = "SELECT OrderID, Customer, Product, Quantity, Status, Total, Date 
         FROM `order` 
-        WHERE Status IN ('On Process', 'Out for Delivery')";
+        WHERE Status IN ('On Process', 'Out for Delivery') ORDER BY Date DESC";
 $result = $conn->query($sql);
 
 $conn->close();
