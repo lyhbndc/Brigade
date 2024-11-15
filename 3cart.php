@@ -312,23 +312,24 @@ if (!$user) {
         }
 
         cartItems.forEach((item, index) => {
-            const cartItemDiv = document.createElement('div');
-            cartItemDiv.className = 'cart-item';
-            cartItemDiv.innerHTML = `
-                <img src="${item.image}" alt="Product Image">
-                <div class="cart-item-info">
-                    <h6>${item.name}</h6>
-                    <p>${item.price}</p>
-                </div>
-                <div class="cart-item-quantity">
-                    <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, -1)">-</button>
-                    <input type="number" value="${item.quantity || 1}" min="1" id="quantity-${index}">
-                    <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, 1)">+</button>
-                </div>
-                <button class="btn btn-link text-danger" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button>
-            `;
-            cartItemsContainer.appendChild(cartItemDiv);
-        });
+        const cartItemDiv = document.createElement('div');
+        cartItemDiv.className = 'cart-item';
+        cartItemDiv.innerHTML = `
+            <img src="${item.image}" alt="Product Image">
+            <div class="cart-item-info">
+                <h6>${item.name}</h6>
+                <p>Size: ${item.size}</p>
+                <p>${item.price}</p>
+            </div>
+            <div class="cart-item-quantity">
+                <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, -1)">-</button>
+                <input type="number" value="${item.quantity || 1}" min="1" id="quantity-${index}">
+                <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, 1)">+</button>
+            </div>
+            <button class="btn btn-link text-danger" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button>
+        `;
+        cartItemsContainer.appendChild(cartItemDiv);
+    });
 
         updateCartCount();
         calculateSummary();

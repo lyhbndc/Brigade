@@ -27,35 +27,85 @@ if ($result && mysqli_num_rows($result) > 0) {
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $cartData = json_decode($_POST['cartData'], true); // Decode JSON to an array
-    $status = "On Process"; // Set the initial status
+ // Fetch cart data from POST
+$cartData = json_decode($_POST['cartData'], true); // Decode JSON to an array
 
-    // Generate a unique Order ID (4 digits)
-    do {
-        $orderID = sprintf('%04d', rand(0, 9999)); // Random number between 0000 to 9999
-        $checkQuery = "SELECT * FROM `order` WHERE OrderID = '$orderID'";
-        $checkResult = mysqli_query($conn, $checkQuery);
-    } while (mysqli_num_rows($checkResult) > 0); // Ensure uniqueness
+$status = "On Process"; // Set initial status
 
-    if (is_array($cartData)) {
-        foreach ($cartData as $item) {
-            $product = mysqli_real_escape_string($conn, $item['name']);
-            $quantity = (int)$item['quantity'];
-            $price = floatval(preg_replace('/[^\d.-]/', '', $item['price'])); // Clean price and ensure it's a float
-            $total = $price * $quantity; // Calculate total based on price and quantity
+// Generate a unique Order ID
+do {
+    $orderID = sprintf('%04d', rand(0, 9999));
+    $checkQuery = "SELECT * FROM `order` WHERE OrderID = '$orderID'";
+    $checkResult = mysqli_query($conn, $checkQuery);
+} while (mysqli_num_rows($checkResult) > 0);
 
-            // Insert order details into the database
-            $query = "INSERT INTO `order` (OrderID, Customer, Product, Quantity, Status, Total, Date, Address) VALUES ('$orderID', '$fullname', '$product', '$quantity', '$status', '$total', NOW(), '$address')";
+$errors = []; // Array to store any stock errors
+
+ // Size to column name mapping
+ $sizeColumnMapping = [
+    'S' => 'small_stock',
+    'M' => 'medium_stock',
+    'L' => 'large_stock',
+    'XL' => 'xl_stock',
+    'XXL' => 'xxl_stock',
+];
+
+if (is_array($cartData)) {
+    foreach ($cartData as $item) {
+        $product = mysqli_real_escape_string($conn, $item['name']);
+        $quantity = (int)$item['quantity'];
+        $size = mysqli_real_escape_string($conn, $item['size']); // Get selected size
+        $price = floatval(preg_replace('/[^\d.-]/', '', $item['price']));
+        $total = $price * $quantity;
+
+        // Determine the correct column for the selected size
+        $stockColumn = isset($sizeColumnMapping[$size]) ? $sizeColumnMapping[$size] : null;
+
+        if (!$stockColumn) {
+            die("Invalid size selected.");
+        }
+
+        // Check stock for each item and size
+        $stockCheckQuery = "SELECT $stockColumn FROM products WHERE name = '$product'";
+        $stockResult = mysqli_query($conn, $stockCheckQuery);
+        $stockRow = mysqli_fetch_assoc($stockResult);
+
+        if ($stockRow) {
+            $availableStock = (int)$stockRow[$stockColumn];
+            if ($quantity > $availableStock) {
+                // Add error message if quantity exceeds stock
+                $errorMessage = "Insufficient stock for $product (Size: $size). Available stock: $availableStock.";
+                header("Location: 3shop.php?error=" . urlencode($errorMessage));
+                exit();
+            } else {
+                // Deduct stock if sufficient stock is available
+                $newStock = $availableStock - $quantity;
+                $updateStockQuery = "UPDATE products SET $stockColumn = $newStock WHERE name = '$product'";
+                mysqli_query($conn, $updateStockQuery);
+            }
+        }
+
+        // Only insert order if no stock errors for this item
+        if (empty($errors)) {
+            $query = "INSERT INTO `order` (OrderID, Customer, Product, Quantity, Size, Status, Total, Date, Address) VALUES ('$orderID', '$fullname', '$product', '$quantity', '$size', '$status', '$total', NOW(), '$address')";
             $result = mysqli_query($conn, $query);
         }
-        // Clear cart items from local storage after successful order
+    }
+
+    // Check if there were stock errors
+    if (!empty($errors)) {
+        echo "<script>alert('" . implode("\\n", $errors) . "');</script>";
+        exit();
+    } else {
+        // Clear cart items and redirect on success
         echo "<script>
-                alert('Order placed successfully!'); 
-                localStorage.removeItem('cartItems_" . addslashes($user) . "'); // Clear items from local storage
-                window.location.href='4recentorders.php'; 
+                alert('Order placed successfully!');
+                localStorage.removeItem('cartItems_" . addslashes($user) . "');
+                window.location.href='4recentorders.php';
               </script>";
         exit();
     }
+}
 }
 ?>
 

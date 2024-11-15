@@ -3,7 +3,7 @@ session_start();
 $user = $_SESSION['user'];
 $conn = mysqli_connect("localhost", "root", "", "brigade");
 
-$sql = "SELECT id, name, image, price, stock FROM products";
+$sql = "SELECT id, name, image, price, small_stock, medium_stock, large_stock, xl_stock, xxl_stock FROM products";
 $result = $conn->query($sql);
 ?>
 
@@ -170,43 +170,52 @@ $result = $conn->query($sql);
 								<!-- Product Grid -->
 
 								<div class="product-grid">
-									<?php 
-									if ($result->num_rows > 0) {
-										while ($row = $result->fetch_assoc()) {
-											$productId = str_pad($row['id'], 7, '0', STR_PAD_LEFT);
-											$stock = $row['stock'];
-											?>
-											<div class="product-item" data-id="<?php echo $productId; ?>">
-												<div class="product discount product_filter">
-													<div class="product_image">
-														<img src="<?php echo htmlspecialchars($row['image']); ?>" alt="">
-													</div>
-													<div class="favorite favorite_left"></div>
-													<?php if ($stock == 0) { ?>
-														<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
-															<span>Sold</span>
-														</div>
-													<?php } ?>
-													<div class="product_info">
-														<h6 class="product_name"><a href="single.html"><?php echo htmlspecialchars($row['name']); ?></a></h6>
-														<div class="product_price">₱<?php echo number_format($row['price'], 2); ?></div>
-													</div>
-												</div>
-												<div class="red_button add_to_cart_button">
-													<?php if ($stock > 0) { ?>
-														<a href="#" class="add-to-cart" data-id="<?php echo $productId; ?>">add to cart</a>
-													<?php } else { ?>
-														<span style="color: gray;">Out of Stock</span>
-													<?php } ?>
-												</div>
-											</div>
-										<?php 
-										}
-									} else {
-										echo "<p>No products found.</p>";
-									}
-									?>
-								</div>
+    <?php 
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $productId = str_pad($row['id'], 7, '0', STR_PAD_LEFT);
+
+            // Check if all sizes are out of stock
+            $isOutOfStock = (
+                $row['small_stock'] == 0 && 
+                $row['medium_stock'] == 0 && 
+                $row['large_stock'] == 0 && 
+                $row['xl_stock'] == 0 && 
+                $row['xxl_stock'] == 0
+            );
+            ?>
+            <div class="product-item" data-id="<?php echo $productId; ?>">
+                <div class="product discount product_filter">
+                    <div class="product_image">
+                        <img src="<?php echo htmlspecialchars($row['image']); ?>" alt="">
+                    </div>
+                    <div class="favorite favorite_left"></div>
+                    <?php if ($isOutOfStock) { ?>
+                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                            <span>Sold</span>
+                        </div>
+                    <?php } ?>
+                    <div class="product_info">
+                        <h6 class="product_name"><a href="single.html"><?php echo htmlspecialchars($row['name']); ?></a></h6>
+                        <div class="product_price">₱<?php echo number_format($row['price'], 2); ?></div>
+                    </div>
+                </div>
+                <div class="red_button add_to_cart_button">
+                    <?php if (!$isOutOfStock) { ?>
+                        <a href="#" class="add-to-cart" data-id="<?php echo $productId; ?>">Add to Cart</a>
+                    <?php } else { ?>
+                        <span style="color: gray;">Out of Stock</span>
+                    <?php } ?>
+                </div>
+            </div>
+        <?php 
+        }
+    } else {
+        echo "<p>No products found.</p>";
+    }
+    ?>
+</div>
+
 
 								</div>
 						
@@ -340,33 +349,47 @@ $result = $conn->query($sql);
     cartCountElement.textContent = cartItems.length;
 }
 
+document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault();
+        const productItem = button.closest('.product-item');
+        const productId = productItem.getAttribute('data-id');
+        const productName = productItem.querySelector('.product_name a').textContent;
+        const productImage = productItem.querySelector('.product_image img').src;
+        const productPrice = productItem.querySelector('.product_price').textContent;
 
-            const productItem = button.closest('.product-item');
-            const productId = productItem.getAttribute('data-id');
-            const productName = productItem.querySelector('.product_name a').textContent;
-            const productImage = productItem.querySelector('.product_image img').src;
-            const productPrice = productItem.querySelector('.product_price').textContent;
+        // Get the selected size from the sidebar
+        const selectedSize = document.querySelector('.checkboxes .active span').textContent;
 
-            // Check if the item is already in the cart
-            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
-            if (existingItemIndex > -1) {
-                // Increase quantity if item already exists
-                cartItems[existingItemIndex].quantity += 1;
-            } else {
-                // Add new item with default quantity of 1
-                cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
-            }
+        if (!selectedSize) {
+            alert("Please select a size from the sidebar.");
+            return;
+        }
 
-            // Save updated cart to localStorage and update the cart display
-            localStorage.setItem(cartKey, JSON.stringify(cartItems));
-            updateCart();
-            alert(`${productName} has been added to your cart!`);
-        });
+        // Check if the item is already in the cart with the selected size
+        const existingItemIndex = cartItems.findIndex(item => item.id === productId && item.size === selectedSize);
+        if (existingItemIndex > -1) {
+            // Increase quantity if item already exists
+            cartItems[existingItemIndex].quantity += 1;
+        } else {
+            // Add new item with default quantity of 1
+            cartItems.push({
+                id: productId,
+                name: productName,
+                image: productImage,
+                price: productPrice,
+                size: selectedSize,
+                quantity: 1
+            });
+        }
+
+        // Save updated cart to localStorage and update the cart display
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        updateCart();
+        alert(`${productName} (Size: ${selectedSize}) has been added to your cart!`);
     });
+});
 
     // Update cart count on page load
     document.addEventListener('DOMContentLoaded', updateCart);

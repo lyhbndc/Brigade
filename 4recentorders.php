@@ -308,6 +308,7 @@ mysqli_close($conn);
             <th>Order ID</th>
             <th>Product</th>
             <th>Quantity</th>
+            <th>Size</th>
             <th>Status</th>
             <th>Total</th>
             <th>Date</th>
@@ -324,6 +325,7 @@ mysqli_close($conn);
                     <td><?php echo htmlspecialchars($orderRow['OrderID']); ?></td>
                     <td><?php echo htmlspecialchars($orderRow['Product']); ?></td>
                     <td><?php echo htmlspecialchars($orderRow['Quantity']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['Size']); ?></td>
                     <td>
                         <?php if ($orderRow['Status'] == "Shipped"): ?>
                             <span class="badge badge-success"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
