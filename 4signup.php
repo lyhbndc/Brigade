@@ -1,30 +1,68 @@
 <?php
 session_start();
 
+require 'vendor/phpmailer/phpmailer/src/Exception.php';
+require 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require 'vendor/phpmailer/phpmailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 $conn = mysqli_connect("localhost", "root", "", "brigade");
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
 if (isset($_POST['next'])) {
-    if (isset($_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['password'], $_POST['city'],$_POST['zip_code'], $_POST['contact_no'], $_POST['email'], $_POST['username']) && !empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['zip_code']) && !empty($_POST['contact_no']) && !empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['password'])) {
+    if (isset($_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['password'], $_POST['city'], $_POST['zip_code'], $_POST['contact_no'], $_POST['email'], $_POST['username']) && !empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['zip_code']) && !empty($_POST['contact_no']) && !empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['password'])) {
 
         $firstname = $_POST['first_name'];
         $lastname = $_POST['last_name'];
         $address = $_POST['address'];
-        $city =  $_POST['city'];
+        $city = $_POST['city'];
         $zip = $_POST['zip_code'];
         $contact = $_POST['contact_no'];
         $email = $_POST['email'];
         $user = $_POST['username'];
         $pass = $_POST['password'];
 
-        $query = "INSERT INTO user (firstname, lastname, address, city,zip, contact, email, username, password) VALUES ('$firstname', '$lastname', '$address', '$city','$zip', '$contact', '$email', '$user', '$pass')";
+        // Generate a random 6-digit verification code
+        $verification_code = mt_rand(100000, 999999);
+
+        // Insert data into the user table
+        $query = "INSERT INTO user (firstname, lastname, address, city, zip, contact, email, username, password, verification_code) VALUES ('$firstname', '$lastname', '$address', '$city', '$zip', '$contact', '$email', '$user', '$pass', '$verification_code')";
         $result = mysqli_query($conn, $query);
 
         if ($result) {
-            header("Location: 4login.php");
-            exit();
+            // Send the verification email using PHPMailer
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host = 'smtp.mailersend.net'; // Update this with your SMTP server
+                $mail->SMTPAuth = true;
+                $mail->Username = 'MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net'; // SMTP username
+                $mail->Password = 'fAtQJCLJh8TX4VSX'; // SMTP password
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
+
+                // Recipients
+                $mail->setFrom('MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net', 'Brigade');
+                $mail->addAddress($email);
+
+                // Content
+                $mail->isHTML(true);
+                $mail->Subject = 'Your Verification Code';
+                $mail->Body = "Your verification code is: <strong>$verification_code</strong>";
+
+                $mail->send();
+
+                // Store email in session for verification
+                $_SESSION['email'] = $email;
+                header("Location: otp_verification.php"); // Redirect to OTP verification page
+                exit();
+            } catch (Exception $e) {
+                echo "Mailer Error: {$mail->ErrorInfo}";
+            }
         } else {
             echo "Error: " . mysqli_error($conn);
         }
@@ -35,6 +73,7 @@ if (isset($_POST['next'])) {
 
 mysqli_close($conn);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
