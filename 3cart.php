@@ -221,10 +221,10 @@ if (!$user) {
         <span id="order-total"><strong>₱0.00</strong></span>
         <hr class="summary-divider">
         <div class="cart-footer">
-    <form action="3checkout.php" method="POST">
-    
-        <button type="submit" class="checkout-button" input type="hidden" id="cartDataField" name="cartData">CHECK OUT</button>
-    </form>
+        <form action="3checkout.php" method="POST">
+    <input type="hidden" id="cartDataField" name="cartData">
+    <button type="submit" class="checkout-button">Checkout</button>
+</form>
 </div>
             </div>
         </div>

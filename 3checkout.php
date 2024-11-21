@@ -1,5 +1,7 @@
 <?php
 session_start();
+require 'vendor/autoload.php'; // Include Guzzle via Composer
+
 $user = $_SESSION['user'];
 $conn = mysqli_connect("localhost", "root", "", "brigade");
 
@@ -25,47 +27,89 @@ if ($result && mysqli_num_rows($result) > 0) {
     }
 }
 
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
- // Fetch cart data from POST
-$cartData = json_decode($_POST['cartData'], true); // Decode JSON to an array
+// Define PayMongo API Keys
+define('PAYMONGO_PUBLIC_KEY', 'pk_test_KdaM7qBivCT1yP1QmVvjTfCB');
+define('PAYMONGO_SECRET_KEY', 'sk_test_2s7FBobkTc3Fw2unrueQtiQd');
 
-$status = "On Process"; // Set initial status
+// Function to create PayMongo Payment Link
+function createPaymentLink($amount, $description, $email) {
+    $secretKey = PAYMONGO_SECRET_KEY;
+    $url = "https://api.paymongo.com/v1/links";
 
-// Generate a unique Order ID
-do {
-    $orderID = sprintf('%04d', rand(0, 9999));
-    $checkQuery = "SELECT * FROM `order` WHERE OrderID = '$orderID'";
-    $checkResult = mysqli_query($conn, $checkQuery);
-} while (mysqli_num_rows($checkResult) > 0);
+    $data = [
+        "data" => [
+            "attributes" => [
+                "amount" => $amount * 100, // Convert to centavos
+                "description" => $description,
+                "remarks" => "Brigade Clothing Payment",
+                "send_email" => false,
+                "currency" => "PHP",
+                "metadata" => [
+                    "email" => $email,
+                ],
+            ],
+        ],
+    ];
 
-$errors = []; // Array to store any stock errors
+    $client = new \GuzzleHttp\Client();
 
- // Size to column name mapping
- $sizeColumnMapping = [
-    'S' => 'small_stock',
-    'M' => 'medium_stock',
-    'L' => 'large_stock',
-    'XL' => 'xl_stock',
-    'XXL' => 'xxl_stock',
-];
+    try {
+        $response = $client->post($url, [
+            'headers' => [
+                'Authorization' => 'Basic ' . base64_encode("$secretKey:"),
+                'Content-Type' => 'application/json',
+            ],
+            'json' => $data,
+        ]);
 
-if (is_array($cartData)) {
+        $responseBody = json_decode($response->getBody(), true);
+        return $responseBody['data']['attributes']['checkout_url'];
+    } catch (\Exception $e) {
+        die('Error creating payment link: ' . $e->getMessage());
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $cartData = json_decode($_POST['cartData'], true);
+
+    if (!$cartData) {
+        die("Cart data is missing or invalid.");
+    }
+
+    $status = "On Process";
+    $shippingCost = 100; // Flat-rate shipping cost
+    $freeShippingThreshold = 1500; // Free shipping if total is ₱1500 or more
+
+    do {
+        $orderID = sprintf('%04d', rand(0, 9999));
+        $checkQuery = "SELECT * FROM `order` WHERE OrderID = '$orderID'";
+        $checkResult = mysqli_query($conn, $checkQuery);
+    } while (mysqli_num_rows($checkResult) > 0);
+
+    $errors = [];
+    $sizeColumnMapping = [
+        'S' => 'small_stock',
+        'M' => 'medium_stock',
+        'L' => 'large_stock',
+        'XL' => 'xl_stock',
+        'XXL' => 'xxl_stock',
+    ];
+
+    $totalAmount = 0;
+
     foreach ($cartData as $item) {
         $product = mysqli_real_escape_string($conn, $item['name']);
         $quantity = (int)$item['quantity'];
-        $size = mysqli_real_escape_string($conn, $item['size']); // Get selected size
+        $size = mysqli_real_escape_string($conn, $item['size']);
         $price = floatval(preg_replace('/[^\d.-]/', '', $item['price']));
         $total = $price * $quantity;
+        $totalAmount += $total;
 
-        // Determine the correct column for the selected size
         $stockColumn = isset($sizeColumnMapping[$size]) ? $sizeColumnMapping[$size] : null;
-
         if (!$stockColumn) {
             die("Invalid size selected.");
         }
 
-        // Check stock for each item and size
         $stockCheckQuery = "SELECT $stockColumn FROM products WHERE name = '$product'";
         $stockResult = mysqli_query($conn, $stockCheckQuery);
         $stockRow = mysqli_fetch_assoc($stockResult);
@@ -73,41 +117,49 @@ if (is_array($cartData)) {
         if ($stockRow) {
             $availableStock = (int)$stockRow[$stockColumn];
             if ($quantity > $availableStock) {
-                // Add error message if quantity exceeds stock
                 $errorMessage = "Insufficient stock for $product (Size: $size). Available stock: $availableStock.";
                 header("Location: 3shop.php?error=" . urlencode($errorMessage));
                 exit();
             } else {
-                // Deduct stock if sufficient stock is available
                 $newStock = $availableStock - $quantity;
                 $updateStockQuery = "UPDATE products SET $stockColumn = $newStock WHERE name = '$product'";
                 mysqli_query($conn, $updateStockQuery);
             }
         }
 
-        // Only insert order if no stock errors for this item
-        if (empty($errors)) {
-            $query = "INSERT INTO `order` (OrderID, Customer, Product, Quantity, Size, Status, Total, Date, Address) VALUES ('$orderID', '$fullname', '$product', '$quantity', '$size', '$status', '$total', NOW(), '$address')";
-            $result = mysqli_query($conn, $query);
+        $query = "INSERT INTO `order` (OrderID, Customer, Product, Quantity, Size, Status, Total, Date, Address)
+                  VALUES ('$orderID', '$fullname', '$product', '$quantity', '$size', '$status', '$total', NOW(), '$address')";
+        $result = mysqli_query($conn, $query);
+
+        if (!$result) {
+            die("Error inserting into order table: " . mysqli_error($conn));
         }
     }
 
-    // Check if there were stock errors
-    if (!empty($errors)) {
-        echo "<script>alert('" . implode("\\n", $errors) . "');</script>";
+     // Determine shipping cost
+     if ($totalAmount >= $freeShippingThreshold) {
+        $shippingCost = 0; 
+    }
+
+    $totalAmount += $shippingCost; 
+
+
+
+    $paymentLink = createPaymentLink($totalAmount, "Brigade Clothing Order Checkout", $email);
+
+    if ($paymentLink) {
+        echo "<script>
+            localStorage.removeItem('cartItems_{$user}');
+            window.location.href = '$paymentLink';
+        </script>";
         exit();
     } else {
-        // Clear cart items and redirect on success
-        echo "<script>
-                alert('Order placed successfully!');
-                localStorage.removeItem('cartItems_" . addslashes($user) . "');
-                window.location.href='4recentorders.php';
-              </script>";
-        exit();
+        echo "<script>alert('Failed to create payment link. Please try again.');</script>";
     }
 }
-}
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
