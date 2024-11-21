@@ -128,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         $query = "INSERT INTO `order` (OrderID, Customer, Product, Quantity, Size, Status, Total, Date, Address)
-                  VALUES ('$orderID', '$fullname', '$product', '$quantity', '$size', '$status', '$total', NOW(), '$address')";
+                  VALUES ('$orderID', '$fullname', '$product', '$quantity', '$size', '$status', '$totalAmount', NOW(), '$address')";
         $result = mysqli_query($conn, $query);
 
         if (!$result) {
@@ -138,10 +138,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
      // Determine shipping cost
      if ($totalAmount >= $freeShippingThreshold) {
-        $shippingCost = 0; 
+        $shippingCost = 0; // Free shipping for orders ₱1500 or above
     }
 
     $totalAmount += $shippingCost; 
+    
+    $finalQuery = "UPDATE `order` SET Total = '$totalAmount' WHERE OrderID = '$orderID'";
+    $finalResult = mysqli_query($conn, $finalQuery);
+
+    if (!$finalResult) {
+        die("Error updating total amount in order table: " . mysqli_error($conn));
+    }
 
 
 
