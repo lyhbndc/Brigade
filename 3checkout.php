@@ -170,58 +170,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
+    <link rel="stylesheet" type="text/css" href="styles/checkout.css">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
-    <style>
-        .checkout-container {
-            max-width: 600px;
-            margin: 5px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .checkout-header {
-            font-weight: bold;
-            font-size: 1.5em;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .checkout-button {
-            width: 100%;
-            padding: 12px;
-            background-color: #333;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-        }
-        .order-summary {
-            margin-bottom: 20px;
-            font-family: Arial, sans-serif;
-        }
-        .order-summary h4 {
-            font-size: 1.25em;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        .summary-line-item, .summary-total {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 10px 0;
-            font-size: 1em;
-        }
-        .summary-total {
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-        .summary-divider {
-            border: none;
-            border-top: 1px solid #ddd;
-            margin: 15px 0;
-        }
-    </style>
+       
 </head>
 
 <body>
@@ -240,38 +191,78 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			</div>
 		</div>
 
-		<div class="main_nav_container">
+        <div class="main_nav_container">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12 text-right">
-                            <div class="logo_container">
-                                <a href="1index.php"><img src="assets/1.png"></a>
+						<div class="logo_container">
+							<a href="#"><img src="assets/1.png"></a>
+						</div>
+						<nav class="navbar">
+                    <ul class="navbar_menu">
+                        <li><a href="#">home</a></li>
+                        <li><a href="3shop.php">shop</a></li>
+                        <li><a href="3new.php">new</a></li>
+                        
+                    </ul>
+                    <ul class="navbar_user">
+					<li class="dropdown">
+        <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu search-dropdown" id="searchDropdownMenu">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+			<ul id="nameList" class="name-list">
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="1" class="name-item-img">
+                    LETS GET HIGH
+                </li>
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="2" class="name-item-img">
+                    LUCKY BLACK
+                </li>
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="3" class="name-item-img">
+                    CHASE DREAM BLUE
+                </li>
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="4" class="name-item-img">
+                    COLDEST BLUE
+                </li>
+            </ul>
+        </div>
+    </li>
+                        
+                        <!-- User Dropdown -->
+                        <li class="dropdown">
+                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="4login.php">Sign In</a>
+								<a class="dropdown-item" href="4myacc.php">Account</a>
+								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+								<a class="dropdown-item" href="7adminlogin.php">Admin</a>
+								<a class="dropdown-item" href="logout.php">Logout</a>
                             </div>
-                            <nav class="navbar">
-                                <ul class="navbar_menu">
-                                    <li><a href="index.html">home</a></li>
-                                    <li><a href="#">shop</a></li>
-                                    <li><a href="#">new</a></li>
-                                    <li><a href="#">on sale</a></li>
-                                </ul>
-                                <ul class="navbar_user">
-                                    <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-                                    <li class="checkout">
-                                        <a href="3cart.php">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items">2</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="hamburger_container">
-                                    <i class="fa fa-bars" aria-hidden="true"></i>
-                                </div>
-                            </nav>
-                        </div>
+                        </li>
+                        
+                        <li class="checkout">
+                            <a href="3cart.php">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <span id="checkout_items" class="checkout_items">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="hamburger_container">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
                     </div>
-                </div>
+                </nav>
             </div>
+        </div>
+    </div>
+</div>
+
         </header>
 
         <div class="fs_menu_overlay"></div>

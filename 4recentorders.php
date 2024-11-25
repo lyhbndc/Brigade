@@ -186,43 +186,81 @@ mysqli_close($conn);
             </div>
             <!-- Main Navigation -->
             <div class="main_nav_container">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12 text-right">
-                            <div class="logo_container">
-                                <a href="#"><img src="assets/1.png"></a>
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 text-right">
+						<div class="logo_container">
+							<a href="1index.php"><img src="assets/1.png"></a>
+						</div>
+						<nav class="navbar">
+                    <ul class="navbar_menu">
+                        <li><a href="1index.php">home</a></li>
+                        <li><a href="3shop.php">shop</a></li>
+                        <li><a href="3new.php">new</a></li>
+                        
+                    </ul>
+                    <ul class="navbar_user">
+					<li class="dropdown">
+        <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu search-dropdown" id="searchDropdownMenu">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+			<ul id="nameList" class="name-list">
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="1" class="name-item-img">
+                    LETS GET HIGH
+                </li>
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="2" class="name-item-img">
+                    LUCKY BLACK
+                </li>
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="3" class="name-item-img">
+                    CHASE DREAM BLUE
+                </li>
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="4" class="name-item-img">
+                    COLDEST BLUE
+                </li>
+            </ul>
+        </div>
+    </li>
+                        
+                        <!-- User Dropdown -->
+                        <li class="dropdown">
+                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="4login.php">Sign In</a>
+								<a class="dropdown-item" href="4myacc.php">Account</a>
+								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+								<a class="dropdown-item" href="7adminlogin.php">Admin</a>
+								<a class="dropdown-item" href="logout.php">Logout</a>
                             </div>
-                            <nav class="navbar">
-                                <ul class="navbar_menu">
-                                    <li><a href="1homepage.php">home</a></li>
-                                    <li><a href="3shop.php">shop</a></li>
-                                    <li><a href="#">new</a></li>
-                                    <li><a href="#">on sale</a></li>
-                                    <li><a href="4recentorders.php">Recent Orders</a></li>
-                                    <li><a href="logout.php" class="logout">Logout</a></li>
-                                </ul>
-                                <ul class="navbar_user">
-                                    <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-                                    <li class="checkout">
-                                        <a href="3cart.php">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items">0</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="hamburger_container">
-                                    <i class="fa fa-bars" aria-hidden="true"></i>
-                                </div>
-                            </nav>
-                        </div>
+                        </li>
+                        
+                        <li class="checkout">
+                            <a href="3cart.php">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <span id="checkout_items" class="checkout_items">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="hamburger_container">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
                     </div>
-                </div>
+                </nav>
             </div>
+        </div>
+    </div>
+</div>
+
             </header>
         <div class="fs_menu_overlay"></div>
 
-        <br><br><br><br><br><br><br>
+        <br><br><br><br>
                     <div class="title">
                     <div class="account-container">
                         <div class="account-content">
@@ -265,11 +303,18 @@ mysqli_close($conn);
                     <td><?php echo htmlspecialchars($orderRow['Date']); ?></td>
                     <td><?php echo htmlspecialchars($orderRow['Address']); ?></td>
                     <td>
-                        <div class="button-container">
-                            <button class="btn btn-success btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Received" name ="Received">Received</button>
-                            <button class="btn btn-warning btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Refund">Refund</button>
-                            <button class="btn btn-danger btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Cancel">Cancel</button>
-                        </div>
+                    <div class="button-container">
+    <div>
+        <button class="btn btn-success btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Received" name="Received">Received</button>
+    </div>
+    <div>
+        <button class="btn btn-warning btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Refund">Refund</button>
+    </div>
+    <div>
+        <button class="btn btn-danger btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Cancel">Cancel</button>
+    </div>
+</div>
+
                     </td>
                 </tr>
         <?php endwhile; ?>
@@ -289,7 +334,7 @@ mysqli_close($conn);
                      
             
         <!-- Footer -->
-        <br><br><br><br>
+
         <footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
             <div class="container">
                 <div class="row">
@@ -386,29 +431,6 @@ mysqli_close($conn);
     document.addEventListener('DOMContentLoaded', updateCart);
 </script>
 
-<style>
-    /* Center-align text in table headers */
-    .table th {
-        text-align: center;
-    }
-
-    /* Space between buttons */
-    .button-container .action-button {
-        margin: 0 5px; /* Horizontal space between buttons */
-    }
-    
-    /* Center-align buttons in cell */
-    .button-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    /* Additional padding for table cells */
-    .table td, .table th {
-        padding: 35px 40px; /* Increase cell padding for better readability */
-    }
-</style>
 
 <script>
     // JavaScript to make the navbar opaque when scrolling

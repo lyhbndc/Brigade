@@ -19,104 +19,9 @@ if (!$user) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
+    <link rel="stylesheet" type="text/css" href="styles/cart.css">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
-    <style>
-    .cart-page-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    max-width: 800px;
-    margin: 200px auto;
-}
-
-.cart-container {
-    flex-grow: 1; /* Allows the cart items container to take remaining space */
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.summary-container {
-    width: 300px; /* Fixed width for the summary container */
-    height: 320px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-        .cart-header, .summary-header {
-            font-weight: bold;
-            font-size: 1.5em;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #ddd;
-        }
-        .cart-item img {
-            width: 60px;
-            height: 60px;
-            border-radius: 4px;
-        }
-        .cart-item-info {
-            flex-grow: 1;
-            margin-left: 15px;
-        }
-        .cart-item-info h6 {
-            margin: 0;
-            font-size: 1em;
-            font-weight: bold;
-        }
-        .cart-item-info p {
-            margin: 5px 0;
-            font-size: 0.9em;
-        }
-        .cart-item-quantity {
-            display: flex;
-            align-items: center;
-        }
-        .cart-item-quantity input {
-            width: 40px;
-            text-align: center;
-            margin: 0 5px;
-        }
-        .checkout-button {
-            width: 100%;
-            padding: 12px;
-            background-color: #333;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-        }
-        .checkout-button:hover {
-            background-color: #555; 
-            cursor: pointer;
-        }
-        input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type="number"] {
-            -moz-appearance: textfield;
-            appearance: textfield;
-        }
-        .summary-total {
-    font-weight: bold;
-    font-size: 1.1em;
-}
-
-    </style>
 </head>
-
 <body>
 
     <div class="super_container">
@@ -140,39 +45,77 @@ if (!$user) {
 
             <!-- Main Navigation -->
             <div class="main_nav_container">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12 text-right">
-                            <div class="logo_container">
-                                <a href="1index.php"><img src="assets/1.png"></a>
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 text-right">
+						<div class="logo_container">
+							<a href="#"><img src="assets/1.png"></a>
+						</div>
+						<nav class="navbar">
+                    <ul class="navbar_menu">
+                        <li><a href="#">home</a></li>
+                        <li><a href="3shop.php">shop</a></li>
+                        <li><a href="3new.php">new</a></li>
+                        
+                    </ul>
+                    <ul class="navbar_user">
+					<li class="dropdown">
+        <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu search-dropdown" id="searchDropdownMenu">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+			<ul id="nameList" class="name-list">
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="1" class="name-item-img">
+                    LETS GET HIGH
+                </li>
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="2" class="name-item-img">
+                    LUCKY BLACK
+                </li>
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="3" class="name-item-img">
+                    CHASE DREAM BLUE
+                </li>
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="4" class="name-item-img">
+                    COLDEST BLUE
+                </li>
+            </ul>
+        </div>
+    </li>
+                        
+                        <!-- User Dropdown -->
+                        <li class="dropdown">
+                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="4login.php">Sign In</a>
+								<a class="dropdown-item" href="4myacc.php">Account</a>
+								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+								<a class="dropdown-item" href="7adminlogin.php">Admin</a>
+								<a class="dropdown-item" href="logout.php">Logout</a>
                             </div>
-                            <nav class="navbar">
-                                <ul class="navbar_menu">
-                                    <li><a href="1homepage.php">home</a></li>
-                                    <li><a href="3shop.php">shop</a></li>
-                                    <li><a href="3new.php">new</a></li>
-                                    <li><a href="3onsale.php">on sale</a></li>
-                                    <li><a href="logout.php">logout</a></li>
-                                </ul>
-                                <ul class="navbar_user">
-                                    <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-                                    <li class="checkout">
-                                        <a href="#">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items">2</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="hamburger_container">
-                                    <i class="fa fa-bars" aria-hidden="true"></i>
-                                </div>
-                            </nav>
-                        </div>
+                        </li>
+                        
+                        <li class="checkout">
+                            <a href="3cart.php">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <span id="checkout_items" class="checkout_items">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="hamburger_container">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
                     </div>
-                </div>
+                </nav>
             </div>
-    
+        </div>
+    </div>
+</div>
+
         </header>
     
         <div class="fs_menu_overlay"></div>
