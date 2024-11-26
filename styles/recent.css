@@ -703,93 +703,37 @@ video {
 	height: auto;
 	max-width: 100%;
 }
- /* Full-screen loading container */
- .loading-page {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: #000; /* Black background */
-	z-index: 9999; /* Keeps it on top */
-	opacity: 0; /* Start as invisible */
-	animation: fadeIn 0.5s forwards; /* Fade in effect */
-}
-
-/* Fade in animation */
-@keyframes fadeIn {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-
-/* Logo styling */
-.logo {
-	width: 200px; /* Initial logo size */
-	height: auto;
-	animation: pulse 1.5s ease-in-out infinite; /* Pulsing effect */
-}
-
-/* Logo pulse animation */
-@keyframes pulse {
-	0%, 100% { transform: scale(1); opacity: 1; }
-	50% { transform: scale(1.1); opacity: 0.8; }
-}
-
-/* Zoom and fade out animation */
-.zoom-fade {
-	animation: zoomFade 1s forwards; /* Trigger zoom and fade effect */
-}
-
-@keyframes zoomFade {
-	from {
-		transform: scale(1);
-		opacity: 1;
-	}
-	to {
-		transform: scale(3); /* Increased scale for a bigger zoom */
-		opacity: 0; /* Fade out */
-	}
-}
-
+ 
 .account-container {
-	width: 80%;
-	max-width: 900px;
-	margin: 0 auto;
-	font-family: Arial, sans-serif;
-	color: #333;
-}
-.logout {
-	color: #333;
-	text-decoration: none;
-	font-size: 16px;
-	font-weight: bold;
+    width: 80%;
+    max-width: 900px;
+    margin: 0 auto; /* Centers the container horizontally */
+    font-family: Arial, sans-serif;
+    color: #333;
 }
 
+/* Account Content (for Flexbox layout) */
 .account-content {
-	display: flex;
-	justify-content: space-between;
-	padding: 20px 0;
+    display: flex;
+    justify-content: center; /* Centers the content horizontally */
+    padding: 20px 0;
+    width: 100%;
 }
 
-.order-history, .account-details {
-	width: 48%;
+
+/* Using Flexbox to Align Order History */
+.order-history-container {
+    display: flex;
+    justify-content: space-between; /* Aligns content to left and right */
+    margin-top: 20px;
 }
 
-.order-history h2, .account-details h2 {
-	font-size: 16px;
-	font-weight: bold;
-	text-transform: uppercase;
-	margin-bottom: 10px;
-	color: #333;
-}
-
-.order-history p, .account-details p {
-	font-size: 14px;
-	margin: 10px 0;
-	color: #666;
+.order-history {
+    flex: 0 0 300px; /* Set the width of the order history section */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .view-addresses {
@@ -811,110 +755,103 @@ video {
 	font-weight: bold;
 	margin: 0;
 }
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-family: Arial, sans-serif;
+table {
+    width: 80%; /* Adjusts the width of the table */
+    margin: 20px auto; /* Centers the table */
+    border-collapse: collapse; /* Combines table borders */
 }
 
-/* Table Header Styling */
-.table thead {
-    background-color: #343a40; /* Dark header */
-    color: #fff;
+th, td {
+    padding: 8px 12px; /* Adjusts padding for cells */
+    text-align: left; /* Aligns text to the left */
+    border: 1px solid #ddd; /* Adds border for clarity */
 }
 
-.table thead th {
-    padding: 12px 15px;
-    text-align: left;
+th {
+    background-color: #f4f4f4; /* Adds a light background to header */
     font-weight: bold;
 }
 
-/* Table Body Styling */
-.table tbody {
-    background-color: #f8f9fa; /* Light gray background */
+td {
+    font-size: 14px; /* Adjusts text size for readability */
 }
 
-.table tbody tr:nth-child(even) {
-    background-color: #e9ecef; /* Stripe rows */
+table td, table th {
+    word-wrap: break-word; /* Prevents long words from breaking the layout */
 }
 
-.table tbody tr:hover {
-    background-color: #e2e6ea; /* Hover effect */
-}
 
-/* Table Cells Styling */
-.table td {
-    padding: 10px 15px;
-    text-align: left;
-    vertical-align: middle;
-    border: 1px solid #dee2e6;
-}
-
-/* Badge Styling for Order Status */
-.badge {
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.875rem;
-}
-
+/* Badge Styling */
 .badge-success {
     background-color: #28a745;
     color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
 }
 
 .badge-warning {
     background-color: #ffc107;
     color: black;
+    padding: 5px 10px;
+    border-radius: 4px;
 }
 
-/* Action Buttons Container */
+/* Button Container */
 .button-container {
     display: flex;
-    gap: 10px;
+    justify-content: space-around;
 }
 
-/* Action Buttons Styling */
-.btn {
-    padding: 6px 12px;
-    font-size: 0.875rem;
+/* Action Buttons */
+.action-button {
+    margin: 3px;
+    padding: 8px 16px;
+    font-size: 14px;
     border-radius: 4px;
     cursor: pointer;
-    border: none;
-    transition: background-color 0.3s ease;
 }
 
-.btn-sm {
-    padding: 4px 8px;
-    font-size: 0.75rem;
-}
-
-.btn-success {
+.action-button[name="Received"] {
     background-color: #28a745;
     color: white;
+    border: none;
 }
 
-.btn-warning {
+.action-button[data-action="Refund"] {
     background-color: #ffc107;
     color: black;
+    border: none;
 }
 
-.btn-danger {
+.action-button[data-action="Cancel"] {
     background-color: #dc3545;
     color: white;
+    border: none;
 }
 
-/* Button Hover Effects */
-.btn:hover {
+.action-button:hover {
     opacity: 0.8;
 }
 
-/* Centering No Orders Message */
-.text-center {
-    text-align: center;
+/* Account Section */
+.account-container {
+    margin-top: 50px;
+}
+
+.account-content {
     padding: 20px;
-    color: #6c757d;
-    font-size: 1rem;
+}
+
+.order-history {
+    margin-bottom: 30px;
+}
+
+/* Title Styling */
+.title h2 {
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
 }
 .navbar_user .dropdown-menu {
     position: absolute;
