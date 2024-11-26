@@ -146,13 +146,17 @@ $result = $conn->query($sql);
 						<div class="sidebar_title">
 							<h5>Sizes</h5>
 						</div>
-						<ul class="checkboxes">
-							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>S</span></li>
-							<li class="active"><i class="fa fa-square" aria-hidden="true"></i><span>M</span></li>
-							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>L</span></li>
-							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XL</span></li>
-							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XXL</span></li>
+						<div class="sidebar_section">
+
+						<ul class="radio-buttons">
+							<li><input type="radio" id="sizeS" name="size" value="S"><label for="sizeS">S</label></li>
+							<li><input type="radio" id="sizeM" name="size" value="M"><label for="sizeM">M</label></li>
+							<li><input type="radio" id="sizeL" name="size" value="L"><label for="sizeL">L</label></li>
+							<li><input type="radio" id="sizeXL" name="size" value="XL"><label for="sizeXL">XL</label></li>
+							<li><input type="radio" id="sizeXXL" name="size" value="XXL"><label for="sizeXXL">XXL</label></li>
 						</ul>
+</div>
+
 					</div>
 
 
