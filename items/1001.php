@@ -142,15 +142,15 @@
 						<div class="col-lg-3 thumbnails_col order-lg-1 order-2">
 							<div class="single_product_thumbnails">
 								<ul>
-									<li><img src="images\1001\t1.png" alt="" data-image="images\1001\1.png"></li>
-									<li class="active"><img src="images\1001\t2.png" alt="" data-image="images\1001\2.png"></li>
-									<li><img src="images\1001\t3.png" alt="" data-image="images\1001\3.png"></li>
+									<li><img src="images\1001\t1.png" alt="" data-image="images/1001/1.png"></li>
+									<li class="active"><img src="images\1001\t2.png" alt="" data-image="images/1001/2.png"></li>
+									<li><img src="images\1001\t3.png" alt="" data-image="images/1001/3.png"></li>
 								</ul>
 							</div>
 						</div>
 						<div class="col-lg-9 image_col order-lg-2 order-1">
 							<div class="single_product_image">
-								<div class="single_product_image_background" style="background-image:url(images\1001\2.png)"></div>
+								<div class="single_product_image_background" style="background-image:url(images/1001/2.png)"></div>
 							</div>
 						</div>
 					</div>
@@ -173,7 +173,6 @@
 							<div class="size-option" data-size="l">Large</div>
 							<div class="size-option" data-size="xl">XL</div>
 							<div class="size-option" data-size="2xl">2XL</div>
-							<div class="size-option" data-size="3xl">3XL</div>
 						</div>
 					</div>
 					<div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
@@ -249,8 +248,10 @@
                                 <div class="col-lg-8 offset-lg-2 desc_col">
 								<div class="tab_image">
 									<img src="images\ph-11134207-7r98v-lu666edug2a142.webp" alt="">
+									<div class="others">
 								<p>COLOR:<span>Black</span></p>
 								<p>SIZE:<span>S, M, L, Xl, XXL, 3XL</span></p>
+									</div>
                                 </div>
 							</div>
 						</div>
@@ -510,6 +511,26 @@ function closeSearchDropdown() {
         } else {
             mainNav.classList.remove('opaque');
         }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const sizeOptions = document.querySelectorAll(".size-option");
+        let selectedSize = null;
+
+        sizeOptions.forEach(option => {
+            option.addEventListener("click", () => {
+                // Remove 'active' class from all size options
+                sizeOptions.forEach(opt => opt.classList.remove("active"));
+                
+                // Add 'active' class to the clicked option
+                option.classList.add("active");
+
+                // Record the selected size
+                selectedSize = option.getAttribute("data-size");
+                console.log("Selected size:", selectedSize); // Replace with desired logic
+            });
+        });
     });
 </script>
 </body>

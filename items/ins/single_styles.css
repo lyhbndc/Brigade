@@ -1597,27 +1597,24 @@ section
 	width: 30px;
 	margin-top: 10px;
 }
-.size-options {
-    display: flex;
-    gap: 10px; /* Space between the boxes */
-    margin: 10px 0; /* Space above and below the size selection */
-}
-
 .size-option {
-    border: 1px solid #ccc; /* Light border */
-    padding: 10px 15px; /* Padding for clickable area */
-    cursor: pointer; /* Cursor changes to pointer on hover */
-    transition: background-color 0.3s; /* Smooth transition for background color */
+	display: inline-block;
+	padding: 10px 15px;
+	margin: 5px;
+	border: 1px solid #ccc;
+	cursor: pointer;
+	text-align: center;
+	transition: 0.3s;
 }
 
 .size-option:hover {
-    background-color: #f0f0f0; /* Light gray on hover */
+	background-color: #f1f1f1;
 }
 
-.size-option.selected {
-    background-color: black; /* Background color when selected */
-    color: white; /* Text color when selected */
-    border-color: #999; /* Darker border for selected */
+.size-option.active {
+	background-color: gray;
+	color: white;
+	border-color: black;
 }
 .navbar_user .dropdown-menu {
     position: absolute;
@@ -1719,4 +1716,8 @@ section
 .name-item-text {
     padding-left: 50px; /* Create space for the fixed image */
     width: 100%;
+}
+.others{
+	margin-top: 20px;
+	margin-left: 50px;
 }
