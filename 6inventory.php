@@ -1,5 +1,155 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+session_start();
+
+// Connect to MySQL
+$conn = mysqli_connect("localhost", "root", "", "brigade");
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// Fetch inventory data
+$sql = "SELECT * FROM inventory";
+$result = $conn->query($sql);
+
+// Handle form submissions
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['itemName'])) { //ADD ITEM MODULE
+        // Process the form
+        $itemName = $_POST['itemName'];
+
+        // Use null coalescing to default to 0 if not set, and check if the value is numeric
+        $small = isset($_POST['small']) && is_numeric($_POST['small']) ? (int)$_POST['small'] : 0;
+        $medium = isset($_POST['medium']) && is_numeric($_POST['medium']) ? (int)$_POST['medium'] : 0;
+        $large = isset($_POST['large']) && is_numeric($_POST['large']) ? (int)$_POST['large'] : 0;
+        $extraLarge = isset($_POST['extraLarge']) && is_numeric($_POST['extraLarge']) ? (int)$_POST['extraLarge'] : 0;
+        $twoXL = isset($_POST['twoXL']) && is_numeric($_POST['twoXL']) ? (int)$_POST['twoXL'] : 0;
+        $threeXL = isset($_POST['threeXL']) && is_numeric($_POST['threeXL']) ? (int)$_POST['threeXL'] : 0;
+        $price = isset($_POST['price']) && is_numeric($_POST['price']) ? (float)$_POST['price'] : 0;
+
+        // Calculate total quantity
+        $totalQuantity = $small + $medium + $large + $extraLarge + $twoXL + $threeXL;
+
+        // Handle image upload (if any)
+        $image = null; // Default if no image is uploaded
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = "uploads/"; // Directory to store images
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true); // Create directory if it doesn't exist
+            }
+            $image = basename($_FILES['image']['name']);
+            $uploadFile = $uploadDir . $image;
+
+            if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
+                die("Error uploading image.");
+            }
+        }
+
+        // Insert into database
+        $stmt = $conn->prepare("INSERT INTO inventory (itemName, quantity, small, medium, large, extraLarge, twoXL, threeXL, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        if (!$stmt) {
+            die("Error preparing statement: " . $conn->error);
+        }
+
+        $stmt->bind_param("siiiiiiids", $itemName, $totalQuantity, $small, $medium, $large, $extraLarge, $twoXL, $threeXL, $price, $image);
+        if ($stmt->execute()) {
+            header("Location: 6inventory.php");
+            exit;
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+    }
+
+    if (isset($_POST['itemID'])) {//EDIT STOCK MODULE
+        // Get form data
+        $itemID = $_POST['itemID'];
+        $small = $_POST['small'];
+        $medium = $_POST['medium'];
+        $large = $_POST['large'];
+        $extraLarge = $_POST['extraLarge'];
+        $twoXL = $_POST['twoXL'];
+        $threeXL = $_POST['threeXL'];
+        $price = $_POST['price'];
+    
+        // Fetch current values from the database
+        $query = "SELECT small, medium, large, extraLarge, twoXL, threeXL, quantity FROM inventory WHERE itemID = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $itemID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $current = $result->fetch_assoc();
+        
+        // Calculate the total difference in quantity
+        $currentTotal = $current['quantity'];
+        $currentSizesSum = $current['small'] + $current['medium'] + $current['large'] + 
+                           $current['extraLarge'] + $current['twoXL'] + $current['threeXL'];
+        $newSizesSum = $small + $medium + $large + $extraLarge + $twoXL + $threeXL;
+        $quantityDifference = $newSizesSum - $currentSizesSum;
+    
+        // Update the database
+        $updateQuery = "UPDATE inventory 
+                        SET small = ?, medium = ?, large = ?, extraLarge = ?, twoXL = ?, threeXL = ?, price = ?, quantity = quantity + ? 
+                        WHERE itemID = ?";
+        $stmt = $conn->prepare($updateQuery);
+        $stmt->bind_param("iiiiiidii", $small, $medium, $large, $extraLarge, $twoXL, $threeXL, $price, $quantityDifference, $itemID);
+        
+        if ($stmt->execute()) {
+            header("Location: 6inventory.php");
+            exit;
+        } else {
+            echo "Error updating record: " . $stmt->error;
+        }
+    }    
+
+    if (isset($_POST['deleteitemID'])) {//DELETE STOCK MODULE
+        // Delete item
+        $itemIDToDelete = $_POST['deleteitemID'];
+    
+        // Step 1: Retrieve the image filename from the database
+        $stmt = $conn->prepare("SELECT image FROM inventory WHERE itemID = ?");
+        if (!$stmt) {
+            die("Error preparing statement: " . $conn->error);
+        }
+    
+        $stmt->bind_param("i", $itemIDToDelete);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $image = $row['image'];
+    
+            // Step 2: Delete the image file from the directory
+            if (!empty($image)) {
+                $imagePath = "uploads/" . $image; // Adjust path if needed
+                if (file_exists($imagePath)) {
+                    unlink($imagePath); // Delete the image file
+                }
+            }
+    
+            // Step 3: Delete the database record
+            $stmt = $conn->prepare("DELETE FROM inventory WHERE itemID = ?");
+            if (!$stmt) {
+                die("Error preparing statement: " . $conn->error);
+            }
+    
+            $stmt->bind_param("i", $itemIDToDelete);
+            if ($stmt->execute()) {
+                header("Location: 6inventory.php");
+                exit;
+            } else {
+                echo "Error deleting record: " . $stmt->error;
+            }
+        } else {
+            echo "Item not found.";
+        }
+    }
+    
+}
+
+// Close the connection
+$conn->close();
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,7 +189,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addItemForm" action="6inventory.php" method="POST">
+                    <form id="addItemForm" action="6inventory.php" method="POST" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="itemName" class="form-label">Item Name</label>
                             <input type="text" id="itemName" name="itemName" class="form-control" placeholder="Item Name" required>
@@ -74,6 +224,10 @@
                             <label for="price" class="form-label">Price</label>
                             <input type="number" step="0.01" id="price" name="price" class="form-control" placeholder="Price" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Upload Image</label>
+                            <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                        </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
@@ -86,33 +240,41 @@
         <table class="table table-striped">
             <thead> <!-- Table Headers -->
                 <tr>
-                    <th>Item ID</th>
-                    <th>Item Name</th>
-                    <th>Quantity</th>
-                    <th>S</th>
-                    <th>M</th>
-                    <th>L</th>
-                    <th>XL</th>
-                    <th>2XL</th>
-                    <th>3XL</th>
-                    <th>Price</th>
-                    <th>Actions</th>
+                    <th style="width: 8%;">Item ID</th>
+                    <th style="width: 10%;">Image</th>
+                    <th style="width: 8%;">Item Name</th>
+                    <th style="width: 8%;">Quantity</th>
+                    <th style="width: 5%;">S</th>
+                    <th style="width: 5%;">M</th>
+                    <th style="width: 5%;">L</th>
+                    <th style="width: 5%;">XL</th>
+                    <th style="width: 5%;">2XL</th>
+                    <th style="width: 5%;">3XL</th>
+                    <th style="width: 10%;">Price</th>
+                    <th style="width: 10%;">Actions</th>
                 </tr>
             </thead>
             <tbody id="inventoryTableBody">
                 <?php while ($row = $result->fetch_assoc()) { ?>
                     <tr>
-                        <td><?php echo str_pad($row['itemID'], 4, '0', STR_PAD_LEFT); ?></td>
-                        <td><?php echo $row['itemName']; ?></td>
-                        <td><?php echo $row['quantity']; ?></td>
-                        <td><?php echo $row['small']; ?></td>
-                        <td><?php echo $row['medium']; ?></td>
-                        <td><?php echo $row['large']; ?></td>
-                        <td><?php echo $row['extraLarge']; ?></td>
-                        <td><?php echo $row['twoXL']; ?></td>
-                        <td><?php echo $row['threeXL']; ?></td>
-                        <td><?php echo '$' . number_format($row['price'], 2); ?></td>
-                        <td>
+                        <td style="width: 8%"><?php echo str_pad($row['itemID'], 4, '0', STR_PAD_LEFT); ?></td>
+                        <td style="width: 10%">
+                            <?php if (!empty($row['image'])): ?>
+                                <img src="uploads/<?php echo $row['image']; ?>" alt="<?php echo $row['itemName']; ?>" style="width: 100px; height: 100px; object-fit: cover;">
+                            <?php else: ?>
+                                No image
+                            <?php endif; ?>
+                        </td>
+                        <td style="width: 8%"><?php echo $row['itemName']; ?></td>
+                        <td style="width: 8%"><?php echo $row['quantity']; ?></td>
+                        <td style="width: 5%"><?php echo $row['small']; ?></td>
+                        <td style="width: 5%"><?php echo $row['medium']; ?></td>
+                        <td style="width: 5%"><?php echo $row['large']; ?></td>
+                        <td style="width: 5%"><?php echo $row['extraLarge']; ?></td>
+                        <td style="width: 5%"><?php echo $row['twoXL']; ?></td>
+                        <td style="width: 5%"><?php echo $row['threeXL']; ?></td>
+                        <td style="width: 10%"><?php echo '$' . number_format($row['price'], 2); ?></td>
+                        <td style="width: 10%">
                             <button class="btn btn-warning btn-sm custom-btn" data-bs-toggle="modal" data-bs-target="#editStockModal<?php echo $row['itemID']; ?>">Edit</button>
                             <button class="btn btn-danger btn-sm custom-btn" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $row['itemID']; ?>">Delete</button>
                         </td>
