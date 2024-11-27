@@ -14,7 +14,7 @@ if (isset($_POST['login'])) {
         $pass = $_POST['password'];
 
         // Use prepared statements to prevent SQL injection
-        $stmt = $conn->prepare("SELECT * FROM user WHERE username=? AND Password=?");
+        $stmt = $conn->prepare("SELECT * FROM employees WHERE username=? AND Password=?");
         $stmt->bind_param("ss", $user, $pass);
         $stmt->execute();
         $result = $stmt->get_result();
