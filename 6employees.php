@@ -1,5 +1,5 @@
 <?php
-session_start();
+/*session_start();
 
 
 $conn = mysqli_connect("localhost", "root", "", "brigade");
@@ -24,7 +24,7 @@ if (isset($_POST['addEmployee'])) {
 
 
 $sql = "SELECT id, name, username, password FROM employee";
-$result = $conn->query($sql);
+$result = $conn->query($sql);*/
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +46,10 @@ $result = $conn->query($sql);
         <a href="6completeorders.php">Complete Orders</a>
         <a href="6cancelorders.php">Cancel Orders</a>
         <a href="6refundorders.php">Refund Orders</a>
-        <a href="6employees.php">Employees</a>
+
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+            <a href="6employees.php">Employees</a>
+        <?php endif; ?>
     </div>
 
     <div class="content" id="content">
