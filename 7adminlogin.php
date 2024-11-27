@@ -14,7 +14,7 @@ if (isset($_POST['login'])) {
         $pass = $_POST['password'];
 
         // Use prepared statements to prevent SQL injection
-        $stmt = $conn->prepare("SELECT * FROM user WHERE Username=? AND Password=?");
+        $stmt = $conn->prepare("SELECT * FROM user WHERE username=? AND Password=?");
         $stmt->bind_param("ss", $user, $pass);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -22,10 +22,14 @@ if (isset($_POST['login'])) {
         if ($result->num_rows === 1) {
             $row = $result->fetch_assoc();
             $id = $row['ID'];
-            $_SESSION['user'] = $user; // Save user data to session
-            $_SESSION['id'] = $id;
-            header("Location: /Brigade/1homepage.php");
-            exit;
+            $role = $row['role']; // Assuming the column for role is named 'Role'
+            
+            $_SESSION['user'] = $user; // Save username to session
+            $_SESSION['id'] = $id;     // Save user ID to session
+            $_SESSION['role'] = $role; // Save user role to session
+        
+            header("Location: /Brigade/6dashboard.php");
+            exit;   
         } else {
             $error_message = "Invalid username or password. Please try again.";
         }
@@ -33,10 +37,6 @@ if (isset($_POST['login'])) {
         $error_message = "Both fields are required.";
     }
 }
-?>
-
-
-mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
