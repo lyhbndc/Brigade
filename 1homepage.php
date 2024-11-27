@@ -69,10 +69,7 @@ $user = $_SESSION['user'];
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="4login.php">Sign In</a>
-								<a class="dropdown-item" href="4myacc.php">Account</a>
-								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
 								<a class="dropdown-item" href="7adminlogin.php">Admin</a>
-								<a class="dropdown-item" href="logout.php">Logout</a>
                             </div>
                         </li>
                         

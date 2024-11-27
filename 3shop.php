@@ -50,31 +50,14 @@ $result = $conn->query($sql);
                     </ul>
                     <ul class="navbar_user">
 					<li class="dropdown">
-        <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-search" aria-hidden="true"></i>
-        </a>
-        <div class="dropdown-menu search-dropdown" id="searchDropdownMenu">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
-			<ul id="nameList" class="name-list">
-                <li class="name-item">
-                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="1" class="name-item-img">
-                    LETS GET HIGH
-                </li>
-                <li class="name-item">
-                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="2" class="name-item-img">
-                    LUCKY BLACK
-                </li>
-                <li class="name-item">
-                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="3" class="name-item-img">
-                    CHASE DREAM BLUE
-                </li>
-                <li class="name-item">
-                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="4" class="name-item-img">
-                    COLDEST BLUE
-                </li>
-            </ul>
-        </div>
-    </li>
+    <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </a>
+    <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+        <ul id="nameList" class="name-list"></ul>
+    </div>
+</li>
                         
                         <!-- User Dropdown -->
                         <li class="dropdown">
@@ -82,10 +65,8 @@ $result = $conn->query($sql);
                                 <i class="fa fa-user" aria-hidden="true"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="4login.php">Sign In</a>
 								<a class="dropdown-item" href="4myacc.php">Account</a>
 								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
-								<a class="dropdown-item" href="7adminlogin.php">Admin</a>
 								<a class="dropdown-item" href="logout.php">Logout</a>
                             </div>
                         </li>
@@ -105,7 +86,6 @@ $result = $conn->query($sql);
         </div>
     </div>
 </div>
-
 	</header>
 
 	<div class="fs_menu_overlay"></div>
@@ -444,6 +424,82 @@ document.querySelectorAll('.add-to-cart').forEach(button => {
         }
     });
 </script>
+
+<script>
+    const items = [
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "1", name: "LETS GET HIGH" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "2", name: "LUCKY BLACK" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "3", name: "CHASE DREAM BLUE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "4", name: "COLDEST BLUE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "5", name: "WORD OF KNIVES" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "6", name: "CHASE DREAM WHITE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "7", name: "MULTIVERSE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "8", name: "GLOBAL TERROR" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "9", name: "CYBER PUNK" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "10", name: "DAILY" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "11", name: "COOKIES" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "12", name: "WHAT EVER" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "13", name: "YOUR HIRED" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "14", name: "CHICAGO" },
+];
+
+const nameList = document.getElementById('nameList');
+const searchInput = document.getElementById('searchInput');
+
+function renderList(filteredItems) {
+ nameList.innerHTML = ''; // Clear the list
+ filteredItems.forEach(item => {
+     const li = document.createElement('li');
+     li.classList.add('name-item');
+     li.innerHTML = `
+         <img src="${item.img}" alt="${item.alt}" class="name-item-img">
+         ${item.name}
+     `;
+     nameList.appendChild(li);
+ });
+}
+
+// Initial render
+renderList(items);
+
+function filterNames() {
+ const searchValue = searchInput.value.toLowerCase();
+ const filteredItems = items
+     .filter(item => item.name.toLowerCase().includes(searchValue)) // Filter items
+     .sort((a, b) => a.name.localeCompare(b.name)); // Sort filtered items alphabetically
+ renderList(filteredItems); // Render the filtered and sorted list
+}
+searchInput.addEventListener('keyup', filterNames);
+
+// Initialize the dropdown toggle behavior
+function toggleDropdown(event) {
+ const dropdownMenu = document.getElementById('searchDropdownMenu');
+ const isExpanded = dropdownMenu.style.display === 'block';
+ dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+}
+function closeSearchDropdown() {
+     const searchDropdownMenu = document.getElementById('searchDropdownMenu');
+     searchDropdownMenu.style.display = 'none';
+ }
+
+ // Attach event listener to the user dropdown
+ document.getElementById('userDropdown').addEventListener('click', function() {
+     closeSearchDropdown(); // Close the search dropdown when the user dropdown is clicked
+ });
+
+ // Function to toggle the search dropdown
+ function toggleSearchDropdown(event) {
+     const dropdownMenu = document.getElementById('searchDropdownMenu');
+     const isExpanded = dropdownMenu.style.display === 'block';
+     dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+     
+     // Close the user dropdown if it is open
+     const userDropdownMenu = document.querySelector('.dropdown-menu-right');
+     if (userDropdownMenu.style.display === 'block') {
+         userDropdownMenu.style.display = 'none';
+     }
+ }
+ </script>
 
 </body>
 

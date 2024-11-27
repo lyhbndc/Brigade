@@ -497,11 +497,20 @@ section
 3.4 Main Navigation
 *********************************/
 
-.main_nav_container
-{
+.main_nav_container {
 	width: 100%;
-	background: black;
+	background-color: rgba(0, 0, 0, 1); 
 	box-shadow: 0 0 16px rgba(0, 0, 0, 0.15);
+	padding: 20px 0;
+	transition: background-color 0.3s ease;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+
+.main_nav_container.opaque {
+	background-color: rgba(0, 0, 0, 0.7); /* Transparent background */ /* Solid background when scrolling */
 }
 .navbar
 {
