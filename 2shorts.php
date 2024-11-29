@@ -307,7 +307,7 @@
 		</div>
 	</div>
 
-	<!-- Footer -->
+<!-- Footer -->
 
 	<br><br><br><br>
 	<footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">

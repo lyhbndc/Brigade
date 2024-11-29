@@ -625,7 +625,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 		</div>
 	</div>
 	<br><br>
-	</footer>
+</footer>
 
 
 <script>

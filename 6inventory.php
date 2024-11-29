@@ -13,9 +13,9 @@ $result = $conn->query($sql);
 
 // Handle form submissions
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['itemName'])) { // ADD ITEM MODULE
+    if (isset($_POST['name'])) { // ADD ITEM MODULE
         // Process the form
-        $itemName = $_POST['itemName'];
+        $name = $_POST['name'];
     
         // Use null coalescing to default to 0 if not set, and check if the value is numeric
         $small_stock = isset($_POST['small_stock']) && is_numeric($_POST['small_stock']) ? (int)$_POST['small_stock'] : 0;
@@ -45,12 +45,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     
         // Insert into database
-        $stmt = $conn->prepare("INSERT INTO products (itemName, quantity, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO products (name, quantity, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         if (!$stmt) {
             die("Error preparing statement: " . $conn->error);
         }
     
-        $stmt->bind_param("siiiiiiids", $itemName, $totalQuantity, $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $image);
+        $stmt->bind_param("siiiiiiids", $name, $totalQuantity, $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $image);
         if ($stmt->execute()) {
             header("Location: 6inventory.php");
             exit;
@@ -59,9 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }    
 
-    if (isset($_POST['itemID'])) {//EDIT STOCK MODULE
+    if (isset($_POST['id'])) {//EDIT STOCK MODULE
         // Get form data
-        $itemID = $_POST['itemID'];
+        $id = $_POST['id'];
         $small_stock = $_POST['small_stock'];
         $medium_stock = $_POST['medium_stock'];
         $large_stock = $_POST['large_stock'];
@@ -71,9 +71,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $price = $_POST['price'];
     
         // Fetch current values from the database
-        $query = "SELECT small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, quantity FROM products WHERE itemID = ?";
+        $query = "SELECT small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, quantity FROM products WHERE id = ?";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $itemID);
+        $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
         $current = $result->fetch_assoc();
@@ -88,9 +88,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Update the database
         $updateQuery = "UPDATE products 
                         SET small_stock = ?, medium_stock = ?, large_stock = ?, xl_stock = ?, xxl_stock = ?, xxxl_stock = ?, price = ?, quantity = quantity + ? 
-                        WHERE itemID = ?";
+                        WHERE id = ?";
         $stmt = $conn->prepare($updateQuery);
-        $stmt->bind_param("iiiiiidii", $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $quantityDifference, $itemID);
+        $stmt->bind_param("iiiiiidii", $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $quantityDifference, $id);
         
         if ($stmt->execute()) {
             header("Location: 6inventory.php");
@@ -102,15 +102,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST['deleteitemID'])) {//DELETE STOCK MODULE
         // Delete item
-        $itemIDToDelete = $_POST['deleteitemID'];
+        $idToDelete = $_POST['deleteitemID'];
     
         // Step 1: Retrieve the image filename from the database
-        $stmt = $conn->prepare("SELECT image FROM products WHERE itemID = ?");
+        $stmt = $conn->prepare("SELECT image FROM products WHERE id = ?");
         if (!$stmt) {
             die("Error preparing statement: " . $conn->error);
         }
     
-        $stmt->bind_param("i", $itemIDToDelete);
+        $stmt->bind_param("i", $idToDelete);
         $stmt->execute();
         $result = $stmt->get_result();
     
@@ -127,12 +127,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
     
             // Step 3: Delete the database record
-            $stmt = $conn->prepare("DELETE FROM products WHERE itemID = ?");
+            $stmt = $conn->prepare("DELETE FROM products WHERE id = ?");
             if (!$stmt) {
                 die("Error preparing statement: " . $conn->error);
             }
     
-            $stmt->bind_param("i", $itemIDToDelete);
+            $stmt->bind_param("i", $idToDelete);
             if ($stmt->execute()) {
                 header("Location: 6inventory.php");
                 exit;
@@ -194,8 +194,8 @@ $conn->close();
                 <div class="modal-body">
                     <form id="addItemForm" action="6inventory.php" method="POST" enctype="multipart/form-data">
                         <div class="mb-3">
-                            <label for="itemName" class="form-label">Item Name</label>
-                            <input type="text" id="itemName" name="itemName" class="form-control" placeholder="Item Name" required>
+                            <label for="name" class="form-label">Item Name</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Item Name" required>
                         </div>
                         <div class="mb-3">
                             <label for="quantity" class="form-label">Quantity</label>
@@ -260,15 +260,15 @@ $conn->close();
             <tbody id="inventoryTableBody">
                 <?php while ($row = $result->fetch_assoc()) { ?>
                     <tr>
-                        <td style="width: 8%"><?php echo str_pad($row['itemID'], 4, '0', STR_PAD_LEFT); ?></td>
+                        <td style="width: 8%"><?php echo str_pad($row['id'], 4, '0', STR_PAD_LEFT); ?></td>
                         <td style="width: 10%">
                             <?php if (!empty($row['image'])): ?>
-                                <img src="uploads/<?php echo $row['image']; ?>" alt="<?php echo $row['itemName']; ?>" style="width: 100px; height: 100px; object-fit: cover;">
+                                <img src="uploads/<?php echo $row['image']; ?>" alt="<?php echo $row['name']; ?>" style="width: 100px; height: 100px; object-fit: cover;">
                             <?php else: ?>
                                 No image
                             <?php endif; ?>
                         </td>
-                        <td style="width: 8%"><?php echo $row['itemName']; ?></td>
+                        <td style="width: 8%"><?php echo $row['name']; ?></td>
                         <td style="width: 8%"><?php echo $row['quantity']; ?></td>
                         <td style="width: 5%"><?php echo $row['small_stock']; ?></td>
                         <td style="width: 5%"><?php echo $row['medium_stock']; ?></td>
@@ -278,22 +278,22 @@ $conn->close();
                         <td style="width: 5%"><?php echo $row['xxxl_stock']; ?></td>
                         <td style="width: 10%"><?php echo '$' . number_format($row['price'], 2); ?></td>
                         <td style="width: 10%">
-                            <button class="btn btn-warning btn-sm custom-btn" data-bs-toggle="modal" data-bs-target="#editStockModal<?php echo $row['itemID']; ?>">Edit</button>
-                            <button class="btn btn-danger btn-sm custom-btn" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $row['itemID']; ?>">Delete</button>
+                            <button class="btn btn-warning btn-sm custom-btn" data-bs-toggle="modal" data-bs-target="#editStockModal<?php echo $row['id']; ?>">Edit</button>
+                            <button class="btn btn-danger btn-sm custom-btn" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $row['id']; ?>">Delete</button>
                         </td>
                     </tr>
 
                     <!-- Edit Stock Modal for this item -->
-                    <div class="modal fade" id="editStockModal<?php echo $row['itemID']; ?>" tabindex="-1" aria-labelledby="editStockModalLabel<?php echo $row['itemID']; ?>" aria-hidden="true">
+                    <div class="modal fade" id="editStockModal<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="editStockModalLabel<?php echo $row['id']; ?>" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="editStockModalLabel<?php echo $row['itemID']; ?>">Edit Stock for <?php echo $row['itemName']; ?></h5>
+                                    <h5 class="modal-title" id="editStockModalLabel<?php echo $row['id']; ?>">Edit Stock for <?php echo $row['name']; ?></h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form action="6inventory.php" method="POST">
-                                        <input type="hidden" name="itemID" value="<?php echo $row['itemID']; ?>">
+                                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                         
                                         <!-- Display sizes and price horizontally -->
                                         <div class="row mb-3">
@@ -340,19 +340,19 @@ $conn->close();
                     </div>
 
                     <!-- Delete Confirmation Modal for this item -->
-                    <div class="modal fade" id="deleteModal<?php echo $row['itemID']; ?>" tabindex="-1" aria-labelledby="deleteModalLabel<?php echo $row['itemID']; ?>" aria-hidden="true">
+                    <div class="modal fade" id="deleteModal<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="deleteModalLabel<?php echo $row['id']; ?>" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="deleteModalLabel<?php echo $row['itemID']; ?>">Delete Stock for <?php echo $row['itemName']; ?>?</h5>
+                                    <h5 class="modal-title" id="deleteModalLabel<?php echo $row['id']; ?>">Delete Stock for <?php echo $row['name']; ?>?</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Are you sure you want to delete the stock for <?php echo $row['itemName']; ?>?</p>
+                                    <p>Are you sure you want to delete the stock for <?php echo $row['name']; ?>?</p>
                                 </div>
                                 <div class="modal-footer">
                                     <form action="6inventory.php" method="POST">
-                                        <input type="hidden" name="deleteitemID" value="<?php echo $row['itemID']; ?>">
+                                        <input type="hidden" name="deleteitemID" value="<?php echo $row['id']; ?>">
                                         <button type="submit" class="btn btn-danger">Delete</button>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                     </form>
