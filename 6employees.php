@@ -13,11 +13,12 @@ if (!$conn) {
     die("Database connection failed: " . mysqli_connect_error());
 }
 
-// Handle adding new employee (code already given above)
+// Handle adding new employee
 if (isset($_POST['addEmployee'])) {
     $firstName = mysqli_real_escape_string($conn, $_POST['firstName']);
     $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $role = mysqli_real_escape_string($conn, $_POST['role']);
 
     // Create the username by concatenating first and last names (removing spaces and converting to lowercase)
     $username = strtolower(str_replace(' ', '', $firstName)) . '.' . strtolower(str_replace(' ', '', $lastName));
@@ -27,7 +28,7 @@ if (isset($_POST['addEmployee'])) {
 
     // Insert the new employee into the database
     $sql = "INSERT INTO employees (first_name, last_name, username, email, password, role) 
-            VALUES ('$firstName', '$lastName', '$username', '$email', '$password', 'user')"; // Default role as user
+            VALUES ('$firstName', '$lastName', '$username', '$email', '$password', '$role')"; 
     
     if (mysqli_query($conn, $sql)) {
         header("Location: 6employees.php?success=Employee added");
