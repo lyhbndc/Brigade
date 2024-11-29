@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Brigade Clothing - On the Grind</title>
+<title>Brigade Clothing - Allergic</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,7 +12,7 @@
 <link rel="stylesheet" type="text/css" href="ins/OwlCarousel2-2.2.1/animate.css">
 <link rel="stylesheet" href="ins/themify-icons/themify-icons.css">
 <link rel="stylesheet" type="text/css" href="ins/jquery-ui-1.12.1.custom/jquery-ui.css">
-<link rel="stylesheet" type="text/css" href="ins/single_styles.css">
+<link rel="stylesheet" type="text/css" href="ins/items.css">
 <link rel="stylesheet" type="text/css" href="ins/single_responsive.css">
 </head>
 
@@ -126,9 +126,9 @@
 
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
-						<li><a href="../index.html">Home</a></li>
-						<li><a href="../categories.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Tees</a></li>
-						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>On The Grind</a></li>
+						<li><a href="../1index.php">Home</a></li>
+						<li><a href="../2tees.php"><i class="fa fa-angle-right" aria-hidden="true"></i>Tees</a></li>
+						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Allegic (White)</a></li>
 					</ul>
 				</div>
 
@@ -142,14 +142,14 @@
 						<div class="col-lg-3 thumbnails_col order-lg-1 order-2">
 							<div class="single_product_thumbnails">
 								<ul>
-									<li class="active"><img src="images\1001\t1.png" alt="" data-image="images/1002/1.png"></li>
-									<li ><img src="images\1001\t2.png" alt="" data-image="images/1002/2.png"></li>
+									<li class="active"><img src="images\1003\t1.png" alt="" data-image="images/1003/1.png"></li>
+									<li ><img src="images\1003\t2.png" alt="" data-image="images/1003/2.png"></li>
 								</ul>
 							</div>
 						</div>
 						<div class="col-lg-9 image_col order-lg-2 order-1">
 							<div class="single_product_image">
-								<div class="single_product_image_background" style="background-image:url(images/1002/1.png)"></div>
+								<div class="single_product_image_background" style="background-image:url(images/1003/1.png)"></div>
 							</div>
 						</div>
 					</div>
@@ -158,7 +158,7 @@
 			<div class="col-lg-5">
 				<div class="product_details">
 					<div class="product_details_title">
-						<h2>BRIGADE CLOTHING - On The Grind</h2>
+						<h2>BRIGADE CLOTHING - Allegic (White)</h2>
 						<p>The Brigade Clothing offers the perfect blend of comfort, style, and bold expression. Designed as a unisex basic T-shirt, this versatile piece is available in sizes ranging from S to XXL, ensuring a fit for everyone. Whether you're lounging or out with friends, this shirt adds an effortlessly cool vibe to your wardrobe.</p>
 					</div>
 					<div class="original_price">₱750.00</div>
@@ -220,12 +220,12 @@
 									<p>Crafted locally with pride, each T-shirt is made from a durable and breathable blend of 80% cotton and 20% polyester. The fabric combination ensures a soft, smooth feel against the skin while providing lasting quality, making it a perfect addition to your everyday essentials.</p>
 								</div>
 								<div class="tab_image">
-									<img src="images\1002\i1.png" alt="">
+									<img src="images\1003\i1.png" alt="">
 								</div>
 							</div>
 							<div class="col-lg-5 offset-lg-2 desc_col">
 								<div class="tab_image">
-									<img src="images\1002\i2.png" alt="">
+									<img src="images\1003\i2.png" alt="">
 								</div>
 								<div class="tab_text_block">
 									<h2>A Statement of Style and Individuality</h2>
@@ -248,7 +248,7 @@
 								<div class="tab_image">
 									<img src="images\ph-11134207-7r98v-lu666edug2a142.webp" alt="">
 									<div class="others">
-								<p>COLOR:<span>Black</span></p>
+								<p>COLOR:<span>White</span></p>
 								<p>SIZE:<span>S, M, L, Xl, XXL, 3XL</span></p>
 									</div>
                                 </div>
@@ -426,20 +426,16 @@
 
 <script>
     const items = [
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "1", name: "LETS GET HIGH" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "2", name: "LUCKY BLACK" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "3", name: "CHASE DREAM BLUE" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "4", name: "COLDEST BLUE" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "5", name: "WORD OF KNIVES" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "6", name: "CHASE DREAM WHITE" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "7", name: "MULTIVERSE" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "8", name: "GLOBAL TERROR" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "9", name: "CYBER PUNK" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "10", name: "DAILY" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "11", name: "COOKIES" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "12", name: "WHAT EVER" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "13", name: "YOUR HIRED" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "14", name: "CHICAGO" },
+		{ img: "images/1001/i1.png", alt: "1", name: "Let's Get High", href: "1001.php" },
+ { img: "images/1002/i1.png", alt: "2", name: "On The Grind", href: "1002.php"},
+ { img: "images/1003/i1.png", alt: "3", name: "Allergic", href: "1003.php" },
+ { img: "images/1004/i1.png", alt: "4", name: "Summer Heist", href: "1004.php" },
+ { img: "images/1005/i1.png", alt: "5", name: "Nectar", href: "1005.php" },
+ { img: "images/1006/i1.png", alt: "6", name: "Bay Area", href: "1006.php" },
+ { img: "images/1007/i1.png", alt: "7", name: "Sting", href: "1007.php" },
+ { img: "images/1008/i1.png", alt: "8", name: "Daily", href: "1008.php" },
+ { img: "images/1009/i1.png", alt: "9", name: "Warm Up", href: "1009.php" },
+ { img: "images/10010/i1.png", alt: "10", name: "Earth", href: "10010.php" },
 ];
 
 const nameList = document.getElementById('nameList');
@@ -451,8 +447,10 @@ function renderList(filteredItems) {
      const li = document.createElement('li');
      li.classList.add('name-item');
      li.innerHTML = `
-         <img src="${item.img}" alt="${item.alt}" class="name-item-img">
-         ${item.name}
+         <a href="${item.href || '#'}" class="name-item-link" style="color: ${item.color || '#000'}">
+                <img src="${item.img}" alt="${item.alt}" class="name-item-img">
+                <span class="name-item-text">${item.name}</span>
+            </a>
      `;
      nameList.appendChild(li);
  });

@@ -755,80 +755,78 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
     });
 </script>
 <script>
-	   const items = [
-    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "1", name: "LETS GET HIGH" },
-    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "2", name: "LUCKY BLACK" },
-    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "3", name: "CHASE DREAM BLUE" },
-    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "4", name: "COLDEST BLUE" },
-    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "5", name: "WORD OF KNIVES" },
-    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "6", name: "CHASE DREAM WHITE" },
-    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "7", name: "MULTIVERSE" },
-    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "8", name: "GLOBAL TERROR" },
-    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "9", name: "CYBER PUNK" },
-    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "10", name: "DAILY" },
-    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "11", name: "COOKIES" },
-    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "12", name: "WHAT EVER" },
-    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "13", name: "YOUR HIRED" },
-    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "14", name: "CHICAGO" },
+    const items = [
+		{ img: "items/images/1001/i1.png", alt: "1", name: "Let's Get High", href: "1001.php" },
+ { img: "items/images/1002/i1.png", alt: "2", name: "On The Grind", href: "1002.php"},
+ { img: "items/images/1003/i1.png", alt: "3", name: "Allergic", href: "1003.php" },
+ { img: "items/images/1004/i1.png", alt: "4", name: "Summer Heist", href: "1004.php" },
+ { img: "items/images/1005/i1.png", alt: "5", name: "Nectar", href: "1005.php" },
+ { img: "items/images/1006/i1.png", alt: "6", name: "Bay Area", href: "1006.php" },
+ { img: "items/images/1007/i1.png", alt: "7", name: "Sting", href: "1007.php" },
+ { img: "items/images/1008/i1.png", alt: "8", name: "Daily", href: "1008.php" },
+ { img: "items/images/1009/i1.png", alt: "9", name: "Warm Up", href: "1009.php" },
+ { img: "items/images/10010/i1.png", alt: "10", name: "Earth", href: "10010.php" },
 ];
 
 const nameList = document.getElementById('nameList');
 const searchInput = document.getElementById('searchInput');
 
 function renderList(filteredItems) {
-    nameList.innerHTML = ''; // Clear the list
-    filteredItems.forEach(item => {
-        const li = document.createElement('li');
-        li.classList.add('name-item');
-        li.innerHTML = `
-            <img src="${item.img}" alt="${item.alt}" class="name-item-img">
-            ${item.name}
-        `;
-        nameList.appendChild(li);
-    });
+ nameList.innerHTML = ''; // Clear the list
+ filteredItems.forEach(item => {
+     const li = document.createElement('li');
+     li.classList.add('name-item');
+     li.innerHTML = `
+         <a href="${item.href || '#'}" class="name-item-link" style="color: ${item.color || '#000'}">
+                <img src="${item.img}" alt="${item.alt}" class="name-item-img">
+                <span class="name-item-text">${item.name}</span>
+            </a>
+     `;
+     nameList.appendChild(li);
+ });
 }
 
 // Initial render
 renderList(items);
 
 function filterNames() {
-    const searchValue = searchInput.value.toLowerCase();
-    const filteredItems = items
-        .filter(item => item.name.toLowerCase().includes(searchValue)) // Filter items
-        .sort((a, b) => a.name.localeCompare(b.name)); // Sort filtered items alphabetically
-    renderList(filteredItems); // Render the filtered and sorted list
+ const searchValue = searchInput.value.toLowerCase();
+ const filteredItems = items
+     .filter(item => item.name.toLowerCase().includes(searchValue)) // Filter items
+     .sort((a, b) => a.name.localeCompare(b.name)); // Sort filtered items alphabetically
+ renderList(filteredItems); // Render the filtered and sorted list
 }
 searchInput.addEventListener('keyup', filterNames);
 
 // Initialize the dropdown toggle behavior
 function toggleDropdown(event) {
-	const dropdownMenu = document.getElementById('searchDropdownMenu');
-	const isExpanded = dropdownMenu.style.display === 'block';
-	dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+ const dropdownMenu = document.getElementById('searchDropdownMenu');
+ const isExpanded = dropdownMenu.style.display === 'block';
+ dropdownMenu.style.display = isExpanded ? 'none' : 'block';
 }
 function closeSearchDropdown() {
-        const searchDropdownMenu = document.getElementById('searchDropdownMenu');
-        searchDropdownMenu.style.display = 'none';
-    }
+     const searchDropdownMenu = document.getElementById('searchDropdownMenu');
+     searchDropdownMenu.style.display = 'none';
+ }
 
-    // Attach event listener to the user dropdown
-    document.getElementById('userDropdown').addEventListener('click', function() {
-        closeSearchDropdown(); // Close the search dropdown when the user dropdown is clicked
-    });
+ // Attach event listener to the user dropdown
+ document.getElementById('userDropdown').addEventListener('click', function() {
+     closeSearchDropdown(); // Close the search dropdown when the user dropdown is clicked
+ });
 
-    // Function to toggle the search dropdown
-    function toggleSearchDropdown(event) {
-        const dropdownMenu = document.getElementById('searchDropdownMenu');
-        const isExpanded = dropdownMenu.style.display === 'block';
-        dropdownMenu.style.display = isExpanded ? 'none' : 'block';
-        
-        // Close the user dropdown if it is open
-        const userDropdownMenu = document.querySelector('.dropdown-menu-right');
-        if (userDropdownMenu.style.display === 'block') {
-            userDropdownMenu.style.display = 'none';
-        }
-    }
-	</script>
+ // Function to toggle the search dropdown
+ function toggleSearchDropdown(event) {
+     const dropdownMenu = document.getElementById('searchDropdownMenu');
+     const isExpanded = dropdownMenu.style.display === 'block';
+     dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+     
+     // Close the user dropdown if it is open
+     const userDropdownMenu = document.querySelector('.dropdown-menu-right');
+     if (userDropdownMenu.style.display === 'block') {
+         userDropdownMenu.style.display = 'none';
+     }
+ }
+ </script>
 </body>
 
 </html>

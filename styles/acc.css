@@ -968,7 +968,6 @@ video {
     margin-bottom: 10px;
 }
 
-/* Styling the name list */
 .name-list {
     list-style: none;
     padding: 0;
@@ -980,32 +979,41 @@ video {
 /* Styling each name item */
 .name-item {
     display: flex;
-    align-items: center;  /* Align image and name text vertically */
-    padding: 10px;
+    align-items: center; /* Align image and name text vertically */
+    padding: 10px 15px;  /* Adjusted padding */
     cursor: pointer;
     color: #333;
     border-bottom: 1px solid #ddd;
-    width: 100%;
+    width: 100%; /* Ensures items stretch to container width */
     box-sizing: border-box;
     position: relative;
 }
 
+
 /* Hover effect for full-width highlight */
 .name-item:hover {
     background-color: #f0f0f0;
-    width: 100%;
-}
-.name-item-img {
-    width: 30px;  /* Adjust size */
-    height: 30px; /* Adjust size */
-    border-radius: 50%;  /* Circle the image */
-    margin-right: 10px;  /* Space between image and text */
-    position: absolute;  /* Fix it to the left */
-    left: 10px;
 }
 
-/* Ensure text aligns properly with the image */
-.name-item-text {
-    padding-left: 50px; /* Create space for the fixed image */
-    width: 100%;
+/* Styling the image inside name items */
+.name-item-img {
+    width: 30px;  /* Adjusted size */
+    height: 30px; /* Adjusted size */
+    border-radius: 50%; 
+    margin-right: 15px;  /* Space between image and text */
+    flex-shrink: 0; /* Prevent the image from shrinking */
 }
+
+/* Styling the name text */
+.name-item-text {
+ /* Let the text take the remaining space */
+    white-space: nowrap; /* Prevent text from wrapping */
+    padding-left: 200px; /* Additional padding for spacing */
+}
+
+/* Styling for additional sections */
+.others {
+    margin-top: 20px;
+    margin-left: 50px;
+}
+

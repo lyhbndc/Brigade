@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Brigade Clothing - On the Grind</title>
+<title>Brigade Clothing - On The Grind</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,7 +12,7 @@
 <link rel="stylesheet" type="text/css" href="ins/OwlCarousel2-2.2.1/animate.css">
 <link rel="stylesheet" href="ins/themify-icons/themify-icons.css">
 <link rel="stylesheet" type="text/css" href="ins/jquery-ui-1.12.1.custom/jquery-ui.css">
-<link rel="stylesheet" type="text/css" href="ins/single_styles.css">
+<link rel="stylesheet" type="text/css" href="ins/items.css">
 <link rel="stylesheet" type="text/css" href="ins/single_responsive.css">
 </head>
 
@@ -126,8 +126,8 @@
 
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
-						<li><a href="../index.html">Home</a></li>
-						<li><a href="../categories.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Tees</a></li>
+						<li><a href="../1index.php">Home</a></li>
+						<li><a href="../2tees.php"><i class="fa fa-angle-right" aria-hidden="true"></i>Tees</a></li>
 						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>On The Grind</a></li>
 					</ul>
 				</div>
@@ -426,20 +426,16 @@
 
 <script>
     const items = [
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "1", name: "LETS GET HIGH" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "2", name: "LUCKY BLACK" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "3", name: "CHASE DREAM BLUE" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "4", name: "COLDEST BLUE" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "5", name: "WORD OF KNIVES" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "6", name: "CHASE DREAM WHITE" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "7", name: "MULTIVERSE" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "8", name: "GLOBAL TERROR" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "9", name: "CYBER PUNK" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "10", name: "DAILY" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "11", name: "COOKIES" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "12", name: "WHAT EVER" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "13", name: "YOUR HIRED" },
- { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "14", name: "CHICAGO" },
+		{ img: "images/1001/i1.png", alt: "1", name: "Let's Get High", href: "1001.php" },
+ { img: "images/1002/i1.png", alt: "2", name: "On The Grind", href: "1002.php"},
+ { img: "images/1003/i1.png", alt: "3", name: "Allergic", href: "1003.php" },
+ { img: "images/1004/i1.png", alt: "4", name: "Summer Heist", href: "1004.php" },
+ { img: "images/1005/i1.png", alt: "5", name: "Nectar", href: "1005.php" },
+ { img: "images/1006/i1.png", alt: "6", name: "Bay Area", href: "1006.php" },
+ { img: "images/1007/i1.png", alt: "7", name: "Sting", href: "1007.php" },
+ { img: "images/1008/i1.png", alt: "8", name: "Daily", href: "1008.php" },
+ { img: "images/1009/i1.png", alt: "9", name: "Warm Up", href: "1009.php" },
+ { img: "images/10010/i1.png", alt: "10", name: "Earth", href: "10010.php" },
 ];
 
 const nameList = document.getElementById('nameList');
@@ -451,8 +447,10 @@ function renderList(filteredItems) {
      const li = document.createElement('li');
      li.classList.add('name-item');
      li.innerHTML = `
-         <img src="${item.img}" alt="${item.alt}" class="name-item-img">
-         ${item.name}
+         <a href="${item.href || '#'}" class="name-item-link" style="color: ${item.color || '#000'}">
+                <img src="${item.img}" alt="${item.alt}" class="name-item-img">
+                <span class="name-item-text">${item.name}</span>
+            </a>
      `;
      nameList.appendChild(li);
  });
