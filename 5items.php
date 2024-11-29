@@ -19,54 +19,105 @@
 <body>
 
 <div class="super_container">
-		<div class="top_nav">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-6">
-					<div class="top_nav_left">
-        </div>
-					
-					</div>
-				</div>
-			</div>
-		</div>
+        <header class="header trans_300">
+            <!-- Top Navigation -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="top_nav_left">
+                                <div class="marquee">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-right">
+                            <div class="top_nav_right">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+		<!-- Main Navigation -->
 
 		<div class="main_nav_container">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="#"><img src="assets/1.png"></a>
+							<a href="1index.php"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
-							<ul class="navbar_menu">
-								<li><a href="#">home</a></li>
-								<li><a href="3shop.php">shop</a></li>
-								<li><a href="3new.php">new</a></li>
-								<li><a href="3onsale.php">on sale</a></li>
-							</ul>
-							<ul class="navbar_user">
-								<li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-								<li><a href="4myacc.php"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-								<li class="checkout">
-									<a href="3cart.php">
-										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
-										<span id="checkout_items" class="checkout_items">0</span>
-									</a>
-								</li>
-							</ul>
-							<div class="hamburger_container">
-								<i class="fa fa-bars" aria-hidden="true"></i>
-							</div>
-						</nav>
-					</div>
-				</div>
-			</div>
-		</div>
-
+                    <ul class="navbar_menu">
+                        <li><a href="1index.php">home</a></li>
+                        <li><a href="3shop.php">shop</a></li>
+                        <li><a href="3new.php">new</a></li>
+                        
+                    </ul>
+                    <ul class="navbar_user">
+					<li class="dropdown">
+    <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </a>
+    <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+        <ul id="nameList" class="name-list"></ul>
+    </div>
+</li>
+                        
+                        <!-- User Dropdown -->
+                        <li class="dropdown">
+                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+								<a class="dropdown-item" href="4myacc.php">Account</a>
+								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+								<a class="dropdown-item" href="logout.php">Logout</a>
+                            </div>
+                        </li>
+                        
+                        <li class="checkout">
+                            <a href="3cart.php">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <span id="checkout_items" class="checkout_items">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="hamburger_container">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
 	</header>
 
 	<div class="fs_menu_overlay"></div>
+
+	<!-- Hamburger Menu -->
+
+	<div class="hamburger_menu">
+		<div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
+		<div class="hamburger_menu_content text-right">
+			<ul class="menu_top_nav">
+				<li class="menu_item has-children">
+					<a href="#">
+						My Account
+						<i class="fa fa-angle-down"></i>
+					</a>
+					<ul class="menu_selection">
+						<li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+						<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+					</ul>
+				</li>
+				<li class="menu_item"><a href="#">home</a></li>
+				<li class="menu_item"><a href="#">shop</a></li>
+				<li class="menu_item"><a href="#">new</a></li>
+				<li class="menu_item"><a href="#">on sale</a></li>
+			</ul>
+		</div>
+	</div>
 	<div class="container single_product_container">
 		<div class="row">
 			<div class="col">
@@ -75,7 +126,7 @@
 
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
-						<li><a href="1index.php">Home</a></li>
+						<li><a href="index.html">Home</a></li>
 						<li><a href="categories.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Tees</a></li>
 						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Racer (White)</a></li>
 					</ul>
@@ -91,15 +142,15 @@
 						<div class="col-lg-3 thumbnails_col order-lg-1 order-2">
 							<div class="single_product_thumbnails">
 								<ul>
-									<li><img src="assets/449066098_449706761150277_4189243537820075673_n.jpg" alt="" data-image="assets/449066098_449706761150277_4189243537820075673_n.jpg"></li>
-									<li class="active"><img src="assets/449066098_449706761150277_4189243537820075673_n.jpg" alt="" data-image="assets/449066098_449706761150277_4189243537820075673_n.jpg"></li>
-									<li><img src="assets/449066098_449706761150277_4189243537820075673_n.jpg" alt="" data-image="assets/449066098_449706761150277_4189243537820075673_n.jpg"></li>
+									<li><img src="images/single_1_thumb.jpg" alt="" data-image="images/single_1.jpg"></li>
+									<li class="active"><img src="images/single_2_thumb.jpg" alt="" data-image="images/single_2.jpg"></li>
+									<li><img src="images/single_3_thumb.jpg" alt="" data-image="images/single_3.jpg"></li>
 								</ul>
 							</div>
 						</div>
 						<div class="col-lg-9 image_col order-lg-2 order-1">
 							<div class="single_product_image">
-								<div class="single_product_image_background" style="background-image:url(assets/359801864_251602164294072_4089427261190148458_n.jpg)"></div>
+								<div class="single_product_image_background" style="background-image:url(images/single_2.jpg)"></div>
 							</div>
 						</div>
 					</div>
@@ -111,8 +162,8 @@
 						<h2>Racer (White)</h2>
 						<p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
 					</div>
-					<div class="original_price">₱750.00</div>
-					<div class="product_price">₱700.00</div>
+					<div class="original_price">₱700.00</div>
+					<div class="product_price">$750.00</div>
 					<div class="product_size">
 						<br>
 						<span>Select Size:</span>
@@ -122,6 +173,7 @@
 							<div class="size-option" data-size="l">Large</div>
 							<div class="size-option" data-size="xl">XL</div>
 							<div class="size-option" data-size="2xl">2XL</div>
+							<div class="size-option" data-size="3xl">3XL</div>
 						</div>
 					</div>
 					<div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
@@ -170,7 +222,7 @@
 									<p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
 								</div>
 								<div class="tab_image">
-									<img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="">
+									<img src="images/desc_1.jpg" alt="">
 								</div>
 								<div class="tab_text_block">
 									<h2>Pocket cotton sweatshirt</h2>
@@ -179,14 +231,14 @@
 							</div>
 							<div class="col-lg-5 offset-lg-2 desc_col">
 								<div class="tab_image">
-									<img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="">
+									<img src="images/desc_2.jpg" alt="">
 								</div>
 								<div class="tab_text_block">
 									<h2>Pocket cotton sweatshirt</h2>
 									<p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
 								</div>
 								<div class="tab_image desc_last">
-									<img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="">
+									<img src="images/desc_3.jpg" alt="">
 								</div>
 							</div>
 						</div>
@@ -224,8 +276,8 @@
 					<div class="benefit_item d-flex flex-row align-items-center">
 						<div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
 						<div class="benefit_content">
-							<h6>shipping nationwide</h6>
-							<p>Fast and reliable.</p>
+							<h6>free shipping</h6>
+							<p>Suffered Alteration in Some Form</p>
 						</div>
 					</div>
 				</div>
@@ -233,8 +285,8 @@
 					<div class="benefit_item d-flex flex-row align-items-center">
 						<div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
 						<div class="benefit_content">
-							<h6>cash on delivery</h6>
-							<p>Pay conveniently at your doorstep.</p>
+							<h6>cach on delivery</h6>
+							<p>The Internet Tend To Repeat</p>
 						</div>
 					</div>
 				</div>
@@ -243,7 +295,7 @@
 						<div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
 						<div class="benefit_content">
 							<h6>45 days return</h6>
-							<p>Hassle-free returns within 45 days.</p>
+							<p>Making it Look Like Readable</p>
 						</div>
 					</div>
 				</div>
@@ -251,14 +303,15 @@
 					<div class="benefit_item d-flex flex-row align-items-center">
 						<div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
 						<div class="benefit_content">
-							<h6>open everyday</h6>
-							<p>10:00AM - 8:00PM</p>
+							<h6>opening all week</h6>
+							<p>8AM - 09PM</p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
 	<!-- Footer -->
 	<br><br><br><br>
 	<footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
@@ -373,22 +426,93 @@
         }
     });
 </script>
+
 <script>
-// JavaScript to toggle the "selected" class on size options
+    const items = [
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "1", name: "LETS GET HIGH" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "2", name: "LUCKY BLACK" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "3", name: "CHASE DREAM BLUE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "4", name: "COLDEST BLUE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "5", name: "WORD OF KNIVES" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "6", name: "CHASE DREAM WHITE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "7", name: "MULTIVERSE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "8", name: "GLOBAL TERROR" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "9", name: "CYBER PUNK" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "10", name: "DAILY" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "11", name: "COOKIES" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "12", name: "WHAT EVER" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "13", name: "YOUR HIRED" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "14", name: "CHICAGO" },
+];
 
-// Get all the size option elements
-const sizeOptions = document.querySelectorAll('.size-option');
+const nameList = document.getElementById('nameList');
+const searchInput = document.getElementById('searchInput');
 
-// Loop through each size option and add an event listener for the click event
-sizeOptions.forEach(option => {
-    option.addEventListener('click', function() {
-        // Remove the "selected" class from all size options
-        sizeOptions.forEach(opt => opt.classList.remove('selected'));
+function renderList(filteredItems) {
+ nameList.innerHTML = ''; // Clear the list
+ filteredItems.forEach(item => {
+     const li = document.createElement('li');
+     li.classList.add('name-item');
+     li.innerHTML = `
+         <img src="${item.img}" alt="${item.alt}" class="name-item-img">
+         ${item.name}
+     `;
+     nameList.appendChild(li);
+ });
+}
+
+// Initial render
+renderList(items);
+
+function filterNames() {
+ const searchValue = searchInput.value.toLowerCase();
+ const filteredItems = items
+     .filter(item => item.name.toLowerCase().includes(searchValue)) // Filter items
+     .sort((a, b) => a.name.localeCompare(b.name)); // Sort filtered items alphabetically
+ renderList(filteredItems); // Render the filtered and sorted list
+}
+searchInput.addEventListener('keyup', filterNames);
+
+// Initialize the dropdown toggle behavior
+function toggleDropdown(event) {
+ const dropdownMenu = document.getElementById('searchDropdownMenu');
+ const isExpanded = dropdownMenu.style.display === 'block';
+ dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+}
+function closeSearchDropdown() {
+     const searchDropdownMenu = document.getElementById('searchDropdownMenu');
+     searchDropdownMenu.style.display = 'none';
+ }
+
+ // Attach event listener to the user dropdown
+ document.getElementById('userDropdown').addEventListener('click', function() {
+     closeSearchDropdown(); // Close the search dropdown when the user dropdown is clicked
+ });
+
+ // Function to toggle the search dropdown
+ function toggleSearchDropdown(event) {
+     const dropdownMenu = document.getElementById('searchDropdownMenu');
+     const isExpanded = dropdownMenu.style.display === 'block';
+     dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+     
+     // Close the user dropdown if it is open
+     const userDropdownMenu = document.querySelector('.dropdown-menu-right');
+     if (userDropdownMenu.style.display === 'block') {
+         userDropdownMenu.style.display = 'none';
+     }
+ }
+ </script>
+ <script>
+    // JavaScript to make the navbar opaque when scrolling
+    window.addEventListener('scroll', function() {
+        const mainNav = document.querySelector('.main_nav_container');
         
-        // Add the "selected" class to the clicked size option
-        this.classList.add('selected');
+        if (window.scrollY > 50) { // Adjust the scroll threshold as needed
+            mainNav.classList.add('opaque');
+        } else {
+            mainNav.classList.remove('opaque');
+        }
     });
-});
 </script>
 </body>
 </html>

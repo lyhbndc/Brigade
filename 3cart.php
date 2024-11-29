@@ -19,109 +19,14 @@ if (!$user) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
+    <link rel="stylesheet" type="text/css" href="styles/cart.css">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
-    <style>
-        .cart-page-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    max-width: 800px;
-    margin: 120px auto;
-}
-
-.cart-container {
-    flex-grow: 1; /* Allows the cart items container to take remaining space */
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.summary-container {
-    width: 300px; /* Fixed width for the summary container */
-    height: 320px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-        .cart-header, .summary-header {
-            font-weight: bold;
-            font-size: 1.5em;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #ddd;
-        }
-        .cart-item img {
-            width: 60px;
-            height: 60px;
-            border-radius: 4px;
-        }
-        .cart-item-info {
-            flex-grow: 1;
-            margin-left: 15px;
-        }
-        .cart-item-info h6 {
-            margin: 0;
-            font-size: 1em;
-            font-weight: bold;
-        }
-        .cart-item-info p {
-            margin: 5px 0;
-            font-size: 0.9em;
-        }
-        .cart-item-quantity {
-            display: flex;
-            align-items: center;
-        }
-        .cart-item-quantity input {
-            width: 40px;
-            text-align: center;
-            margin: 0 5px;
-        }
-        .checkout-button {
-            width: 100%;
-            padding: 12px;
-            background-color: #333;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-        }
-        .checkout-button:hover {
-            background-color: #555; 
-            cursor: pointer;
-        }
-        input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type="number"] {
-            -moz-appearance: textfield;
-            appearance: textfield;
-        }
-        .summary-total {
-    font-weight: bold;
-    font-size: 1.1em;
-}
-
-    </style>
 </head>
-
 <body>
 
     <div class="super_container">
+        <header class="header trans_300">
             <!-- Top Navigation -->
-            <div class="top_nav">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
@@ -137,41 +42,60 @@ if (!$user) {
                         </div>
                     </div>
                 </div>
-            </div>
+
             <!-- Main Navigation -->
             <div class="main_nav_container">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12 text-right">
-                            <div class="logo_container">
-                                <a href="1index.php"><img src="assets/1.png"></a>
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 text-right">
+						<div class="logo_container">
+							<a href="#"><img src="assets/1.png"></a>
+						</div>
+						<nav class="navbar">
+                    <ul class="navbar_menu">
+                        <li><a href="#">home</a></li>
+                        <li><a href="3shop.php">shop</a></li>
+                        <li><a href="3new.php">new</a></li>
+                        
+                    </ul>
+                    <ul class="navbar_user">
+                    <li class="dropdown">
+    <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </a>
+    <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+        <ul id="nameList" class="name-list"></ul>
+    </div>
+</li>
+                        
+                        <!-- User Dropdown -->
+                        <li class="dropdown">
+                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+								<a class="dropdown-item" href="4myacc.php">Account</a>
+								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+								<a class="dropdown-item" href="logout.php">Logout</a>
                             </div>
-                            <nav class="navbar">
-                                <ul class="navbar_menu">
-                                    <li><a href="1homepage.php">home</a></li>
-                                    <li><a href="3shop.php">shop</a></li>
-                                    <li><a href="3new.php">new</a></li>
-                                    <li><a href="3onsale.php">on sale</a></li>
-                                </ul>
-                                <ul class="navbar_user">
-                                    <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-                                    <li class="checkout">
-                                        <a href="#">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items">2</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="hamburger_container">
-                                    <i class="fa fa-bars" aria-hidden="true"></i>
-                                </div>
-                            </nav>
-                        </div>
+                        </li>
+                        
+                        <li class="checkout">
+                            <a href="3cart.php">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <span id="checkout_items" class="checkout_items">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="hamburger_container">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
                     </div>
-                </div>
+                </nav>
             </div>
-    
+        </div>
+    </div>
+</div>
         </header>
     
         <div class="fs_menu_overlay"></div>
@@ -218,9 +142,12 @@ if (!$user) {
     <div class="summary-total">
         <span id="order-total"><strong>₱0.00</strong></span>
         <hr class="summary-divider">
-                <div class="cart-footer">
-                    <a href="3checkout.php"><button class="checkout-button">CHECK OUT</button></a>
-                </div>
+        <div class="cart-footer">
+        <form action="3checkout.php" method="POST">
+    <input type="hidden" id="cartDataField" name="cartData">
+    <button type="submit" class="checkout-button">Checkout</button>
+</form>
+</div>
             </div>
         </div>
         </div>
@@ -231,15 +158,14 @@ if (!$user) {
                     </div>
 
 
-<!-- Footer -->
-<br><br><br><br>
-<footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
+        <!-- Footer -->
+        <footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-6 col-lg-3 p-b-50">
 				<br>
 				<h4 class="stext-301 cl0 p-b-30">
-					<a href="#"><img src="assets/Untitled design.png" class="footer-logo"></a>
+					<a href="1index.php"><img src="assets/Untitled design.png" class="footer-logo"></a>
 				</h4>
 				<p class="stext-107 cl7 size-201">
 					Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
@@ -258,18 +184,17 @@ if (!$user) {
 				<br>
 				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
 				<ul>
-					<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
+					<li class="p-b-10"><a href="1index.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
 					<li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
 					<li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
-					<li class="p-b-10"><a href="3onsale.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
 				</ul>
 			</div>
 			<div class="col-sm-6 col-lg-3 p-b-50">
 				<br>
 				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
 				<ul>
-					<li class="p-b-10"><a href="https://shopee.ph/brigadeclothing?originalCategoryId=11044828#product_list" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
-					<li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing?path=index.htm&lang=en&pageTypeId=1" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
+					<li class="p-b-10"><a href="https://shopee.ph/brigadeclothing" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
+					<li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
 					<li class="p-b-10">
 						<a href="https://www.facebook.com/BrigadeWorld"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
 						<a href="https://www.instagram.com/brigadeclothing_official/"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
@@ -283,88 +208,104 @@ if (!$user) {
 		</div>
 	</div>
 	<br><br>
-</footer>
-</div>
-<!-- Other HTML content -->
+	</footer>
+    </div>
+    <!-- Other HTML content -->
 
 <!-- Add this before the closing body tag -->
 <script>
-        const user = <?php echo json_encode($user); ?>; // Get the current user from PHP
-        const cartKey = `cartItems_${user}`; // Unique key for this user's cart items
-        let cartItems = JSON.parse(localStorage.getItem(cartKey)) || []; // Fetch items
+    // Initialize cart with a user-specific key
+    const user = <?php echo json_encode($user); ?>; // Get the current user from PHP
+    const cartKey = `cartItems_${user}`; // Create a unique key for this user's cart items
+    const cartItems = JSON.parse(localStorage.getItem(cartKey)) || []; // Fetch items from user-specific key
 
-        const cartItemsContainer = document.getElementById('cart-items-container');
-        const shippingCost = 100;
-        const freeShippingThreshold = 1500;
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const shippingCost = 100; // Flat-rate shipping cost
+    const freeShippingThreshold = 1500; // Threshold for free shipping
 
-        function renderCartItems() {
-            cartItemsContainer.innerHTML = ''; // Clear the container
-            if (cartItems.length === 0) {
-                cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
-                updateCartCount();
-                calculateSummary();
-                return;
-            }
-
-            cartItems.forEach((item, index) => {
-                const cartItemDiv = document.createElement('div');
-                cartItemDiv.className = 'cart-item';
-                cartItemDiv.innerHTML = `
-                    <img src="${item.image}" alt="Product Image">
-                    <div class="cart-item-info">
-                        <h6> ${item.name}</h6>
-                        <p> ${item.price}</p>
-                    </div>
-                    <div class="cart-item-quantity">
-                        <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, -1)">-</button>
-                        <input type="number" value="${item.quantity || 1}" min="1" max="5" id="quantity-${index}">
-                        <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, 1)">+</button>
-                    </div>
-                    <button class="btn btn-link text-danger" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button>
-                `;
-                cartItemsContainer.appendChild(cartItemDiv);
-            });
-
+    function renderCartItems() {
+        cartItemsContainer.innerHTML = ''; // Clear the container
+        if (cartItems.length === 0) {
+            cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
             updateCartCount();
             calculateSummary();
+            return;
         }
 
-        function calculateSummary() {
-            const subtotal = cartItems.reduce((total, item) => total + parseInt(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
-            const shipping = subtotal >= freeShippingThreshold ? 0 : shippingCost;
-            const total = subtotal + shipping;
+        cartItems.forEach((item, index) => {
+        const cartItemDiv = document.createElement('div');
+        cartItemDiv.className = 'cart-item';
+        cartItemDiv.innerHTML = `
+            <img src="${item.image}" alt="Product Image">
+            <div class="cart-item-info">
+                <h6>${item.name}</h6>
+                <p>Size: ${item.size}</p>
+                <p>${item.price}</p>
+            </div>
+            <div class="cart-item-quantity">
+                <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, -1)">-</button>
+                <input type="number" value="${item.quantity || 1}" min="1" id="quantity-${index}">
+                <button class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(${index}, 1)">+</button>
+            </div>
+            <button class="btn btn-link text-danger" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button>
+        `;
+        cartItemsContainer.appendChild(cartItemDiv);
+    });
 
-            document.getElementById('order-subtotal').textContent = `Subtotal: ₱${subtotal.toFixed(2)}`;
-            document.getElementById('order-shipping').textContent = `Shipping: ₱${shipping.toFixed(2)}`;
-            document.getElementById('order-total').textContent = `Total: ₱${total.toFixed(2)}`;
+        updateCartCount();
+        calculateSummary();
+    }
+
+    function calculateSummary() {
+        const subtotal = cartItems.reduce((total, item) => total + parseFloat(item.price.replace(/[^\d.-]/g, '')) * item.quantity, 0);
+        const shipping = subtotal >= freeShippingThreshold ? 0 : shippingCost;
+        const total = subtotal + shipping;
+
+        // Display the summary
+        document.getElementById('order-subtotal').textContent = `Subtotal: ₱${subtotal.toFixed(2)}`;
+        document.getElementById('order-shipping').textContent = `Shipping: ₱${shipping.toFixed(2)}`;
+        document.getElementById('order-total').textContent = `Total    ₱${total.toFixed(2)}`;
+    }
+
+    function changeQuantity(index, delta) {
+        const quantityInput = document.getElementById(`quantity-${index}`);
+        let quantity = parseInt(quantityInput.value) + delta;
+        if (quantity < 1) {
+            quantity = 1; // Minimum quantity is 1
         }
+        quantityInput.value = quantity;
 
-        function changeQuantity(index, delta) {
-            const quantityInput = document.getElementById(`quantity-${index}`);
-            let quantity = parseInt(quantityInput.value) + delta;
-            quantity = Math.max(1, Math.min(5, quantity)); // Clamp quantity between 1 and 5
-            quantityInput.value = quantity;
+        // Update the item in the cartItems array
+        cartItems[index].quantity = quantity;
+        // Update user-specific local storage
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        updateCartCount(); // Update the cart count in the header
+        calculateSummary();
+    }
 
-            cartItems[index].quantity = quantity; // Update quantity in cart array
-            localStorage.setItem(cartKey, JSON.stringify(cartItems)); // Update local storage
-            renderCartItems(); // Re-render items and summary
-        }
+    function removeItem(index) {
+        // Remove the item from the cart items array
+        cartItems.splice(index, 1);
+        // Update user-specific local storage
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        // Re-render the cart items
+        renderCartItems();
+        updateCartCount();
+    }
 
-        function removeItem(index) {
-            cartItems.splice(index, 1); // Remove item
-            localStorage.setItem(cartKey, JSON.stringify(cartItems)); // Update storage
-            renderCartItems(); // Re-render items and summary
-        }
-        
-
-        function updateCartCount() {
+    function updateCartCount() {
     const cartCountElement = document.getElementById('checkout_items');
-    cartCountElement.textContent = cartItems.length; // Display the count of unique items
+    cartCountElement.textContent = cartItems.length; // Display unique item count
 }
 
-        // Initial render
-        renderCartItems();
-    </script>
+    document.querySelector('.checkout-button').addEventListener('click', function() {
+    const cartDataField = document.getElementById('cartDataField');
+    cartDataField.value = JSON.stringify(cartItems); // Set the cart items in JSON format
+});
+
+    // Call the function to render cart items
+    renderCartItems();
+</script>
 
 <script>
     // JavaScript to make the navbar opaque when scrolling
@@ -378,6 +319,82 @@ if (!$user) {
         }
     });
 </script>
+
+<script>
+    const items = [
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "1", name: "LETS GET HIGH" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "2", name: "LUCKY BLACK" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "3", name: "CHASE DREAM BLUE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "4", name: "COLDEST BLUE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "5", name: "WORD OF KNIVES" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "6", name: "CHASE DREAM WHITE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "7", name: "MULTIVERSE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "8", name: "GLOBAL TERROR" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "9", name: "CYBER PUNK" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "10", name: "DAILY" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "11", name: "COOKIES" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "12", name: "WHAT EVER" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "13", name: "YOUR HIRED" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "14", name: "CHICAGO" },
+];
+
+const nameList = document.getElementById('nameList');
+const searchInput = document.getElementById('searchInput');
+
+function renderList(filteredItems) {
+ nameList.innerHTML = ''; // Clear the list
+ filteredItems.forEach(item => {
+     const li = document.createElement('li');
+     li.classList.add('name-item');
+     li.innerHTML = `
+         <img src="${item.img}" alt="${item.alt}" class="name-item-img">
+         ${item.name}
+     `;
+     nameList.appendChild(li);
+ });
+}
+
+// Initial render
+renderList(items);
+
+function filterNames() {
+ const searchValue = searchInput.value.toLowerCase();
+ const filteredItems = items
+     .filter(item => item.name.toLowerCase().includes(searchValue)) // Filter items
+     .sort((a, b) => a.name.localeCompare(b.name)); // Sort filtered items alphabetically
+ renderList(filteredItems); // Render the filtered and sorted list
+}
+searchInput.addEventListener('keyup', filterNames);
+
+// Initialize the dropdown toggle behavior
+function toggleDropdown(event) {
+ const dropdownMenu = document.getElementById('searchDropdownMenu');
+ const isExpanded = dropdownMenu.style.display === 'block';
+ dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+}
+function closeSearchDropdown() {
+     const searchDropdownMenu = document.getElementById('searchDropdownMenu');
+     searchDropdownMenu.style.display = 'none';
+ }
+
+ // Attach event listener to the user dropdown
+ document.getElementById('userDropdown').addEventListener('click', function() {
+     closeSearchDropdown(); // Close the search dropdown when the user dropdown is clicked
+ });
+
+ // Function to toggle the search dropdown
+ function toggleSearchDropdown(event) {
+     const dropdownMenu = document.getElementById('searchDropdownMenu');
+     const isExpanded = dropdownMenu.style.display === 'block';
+     dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+     
+     // Close the user dropdown if it is open
+     const userDropdownMenu = document.querySelector('.dropdown-menu-right');
+     if (userDropdownMenu.style.display === 'block') {
+         userDropdownMenu.style.display = 'none';
+     }
+ }
+ </script>
 </body>
 
 </html>

@@ -1,5 +1,7 @@
 <?php
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 $user = $_SESSION['user'];
 $conn = mysqli_connect("localhost", "root", "", "brigade");
@@ -8,7 +10,6 @@ if (!$conn) {
 }
 
 if (!isset($_SESSION['user'])) {
-    // Redirect to login page if the user is not logged in
     header("Location: 4login.php");
     exit();
 }
@@ -26,9 +27,6 @@ if ($result && mysqli_num_rows($result) > 0) {
         $fullname = $row["FirstName"] . ' ' . $row["LastName"];
     }
 }
-
-$orderQuery = "SELECT * FROM `order` WHERE Customer = '$fullname' ORDER BY Date DESC";
-$orderResult = mysqli_query($conn, $orderQuery);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $orderId = mysqli_real_escape_string($conn, $_POST['orderId']);
@@ -55,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Update the order status in the database using both OrderID and Product
     $query = "UPDATE `order` SET Status = '$newStatus' WHERE OrderID = '$orderId' AND Product = '$product'";
     if (mysqli_query($conn, $query)) {
-        echo "Order status updated to '$newStatus'";
+        //echo "Order ";
     } else {
         echo "Error updating order: " . mysqli_error($conn);
     }
@@ -78,7 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 VALUES ('$orderId', '$fullname', '$product', '$quantity', 'Order Cancelled', '$total', '$date')
             ";
             if (mysqli_query($conn, $insertQuery)) {
-                echo "Order successfully inserted into `cancel_order`.";
+                echo "Order #$orderId Cancelled!";
+                exit();
             } else {
                 echo "Error inserting order into `cancel_order`: " . mysqli_error($conn);
             }
@@ -104,7 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 VALUES ('$orderId', '$fullname', '$product', '$quantity', 'Order Completed', '$total', '$date')
             ";
             if (mysqli_query($conn, $insertQuery)) {
-                echo "Order successfully inserted into `complete_order`.";
+                echo "Order #$orderId Received! Thank you`.";
+                exit();
             } else {
                 echo "Error inserting order into `complete_order`: " . mysqli_error($conn);
             }
@@ -130,7 +130,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 VALUES ('$orderId', '$fullname', '$product', '$quantity', 'Order Refunded', '$total', '$date')
             ";
             if (mysqli_query($conn, $insertQuery)) {
-                echo "Order successfully inserted into `refund_order`.";
+                echo "Order #$orderId Return!`.";
+                exit();
             } else {
                 echo "Error inserting order into `refund_order`: " . mysqli_error($conn);
             }
@@ -139,9 +140,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+$orderQuery = "SELECT * FROM `order` WHERE Customer = '$fullname' ORDER BY Date DESC";
+$orderResult = mysqli_query($conn, $orderQuery);
 
 mysqli_close($conn);
 ?>
+
+   
 
 
 <!DOCTYPE html>
@@ -153,80 +158,8 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="styles/single_styles.css">
+    <link rel="stylesheet" type="text/css" href="styles/recent.css">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
-    <style>
-        body {
-            background-color: white;
-            color: black;
-        }
-        h2 {
-            margin-bottom: 20px;
-            font-size: 30px;
-            color: black;
-            font-weight: bold;
-        }
-        .footer-logo{
-           cursor: default; 
-        }
-        .account-container {
-        width: 80%;
-        max-width: 900px;
-        margin: 0 auto;
-        font-family: Arial, sans-serif;
-        color: #333;
-    }
-    .logout {
-        color: #333;
-        text-decoration: none;
-        font-size: 16px;
-        font-weight: bold;
-    }
-
-    .account-content {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px 0;
-    }
-
-    .order-history, .account-details {
-        width: 48%;
-    }
-
-    .order-history h2, .account-details h2 {
-        font-size: 16px;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin-bottom: 10px;
-        color: #333;
-    }
-
-    .order-history p, .account-details p {
-        font-size: 14px;
-        margin: 10px 0;
-        color: #666;
-    }
-
-    .view-addresses {
-        color: #333;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: bold;
-    }
-    .title {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px 0;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .title h1 {
-        font-size: 24px;
-        font-weight: bold;
-        margin: 0;
-    }
-    </style>
 </head>
 
 <body>
@@ -253,43 +186,64 @@ mysqli_close($conn);
             </div>
             <!-- Main Navigation -->
             <div class="main_nav_container">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12 text-right">
-                            <div class="logo_container">
-                                <a href="#"><img src="assets/1.png"></a>
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 text-right">
+						<div class="logo_container">
+							<a href="1index.php"><img src="assets/1.png"></a>
+						</div>
+						<nav class="navbar">
+                    <ul class="navbar_menu">
+                        <li><a href="1index.php">home</a></li>
+                        <li><a href="3shop.php">shop</a></li>
+                        <li><a href="3new.php">new</a></li>
+                        
+                    </ul>
+                    <ul class="navbar_user">
+					<li class="dropdown">
+    <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </a>
+    <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+        <ul id="nameList" class="name-list"></ul>
+    </div>
+</li>
+                        
+                        <!-- User Dropdown -->
+                        <li class="dropdown">
+                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+								<a class="dropdown-item" href="4myacc.php">Account</a>
+								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+								<a class="dropdown-item" href="logout.php">Logout</a>
                             </div>
-                            <nav class="navbar">
-                                <ul class="navbar_menu">
-                                    <li><a href="1homepage.php">home</a></li>
-                                    <li><a href="3shop.php">shop</a></li>
-                                    <li><a href="#">new</a></li>
-                                    <li><a href="#">on sale</a></li>
-                                    <li><a href="4recentorders.php">Recent Orders</a></li>
-                                    <li><a href="logout.php" class="logout">Logout</a></li>
-                                </ul>
-                                <ul class="navbar_user">
-                                    <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-                                    <li class="checkout">
-                                        <a href="3cart.php">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items">0</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="hamburger_container">
-                                    <i class="fa fa-bars" aria-hidden="true"></i>
-                                </div>
-                            </nav>
-                        </div>
+                        </li>
+                        
+                        <li class="checkout">
+                            <a href="3cart.php">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <span id="checkout_items" class="checkout_items">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="hamburger_container">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
                     </div>
-                </div>
+                </nav>
             </div>
+        </div>
+    </div>
+</div>
+
+
+
             </header>
         <div class="fs_menu_overlay"></div>
 
-        <br><br><br><br><br><br><br>
+        <br><br><br><br>
                     <div class="title">
                     <div class="account-container">
                         <div class="account-content">
@@ -303,9 +257,11 @@ mysqli_close($conn);
             <th>Order ID</th>
             <th>Product</th>
             <th>Quantity</th>
+            <th>Size</th>
             <th>Status</th>
             <th>Total</th>
             <th>Date</th>
+            <th>Address</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -318,6 +274,7 @@ mysqli_close($conn);
                     <td><?php echo htmlspecialchars($orderRow['OrderID']); ?></td>
                     <td><?php echo htmlspecialchars($orderRow['Product']); ?></td>
                     <td><?php echo htmlspecialchars($orderRow['Quantity']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['Size']); ?></td>
                     <td>
                         <?php if ($orderRow['Status'] == "Shipped"): ?>
                             <span class="badge badge-success"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
@@ -327,12 +284,20 @@ mysqli_close($conn);
                     </td>
                     <td><?php echo htmlspecialchars($orderRow['Total']); ?></td>
                     <td><?php echo htmlspecialchars($orderRow['Date']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['Address']); ?></td>
                     <td>
-                        <div class="button-container">
-                            <button class="btn btn-success btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Received">Received</button>
-                            <button class="btn btn-warning btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Refund">Refund</button>
-                            <button class="btn btn-danger btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Cancel">Cancel</button>
-                        </div>
+                    <div class="button-container">
+    <div>
+        <button class="btn btn-success btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Received" name="Received">Received</button>
+    </div>
+    <div>
+        <button class="btn btn-warning btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Refund">Refund</button>
+    </div>
+    <div>
+        <button class="btn btn-danger btn-sm action-button" data-order-id="<?php echo $orderRow['OrderID']; ?>" data-product="<?php echo $orderRow['Product']; ?>" data-action="Cancel">Cancel</button>
+    </div>
+</div>
+
                     </td>
                 </tr>
         <?php endwhile; ?>
@@ -343,70 +308,66 @@ mysqli_close($conn);
     <?php endif; ?>
 </tbody>
 </div>
-</table>
-                   
+    </table>                
+</div>
 </div>
                     </div>
-                    <br><br><br><br><br><br><br>
-                </div>   
-                </div>   
-                
+    </div>
                   
                      
             
         <!-- Footer -->
-        <br><br><br><br>
+
         <footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6 col-lg-3 p-b-50">
-                        <br>
-                        <h4 class="stext-301 cl0 p-b-30">
-                            <a href="#"><img src="assets/Untitled design.png" class="footer-logo"></a>
-                        </h4>
-                        <p class="stext-107 cl7 size-201">
-                            Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
-                        </p>
-                    </div>
-                    <div class="col-sm-6 col-lg-3 p-b-50">
-                        <br>
-                        <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Company</h7>
-            
-                        <ul>
-                            <li class="p-b-10"><a href="5about.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
-                            <li class="p-b-10"><a href="5features.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-6 col-lg-3 p-b-50">
-                        <br>
-                        <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
-                        <ul>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
-                            <li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
-                            <li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
-                            <li class="p-b-10"><a href="3onsale.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-6 col-lg-3 p-b-50">
-                        <br>
-                        <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
-                        <ul>
-                            <li class="p-b-10"><a href="https://shopee.ph/brigadeclothing?originalCategoryId=11044828#product_list" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
-                            <li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing?path=index.htm&lang=en&pageTypeId=1" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
-                            <li class="p-b-10">
-                                <a href="https://www.facebook.com/BrigadeWorld"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
-                                <a href="https://www.instagram.com/brigadeclothing_official/"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <br><br><br>
-                <div class="footer-bottom text-center">
-                    <p>© 2024 Brigade Clothing. All rights reserved.</p>
-                </div>
-            </div>
-            <br><br>
-        </footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6 col-lg-3 p-b-50">
+				<br>
+				<h4 class="stext-301 cl0 p-b-30">
+					<a href="1index.php"><img src="assets/Untitled design.png" class="footer-logo"></a>
+				</h4>
+				<p class="stext-107 cl7 size-201">
+					Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
+				</p>
+			</div>
+			<div class="col-sm-6 col-lg-3 p-b-50">
+				<br>
+				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Company</h7>
+	
+				<ul>
+					<li class="p-b-10"><a href="5about.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
+					<li class="p-b-10"><a href="5features.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
+				</ul>
+			</div>
+			<div class="col-sm-6 col-lg-3 p-b-50">
+				<br>
+				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
+				<ul>
+					<li class="p-b-10"><a href="1index.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
+					<li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
+					<li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
+				</ul>
+			</div>
+			<div class="col-sm-6 col-lg-3 p-b-50">
+				<br>
+				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
+				<ul>
+					<li class="p-b-10"><a href="https://shopee.ph/brigadeclothing" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
+					<li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
+					<li class="p-b-10">
+						<a href="https://www.facebook.com/BrigadeWorld"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
+						<a href="https://www.instagram.com/brigadeclothing_official/"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<br><br><br>
+		<div class="footer-bottom text-center">
+			<p>© 2024 Brigade Clothing. All rights reserved.</p>
+		</div>
+	</div>
+	<br><br>
+	</footer>
     </div>
     <script>
     // Define the cart key based on the user session
@@ -453,29 +414,6 @@ mysqli_close($conn);
     document.addEventListener('DOMContentLoaded', updateCart);
 </script>
 
-<style>
-    /* Center-align text in table headers */
-    .table th {
-        text-align: center;
-    }
-
-    /* Space between buttons */
-    .button-container .action-button {
-        margin: 0 5px; /* Horizontal space between buttons */
-    }
-    
-    /* Center-align buttons in cell */
-    .button-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    /* Additional padding for table cells */
-    .table td, .table th {
-        padding: 35px 40px; /* Increase cell padding for better readability */
-    }
-</style>
 
 <script>
     // JavaScript to make the navbar opaque when scrolling
@@ -502,7 +440,7 @@ document.querySelectorAll('.action-button').forEach(button => {
             buttonsInRow.forEach(btn => btn.disabled = true);
 
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', '4myacc.php', true);
+            xhr.open('POST', '4recentorders.php', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function() {
                 if (xhr.status === 200) {
@@ -519,6 +457,81 @@ document.querySelectorAll('.action-button').forEach(button => {
 });
 
 </script>
+<script>
+	   const items = [
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "1", name: "LETS GET HIGH" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "2", name: "LUCKY BLACK" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "3", name: "CHASE DREAM BLUE" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "4", name: "COLDEST BLUE" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "5", name: "WORD OF KNIVES" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "6", name: "CHASE DREAM WHITE" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "7", name: "MULTIVERSE" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "8", name: "GLOBAL TERROR" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "9", name: "CYBER PUNK" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "10", name: "DAILY" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "11", name: "COOKIES" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "12", name: "WHAT EVER" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "13", name: "YOUR HIRED" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "14", name: "CHICAGO" },
+];
+
+const nameList = document.getElementById('nameList');
+const searchInput = document.getElementById('searchInput');
+
+function renderList(filteredItems) {
+    nameList.innerHTML = ''; // Clear the list
+    filteredItems.forEach(item => {
+        const li = document.createElement('li');
+        li.classList.add('name-item');
+        li.innerHTML = `
+            <img src="${item.img}" alt="${item.alt}" class="name-item-img">
+            ${item.name}
+        `;
+        nameList.appendChild(li);
+    });
+}
+
+// Initial render
+renderList(items);
+
+function filterNames() {
+    const searchValue = searchInput.value.toLowerCase();
+    const filteredItems = items
+        .filter(item => item.name.toLowerCase().includes(searchValue)) // Filter items
+        .sort((a, b) => a.name.localeCompare(b.name)); // Sort filtered items alphabetically
+    renderList(filteredItems); // Render the filtered and sorted list
+}
+searchInput.addEventListener('keyup', filterNames);
+
+// Initialize the dropdown toggle behavior
+function toggleDropdown(event) {
+	const dropdownMenu = document.getElementById('searchDropdownMenu');
+	const isExpanded = dropdownMenu.style.display === 'block';
+	dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+}
+function closeSearchDropdown() {
+        const searchDropdownMenu = document.getElementById('searchDropdownMenu');
+        searchDropdownMenu.style.display = 'none';
+    }
+
+    // Attach event listener to the user dropdown
+    document.getElementById('userDropdown').addEventListener('click', function() {
+        closeSearchDropdown(); // Close the search dropdown when the user dropdown is clicked
+    });
+
+    // Function to toggle the search dropdown
+    function toggleSearchDropdown(event) {
+        const dropdownMenu = document.getElementById('searchDropdownMenu');
+        const isExpanded = dropdownMenu.style.display === 'block';
+        dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+        
+        // Close the user dropdown if it is open
+        const userDropdownMenu = document.querySelector('.dropdown-menu-right');
+        if (userDropdownMenu.style.display === 'block') {
+            userDropdownMenu.style.display = 'none';
+        }
+    }
+	</script>
 
 </body>
 </html>

@@ -3,7 +3,7 @@ session_start();
 $user = $_SESSION['user'];
 $conn = mysqli_connect("localhost", "root", "", "brigade");
 
-$sql = "SELECT id, name, image, price, stock FROM products";
+$sql = "SELECT id, name, image, price, small_stock, medium_stock, large_stock, xl_stock, xxl_stock FROM products";
 $result = $conn->query($sql);
 ?>
 
@@ -42,33 +42,50 @@ $result = $conn->query($sql);
 							<a href="1index.php"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
-							<ul class="navbar_menu">
-							<li><a href="1homepage.php">home</a></li>
-                                    <li><a href="3shop.php">shop</a></li>
-                                    <li><a href="#">new</a></li>
-                                    <li><a href="#">on sale</a></li>
-                                    <li><a href="4recentorders.php">Recent Orders</a></li>
-									<li><a href="logout.php" class="logout">Logout</a></li>
-							</ul>
-							<ul class="navbar_user">
-								<li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-								<li><a href="4myacc.php"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-								<li class="checkout">
-									<a href="3cart.php">
-										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
-										<span id="checkout_items" class="checkout_items">2</span>
-									</a>
-								</li>
-							</ul>
-							<div class="hamburger_container">
-								<i class="fa fa-bars" aria-hidden="true"></i>
-							</div>
-						</nav>
-					</div>
-				</div>
-			</div>
-		</div>
-
+                    <ul class="navbar_menu">
+                        <li><a href="1index.php">home</a></li>
+                        <li><a href="3shop.php">shop</a></li>
+                        <li><a href="3new.php">new</a></li>
+                        
+                    </ul>
+                    <ul class="navbar_user">
+					<li class="dropdown">
+    <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </a>
+    <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+        <ul id="nameList" class="name-list"></ul>
+    </div>
+</li>
+                        
+                        <!-- User Dropdown -->
+                        <li class="dropdown">
+                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+								<a class="dropdown-item" href="4myacc.php">Account</a>
+								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+								<a class="dropdown-item" href="logout.php">Logout</a>
+                            </div>
+                        </li>
+                        
+                        <li class="checkout">
+                            <a href="3cart.php">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <span id="checkout_items" class="checkout_items">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="hamburger_container">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
 	</header>
 
 	<div class="fs_menu_overlay"></div>
@@ -125,6 +142,22 @@ $result = $conn->query($sql);
 						<div id="slider-range"></div>
 						<div class="filter_button"><span>filter</span></div>
 					</div>
+					<div class="sidebar_section">
+						<div class="sidebar_title">
+							<h5>Sizes</h5>
+						</div>
+						<div class="sidebar_section">
+
+						<ul class="radio-buttons">
+							<li><input type="radio" id="sizeS" name="size" value="S"><label for="sizeS">S</label></li>
+							<li><input type="radio" id="sizeM" name="size" value="M"><label for="sizeM">M</label></li>
+							<li><input type="radio" id="sizeL" name="size" value="L"><label for="sizeL">L</label></li>
+							<li><input type="radio" id="sizeXL" name="size" value="XL"><label for="sizeXL">XL</label></li>
+							<li><input type="radio" id="sizeXXL" name="size" value="XXL"><label for="sizeXXL">XXL</label></li>
+						</ul>
+</div>
+
+					</div>
 
 
 				</div>
@@ -158,43 +191,52 @@ $result = $conn->query($sql);
 								<!-- Product Grid -->
 
 								<div class="product-grid">
-									<?php 
-									if ($result->num_rows > 0) {
-										while ($row = $result->fetch_assoc()) {
-											$productId = str_pad($row['id'], 7, '0', STR_PAD_LEFT);
-											$stock = $row['stock'];
-											?>
-											<div class="product-item" data-id="<?php echo $productId; ?>">
-												<div class="product discount product_filter">
-													<div class="product_image">
-														<img src="<?php echo htmlspecialchars($row['image']); ?>" alt="">
-													</div>
-													<div class="favorite favorite_left"></div>
-													<?php if ($stock == 0) { ?>
-														<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
-															<span>Sold</span>
-														</div>
-													<?php } ?>
-													<div class="product_info">
-														<h6 class="product_name"><a href="single.html"><?php echo htmlspecialchars($row['name']); ?></a></h6>
-														<div class="product_price">₱<?php echo number_format($row['price'], 2); ?></div>
-													</div>
-												</div>
-												<div class="red_button add_to_cart_button">
-													<?php if ($stock > 0) { ?>
-														<a href="#" class="add-to-cart" data-id="<?php echo $productId; ?>">add to cart</a>
-													<?php } else { ?>
-														<span style="color: gray;">Out of Stock</span>
-													<?php } ?>
-												</div>
-											</div>
-										<?php 
-										}
-									} else {
-										echo "<p>No products found.</p>";
-									}
-									?>
-								</div>
+    <?php 
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $productId = str_pad($row['id'], 7, '0', STR_PAD_LEFT);
+
+            // Check if all sizes are out of stock
+            $isOutOfStock = (
+                $row['small_stock'] == 0 && 
+                $row['medium_stock'] == 0 && 
+                $row['large_stock'] == 0 && 
+                $row['xl_stock'] == 0 && 
+                $row['xxl_stock'] == 0
+            );
+            ?>
+            <div class="product-item" data-id="<?php echo $productId; ?>">
+                <div class="product discount product_filter">
+                    <div class="product_image">
+                        <img src="<?php echo htmlspecialchars($row['image']); ?>" alt="">
+                    </div>
+                    <div class="favorite favorite_left"></div>
+                    <?php if ($isOutOfStock) { ?>
+                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                            <span>Sold</span>
+                        </div>
+                    <?php } ?>
+                    <div class="product_info">
+                        <h6 class="product_name"><a href="single.html"><?php echo htmlspecialchars($row['name']); ?></a></h6>
+                        <div class="product_price">₱<?php echo number_format($row['price'], 2); ?></div>
+                    </div>
+                </div>
+                <div class="red_button add_to_cart_button">
+                    <?php if (!$isOutOfStock) { ?>
+                        <a href="#" class="add-to-cart" data-id="<?php echo $productId; ?>">Add to Cart</a>
+                    <?php } else { ?>
+                        <span style="color: gray;">Out of Stock</span>
+                    <?php } ?>
+                </div>
+            </div>
+        <?php 
+        }
+    } else {
+        echo "<p>No products found.</p>";
+    }
+    ?>
+</div>
+
 
 								</div>
 						
@@ -255,55 +297,54 @@ $result = $conn->query($sql);
 
 	<br><br><br><br>
 	<footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<br>
-					<h4 class="stext-301 cl0 p-b-30">
-						<a href="#"><img src="assets/Untitled design.png" class="footer-logo"></a>
-					</h4>
-					<p class="stext-107 cl7 size-201">
-						Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
-					</p>
-				</div>
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<br>
-					<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Company</h7>
-		
-					<ul>
-						<li class="p-b-10"><a href="5about.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
-						<li class="p-b-10"><a href="5features.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
-					</ul>
-				</div>
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<br>
-					<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
-					<ul>
-						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
-						<li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
-						<li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
-						<li class="p-b-10"><a href="3onsale.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
-					</ul>
-				</div>
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<br>
-					<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
-					<ul>
-						<li class="p-b-10"><a href="https://shopee.ph/brigadeclothing?originalCategoryId=11044828#product_list" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
-						<li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing?path=index.htm&lang=en&pageTypeId=1" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
-						<li class="p-b-10">
-							<a href="https://www.facebook.com/BrigadeWorld"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
-							<a href="https://www.instagram.com/brigadeclothing_official/"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
-						</li>
-					</ul>
-				</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6 col-lg-3 p-b-50">
+				<br>
+				<h4 class="stext-301 cl0 p-b-30">
+					<a href="1index.php"><img src="assets/Untitled design.png" class="footer-logo"></a>
+				</h4>
+				<p class="stext-107 cl7 size-201">
+					Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
+				</p>
 			</div>
-			<br><br><br>
-			<div class="footer-bottom text-center">
-				<p>© 2024 Brigade Clothing. All rights reserved.</p>
+			<div class="col-sm-6 col-lg-3 p-b-50">
+				<br>
+				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Company</h7>
+	
+				<ul>
+					<li class="p-b-10"><a href="5about.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
+					<li class="p-b-10"><a href="5features.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
+				</ul>
+			</div>
+			<div class="col-sm-6 col-lg-3 p-b-50">
+				<br>
+				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
+				<ul>
+					<li class="p-b-10"><a href="1index.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
+					<li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
+					<li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
+				</ul>
+			</div>
+			<div class="col-sm-6 col-lg-3 p-b-50">
+				<br>
+				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
+				<ul>
+					<li class="p-b-10"><a href="https://shopee.ph/brigadeclothing" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
+					<li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
+					<li class="p-b-10">
+						<a href="https://www.facebook.com/BrigadeWorld"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
+						<a href="https://www.instagram.com/brigadeclothing_official/"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
+					</li>
+				</ul>
 			</div>
 		</div>
-		<br><br>
+		<br><br><br>
+		<div class="footer-bottom text-center">
+			<p>© 2024 Brigade Clothing. All rights reserved.</p>
+		</div>
+	</div>
+	<br><br>
 	</footer>
 
 
@@ -328,33 +369,47 @@ $result = $conn->query($sql);
     cartCountElement.textContent = cartItems.length;
 }
 
+document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault();
+        const productItem = button.closest('.product-item');
+        const productId = productItem.getAttribute('data-id');
+        const productName = productItem.querySelector('.product_name a').textContent;
+        const productImage = productItem.querySelector('.product_image img').src;
+        const productPrice = productItem.querySelector('.product_price').textContent;
 
-            const productItem = button.closest('.product-item');
-            const productId = productItem.getAttribute('data-id');
-            const productName = productItem.querySelector('.product_name a').textContent;
-            const productImage = productItem.querySelector('.product_image img').src;
-            const productPrice = productItem.querySelector('.product_price').textContent;
+        // Get the selected size from the sidebar
+        const selectedSize = document.querySelector('.checkboxes .active span').textContent;
 
-            // Check if the item is already in the cart
-            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
-            if (existingItemIndex > -1) {
-                // Increase quantity if item already exists
-                cartItems[existingItemIndex].quantity += 1;
-            } else {
-                // Add new item with default quantity of 1
-                cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
-            }
+        if (!selectedSize) {
+            alert("Please select a size from the sidebar.");
+            return;
+        }
 
-            // Save updated cart to localStorage and update the cart display
-            localStorage.setItem(cartKey, JSON.stringify(cartItems));
-            updateCart();
-            alert(`${productName} has been added to your cart!`);
-        });
+        // Check if the item is already in the cart with the selected size
+        const existingItemIndex = cartItems.findIndex(item => item.id === productId && item.size === selectedSize);
+        if (existingItemIndex > -1) {
+            // Increase quantity if item already exists
+            cartItems[existingItemIndex].quantity += 1;
+        } else {
+            // Add new item with default quantity of 1
+            cartItems.push({
+                id: productId,
+                name: productName,
+                image: productImage,
+                price: productPrice,
+                size: selectedSize,
+                quantity: 1
+            });
+        }
+
+        // Save updated cart to localStorage and update the cart display
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        updateCart();
+        alert(`${productName} (Size: ${selectedSize}) has been added to your cart!`);
     });
+});
 
     // Update cart count on page load
     document.addEventListener('DOMContentLoaded', updateCart);
@@ -372,6 +427,82 @@ $result = $conn->query($sql);
         }
     });
 </script>
+
+<script>
+    const items = [
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "1", name: "LETS GET HIGH" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "2", name: "LUCKY BLACK" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "3", name: "CHASE DREAM BLUE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "4", name: "COLDEST BLUE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "5", name: "WORD OF KNIVES" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "6", name: "CHASE DREAM WHITE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "7", name: "MULTIVERSE" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "8", name: "GLOBAL TERROR" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "9", name: "CYBER PUNK" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "10", name: "DAILY" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "11", name: "COOKIES" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "12", name: "WHAT EVER" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "13", name: "YOUR HIRED" },
+ { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "14", name: "CHICAGO" },
+];
+
+const nameList = document.getElementById('nameList');
+const searchInput = document.getElementById('searchInput');
+
+function renderList(filteredItems) {
+ nameList.innerHTML = ''; // Clear the list
+ filteredItems.forEach(item => {
+     const li = document.createElement('li');
+     li.classList.add('name-item');
+     li.innerHTML = `
+         <img src="${item.img}" alt="${item.alt}" class="name-item-img">
+         ${item.name}
+     `;
+     nameList.appendChild(li);
+ });
+}
+
+// Initial render
+renderList(items);
+
+function filterNames() {
+ const searchValue = searchInput.value.toLowerCase();
+ const filteredItems = items
+     .filter(item => item.name.toLowerCase().includes(searchValue)) // Filter items
+     .sort((a, b) => a.name.localeCompare(b.name)); // Sort filtered items alphabetically
+ renderList(filteredItems); // Render the filtered and sorted list
+}
+searchInput.addEventListener('keyup', filterNames);
+
+// Initialize the dropdown toggle behavior
+function toggleDropdown(event) {
+ const dropdownMenu = document.getElementById('searchDropdownMenu');
+ const isExpanded = dropdownMenu.style.display === 'block';
+ dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+}
+function closeSearchDropdown() {
+     const searchDropdownMenu = document.getElementById('searchDropdownMenu');
+     searchDropdownMenu.style.display = 'none';
+ }
+
+ // Attach event listener to the user dropdown
+ document.getElementById('userDropdown').addEventListener('click', function() {
+     closeSearchDropdown(); // Close the search dropdown when the user dropdown is clicked
+ });
+
+ // Function to toggle the search dropdown
+ function toggleSearchDropdown(event) {
+     const dropdownMenu = document.getElementById('searchDropdownMenu');
+     const isExpanded = dropdownMenu.style.display === 'block';
+     dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+     
+     // Close the user dropdown if it is open
+     const userDropdownMenu = document.querySelector('.dropdown-menu-right');
+     if (userDropdownMenu.style.display === 'block') {
+         userDropdownMenu.style.display = 'none';
+     }
+ }
+ </script>
 
 </body>
 

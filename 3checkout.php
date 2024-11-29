@@ -1,5 +1,7 @@
 <?php
 session_start();
+require 'vendor/autoload.php'; // Include Guzzle via Composer
+
 $user = $_SESSION['user'];
 $conn = mysqli_connect("localhost", "root", "", "brigade");
 
@@ -25,39 +27,139 @@ if ($result && mysqli_num_rows($result) > 0) {
     }
 }
 
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $cartData = json_decode($_POST['cartData'], true); // Decode JSON to an array
-    $status = "On Process"; // Set the initial status
+// Define PayMongo API Keys
+define('PAYMONGO_PUBLIC_KEY', 'pk_test_KdaM7qBivCT1yP1QmVvjTfCB');
+define('PAYMONGO_SECRET_KEY', 'sk_test_2s7FBobkTc3Fw2unrueQtiQd');
 
-    // Generate a unique Order ID (4 digits)
+// Function to create PayMongo Payment Link
+function createPaymentLink($amount, $description, $email) {
+    $secretKey = PAYMONGO_SECRET_KEY;
+    $url = "https://api.paymongo.com/v1/links";
+
+    $data = [
+        "data" => [
+            "attributes" => [
+                "amount" => $amount * 100, // Convert to centavos
+                "description" => $description,
+                "remarks" => "Brigade Clothing Payment",
+                "send_email" => false,
+                "currency" => "PHP",
+                "metadata" => [
+                    "email" => $email,
+                ],
+            ],
+        ],
+    ];
+
+    $client = new \GuzzleHttp\Client();
+
+    try {
+        $response = $client->post($url, [
+            'headers' => [
+                'Authorization' => 'Basic ' . base64_encode("$secretKey:"),
+                'Content-Type' => 'application/json',
+            ],
+            'json' => $data,
+        ]);
+
+        $responseBody = json_decode($response->getBody(), true);
+        return $responseBody['data']['attributes']['checkout_url'];
+    } catch (\Exception $e) {
+        die('Error creating payment link: ' . $e->getMessage());
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $cartData = json_decode($_POST['cartData'], true);
+
+    if (!$cartData) {
+        die("Cart data is missing or invalid.");
+    }
+
+    $status = "On Process";
+    $shippingCost = 100; // Flat-rate shipping cost
+    $freeShippingThreshold = 1500; // Free shipping if total is ₱1500 or more
+
     do {
-        $orderID = sprintf('%04d', rand(0, 9999)); // Random number between 0000 to 9999
+        $orderID = sprintf('%04d', rand(0, 9999));
         $checkQuery = "SELECT * FROM `order` WHERE OrderID = '$orderID'";
         $checkResult = mysqli_query($conn, $checkQuery);
-    } while (mysqli_num_rows($checkResult) > 0); // Ensure uniqueness
+    } while (mysqli_num_rows($checkResult) > 0);
 
-    if (is_array($cartData)) {
-        foreach ($cartData as $item) {
-            $product = mysqli_real_escape_string($conn, $item['name']);
-            $quantity = (int)$item['quantity'];
-            $price = floatval(preg_replace('/[^\d.-]/', '', $item['price'])); // Clean price and ensure it's a float
-            $total = $price * $quantity; // Calculate total based on price and quantity
+    $errors = [];
+    $sizeColumnMapping = [
+        'S' => 'small_stock',
+        'M' => 'medium_stock',
+        'L' => 'large_stock',
+        'XL' => 'xl_stock',
+        'XXL' => 'xxl_stock',
+    ];
 
-            // Insert order details into the database
-            $query = "INSERT INTO `order` (OrderID, Customer, Product, Quantity, Status, Total, Date) VALUES ('$orderID', '$fullname', '$product', '$quantity', '$status', '$total', NOW())";
-            $result = mysqli_query($conn, $query);
+    $totalAmount = 0;
+
+    foreach ($cartData as $item) {
+        $product = mysqli_real_escape_string($conn, $item['name']);
+        $quantity = (int)$item['quantity'];
+        $size = mysqli_real_escape_string($conn, $item['size']);
+        $price = floatval(preg_replace('/[^\d.-]/', '', $item['price']));
+        $total = $price * $quantity;
+        $totalAmount += $total;
+
+        $stockColumn = isset($sizeColumnMapping[$size]) ? $sizeColumnMapping[$size] : null;
+        if (!$stockColumn) {
+            die("Invalid size selected.");
         }
-        // Clear cart items from local storage after successful order
+
+        $stockCheckQuery = "SELECT $stockColumn FROM products WHERE name = '$product'";
+        $stockResult = mysqli_query($conn, $stockCheckQuery);
+        $stockRow = mysqli_fetch_assoc($stockResult);
+
+        if ($stockRow) {
+            $availableStock = (int)$stockRow[$stockColumn];
+            if ($quantity > $availableStock) {
+                $errorMessage = "Insufficient stock for $product (Size: $size). Available stock: $availableStock.";
+                header("Location: 3shop.php?error=" . urlencode($errorMessage));
+                exit();
+            } else {
+                $newStock = $availableStock - $quantity;
+                $updateStockQuery = "UPDATE products SET $stockColumn = $newStock WHERE name = '$product'";
+                mysqli_query($conn, $updateStockQuery);
+            }
+        }
+
+        $query = "INSERT INTO `order` (OrderID, Customer, Product, Quantity, Size, Status, Total, Date, Address)
+                  VALUES ('$orderID', '$fullname', '$product', '$quantity', '$size', '$status', '$total', NOW(), '$address')";
+        $result = mysqli_query($conn, $query);
+
+        if (!$result) {
+            die("Error inserting into order table: " . mysqli_error($conn));
+        }
+    }
+
+     // Determine shipping cost
+     if ($totalAmount >= $freeShippingThreshold) {
+        $shippingCost = 0; 
+    }
+
+    $totalAmount += $shippingCost; 
+
+
+
+    $paymentLink = createPaymentLink($totalAmount, "Brigade Clothing Order Checkout", $email);
+
+    if ($paymentLink) {
         echo "<script>
-                alert('Order placed successfully!'); 
-                localStorage.removeItem('cartItems_" . addslashes($user) . "'); // Clear items from local storage
-                window.location.href='1homepage.php'; 
-              </script>";
+            localStorage.removeItem('cartItems_{$user}');
+            window.location.href = '$paymentLink';
+        </script>";
         exit();
+    } else {
+        echo "<script>alert('Failed to create payment link. Please try again.');</script>";
     }
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -68,227 +170,216 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
+    <link rel="stylesheet" type="text/css" href="styles/checkout.css">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
-    <style>
-        .checkout-container {
-            max-width: 600px;
-            margin: 200px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .checkout-header {
-            font-weight: bold;
-            font-size: 1.5em;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .checkout-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #333;
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
-}
-
-.checkout-button:hover {
-    background-color: #555; /* Change background color on hover */
-    transform: scale(1.0); /* Slightly increase size when hovered */
-}
-
-        .order-summary {
-            margin-bottom: 20px;
-            font-family: Arial, sans-serif;
-        }
-        .order-summary h4 {
-            font-size: 1.25em;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        .summary-line-item, .summary-total {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 10px 0;
-            font-size: 1em;
-        }
-        .summary-total {
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-        .summary-divider {
-            border: none;
-            border-top: 1px solid #ddd;
-            margin: 15px 0;
-        }
-    </style>
+       
 </head>
 
 <body>
+<div class="super_container">
 
-    <div class="super_container">
-        <header class="header trans_300">
-            <div class="main_nav_container">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12 text-right">
-                            <div class="logo_container">
-                                <a href="1index.php"><img src="assets/1.png"></a>
+	<header class="header trans_300">
+		<div class="top_nav">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6">
+					<div class="top_nav_left">
+        </div>
+					
+					</div>
+				</div>
+			</div>
+		</div>
+
+        <div class="main_nav_container">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 text-right">
+						<div class="logo_container">
+							<a href="#"><img src="assets/1.png"></a>
+						</div>
+						<nav class="navbar">
+                    <ul class="navbar_menu">
+                        <li><a href="#">home</a></li>
+                        <li><a href="3shop.php">shop</a></li>
+                        <li><a href="3new.php">new</a></li>
+                        
+                    </ul>
+                    <ul class="navbar_user">
+					<li class="dropdown">
+        <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu search-dropdown" id="searchDropdownMenu">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+			<ul id="nameList" class="name-list">
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="1" class="name-item-img">
+                    LETS GET HIGH
+                </li>
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="2" class="name-item-img">
+                    LUCKY BLACK
+                </li>
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="3" class="name-item-img">
+                    CHASE DREAM BLUE
+                </li>
+                <li class="name-item">
+                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="4" class="name-item-img">
+                    COLDEST BLUE
+                </li>
+            </ul>
+        </div>
+    </li>
+                        
+                        <!-- User Dropdown -->
+                        <li class="dropdown">
+                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="4login.php">Sign In</a>
+								<a class="dropdown-item" href="4myacc.php">Account</a>
+								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+								<a class="dropdown-item" href="7adminlogin.php">Admin</a>
+								<a class="dropdown-item" href="logout.php">Logout</a>
                             </div>
-                            <nav class="navbar">
-                                <ul class="navbar_menu">
-                                    <li><a href="index.html">home</a></li>
-                                    <li><a href="#">shop</a></li>
-                                    <li><a href="#">new</a></li>
-                                    <li><a href="#">on sale</a></li>
-                                </ul>
-                                <ul class="navbar_user">
-                                    <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-                                    <li class="checkout">
-                                        <a href="3cart.php">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items">2</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="hamburger_container">
-                                    <i class="fa fa-bars" aria-hidden="true"></i>
-                                </div>
-                            </nav>
-                        </div>
+                        </li>
+                        
+                        <li class="checkout">
+                            <a href="3cart.php">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <span id="checkout_items" class="checkout_items">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="hamburger_container">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
                     </div>
-                </div>
-            </div>
-        </header>
-
-        <div class="fs_menu_overlay"></div>
-
-
-        <div class="container single_product_container">
-    <div class="row">
-        <div class="col">
-            <div class="checkout-container">
-                <div class="checkout-header">Checkout</div>
-                <div class="order-summary">
-                    <h4>Order Summary</h4>
-                    <div class="summary-line-item">
-                        <span>Subtotal</span>
-                        <span id="order-subtotal">₱0.00</span>
-                    </div>
-                    <div class="summary-line-item">
-                        <span>Estimated Delivery & Handling</span>
-                        <span id="order-shipping">₱0.00</span>
-                    </div>
-                    <hr class="summary-divider">
-                    <div class="summary-total">
-                        <span>Total</span>
-                        <span id="order-total"><strong>₱0.00</strong></span>
-                    </div>
-                </div>
-
-                <form method="POST" action="">
-                    <!-- Add hidden input to pass cart data -->
-                    <input type="hidden" id="cartData" name="cartData">
-
-                    <!-- Personal Information -->
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" class="form-control" id="name" placeholder="Enter your full name" value="<?php echo htmlspecialchars($fullname); ?>" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter your email" value="<?php echo htmlspecialchars($email); ?>" required>
-                    </div>
-
-                    <!-- Shipping Address -->
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <input type="text" class="form-control" id="address" placeholder="1234 Main St" value="<?php echo htmlspecialchars($address); ?>" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="contact">Contact</label>
-                        <input type="text" class="form-control" id="contact" placeholder="Enter your contact number" value="<?php echo htmlspecialchars($contact); ?>" required>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="city">City</label>
-                            <input type="text" class="form-control" id="city" value="<?php echo htmlspecialchars($city); ?>" required>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="state">State</label>
-                            <input type="text" class="form-control" id="state" value="<?php echo htmlspecialchars($state); ?>" required>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label for="zip">Zip</label>
-                            <input type="text" class="form-control" id="zip" value="<?php echo htmlspecialchars($zip); ?>" required>
-                        </div>
-                    </div>
-
-                    <!-- Payment Method Selection -->
-                    <div class="form-group">
-                        <label for="paymentMethod">Select Payment Method</label>
-                        <select class="form-control" id="paymentMethod" name="paymentMethod" required onchange="togglePaymentDetails()">
-                            <option value="" disabled selected>Select Payment Method</option>
-                            <option value="paypal">PayPal</option>
-                            <option value="card">Credit Card</option>
-                            <option value="gcash">GCash</option>
-                        </select>
-                    </div>
-
-                    <!-- Payment Details - Hidden by default, shown based on selected method -->
-                    <div id="paypalDetails" class="payment-details" style="display:none;">
-                        <div class="form-group">
-                            <label for="paypalEmail">PayPal Email</label>
-                            <input type="email" class="form-control" id="paypalEmail" placeholder="Enter your PayPal email">
-                        </div>
-                    </div>
-
-                    <div id="cardDetails" class="payment-details" style="display:none;">
-                        <div class="form-group">
-                            <label for="cardName">Name on Card</label>
-                            <input type="text" class="form-control" id="cardName" placeholder="Name as it appears on card" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="cardNumber">Credit Card Number</label>
-                            <input type="text" class="form-control" id="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX" required pattern="\d{4}(-)?\d{4}(-)?\d{4}(-)?\d{4}" title="Card number must be in XXXX-XXXX-XXXX-XXXX format">
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label for="expiry">Expiration Date</label>
-                                <input type="text" class="form-control" id="expiry" placeholder="MM/YY" required pattern="^(0[1-9]|1[0-2])\/\d{2}$" title="Expiration date must be in MM/YY format">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="cvv">CVV</label>
-                                <input type="text" class="form-control" id="cvv" placeholder="XXX" required pattern="\d{3}" title="CVV must be 3 digits">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="gcashDetails" class="payment-details" style="display:none;">
-                        <div class="form-group">
-                            <label for="gcashNumber">GCash Number</label>
-                            <input type="text" class="form-control" id="gcashNumber" placeholder="Enter your GCash number">
-                        </div>
-                    </div>
-
-                    <button type="submit" class="checkout-button">Place Order</button>
-                </form>
+                </nav>
             </div>
         </div>
     </div>
 </div>
 
+        </header>
+
+        <div class="fs_menu_overlay"></div>
+
+        <div class="hamburger_menu">
+            <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
+            <div class="hamburger_menu_content text-right">
+                <ul class="menu_top_nav">
+                    <li class="menu_item has-children">
+                        <a href="#">
+                            My Account
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="menu_selection">
+                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                            <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu_item"><a href="#">home</a></li>
+                    <li class="menu_item"><a href="#">shop</a></li>
+                    <li class="menu_item"><a href="#">new</a></li>
+                    <li class="menu_item"><a href="#">on sale</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container single_product_container">
+            <div class="row">
+                <div class="col">
+                    <div class="checkout-container">
+                        <div class="checkout-header">Checkout</div>
+                        <div class="order-summary">
+                            <h4>Order Summary</h4>
+                            <div class="summary-line-item">
+                                <span>Subtotal</span>
+                                <span id="order-subtotal">₱0.00</span>
+                            </div>
+                            <div class="summary-line-item">
+                                <span>Estimated Delivery & Handling</span>
+                                <span id="order-shipping">₱0.00</span>
+                            </div>
+                            <hr class="summary-divider">
+                            <div class="summary-total">
+                                <span>Total</span>
+                                <span id="order-total"><strong>₱0.00</strong></span>
+                            </div>
+                        </div>
+
+                        <form method="POST" action="">
+                             <!-- Add hidden input to pass cart data -->
+                             <input type="hidden" id="cartData" name="cartData">
+
+                            <!-- Personal Information -->
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter your full name" value="<?php echo htmlspecialchars($fullname); ?>" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" class="form-control" id="email" placeholder="Enter your email" value="<?php echo htmlspecialchars($email); ?>" required>
+                            </div>
+
+                            <!-- Shipping Address -->
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" placeholder="1234 Main St" value="<?php echo htmlspecialchars($address); ?>" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact">Contact</label>
+                                <input type="text" class="form-control" id="contact" placeholder="Enter your contact number" value="<?php echo htmlspecialchars($contact); ?>" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="city">City</label>
+                                    <input type="text" class="form-control" id="city" value="<?php echo htmlspecialchars($city); ?>" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="state">State</label>
+                                    <input type="text" class="form-control" id="state" value="<?php echo htmlspecialchars($state); ?>" required>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="zip">Zip</label>
+                                    <input type="text" class="form-control" id="zip" value="<?php echo htmlspecialchars($zip); ?>" required>
+                                </div>
+                            </div>
+
+                            <!-- Payment Information -->
+                            <div class="form-group">
+                                <label for="cardName">Name on Card</label>
+                                <input type="text" class="form-control" id="cardName" placeholder="Name as it appears on card" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cardNumber">Credit Card Number</label>
+                                <input type="text" class="form-control" id="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="expiry">Expiration Date</label>
+                                    <input type="text" class="form-control" id="expiry" placeholder="MM/YY" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="cvv">CVV</label>
+                                    <input type="text" class="form-control" id="cvv" placeholder="XXX" required>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="checkout-button">Place Order</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Footer -->
         <br><br><br><br>
@@ -404,38 +495,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         });
     </script>
-   <script>
-    function togglePaymentDetails() {
-        const paymentMethod = document.getElementById('paymentMethod').value;
-        const paypalDetails = document.getElementById('paypalDetails');
-        const cardDetails = document.getElementById('cardDetails');
-        const gcashDetails = document.getElementById('gcashDetails');
-
-        // Hide all payment details first
-        paypalDetails.style.display = 'none';
-        cardDetails.style.display = 'none';
-        gcashDetails.style.display = 'none';
-
-        // Show the relevant payment details based on the selected method
-        if (paymentMethod === 'paypal') {
-            paypalDetails.style.display = 'block';
-        } else if (paymentMethod === 'card') {
-            cardDetails.style.display = 'block';
-        } else if (paymentMethod === 'gcash') {
-            gcashDetails.style.display = 'block';
-        }
-    }
-
-    // Function to display the confirmation message after successful form submission
-    document.getElementById('checkoutForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the form from actually submitting
-
-        // Show confirmation message
-        document.getElementById('confirmationMessage').style.display = 'block';
-
-        // Optionally, hide the checkout form after successful submission
-        document.getElementById('checkoutForm').style.display = 'none';
-    });
-</script>
 </body>
 </html>

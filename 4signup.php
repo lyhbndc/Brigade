@@ -1,30 +1,68 @@
 <?php
 session_start();
 
+require 'vendor/phpmailer/phpmailer/src/Exception.php';
+require 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require 'vendor/phpmailer/phpmailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 $conn = mysqli_connect("localhost", "root", "", "brigade");
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
 if (isset($_POST['next'])) {
-    if (isset($_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['password'], $_POST['city'],$_POST['zip_code'], $_POST['contact_no'], $_POST['email'], $_POST['username']) && !empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['zip_code']) && !empty($_POST['contact_no']) && !empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['password'])) {
+    if (isset($_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['password'], $_POST['city'], $_POST['zip_code'], $_POST['contact_no'], $_POST['email'], $_POST['username']) && !empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['zip_code']) && !empty($_POST['contact_no']) && !empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['password'])) {
 
         $firstname = $_POST['first_name'];
         $lastname = $_POST['last_name'];
         $address = $_POST['address'];
-        $city =  $_POST['city'];
+        $city = $_POST['city'];
         $zip = $_POST['zip_code'];
         $contact = $_POST['contact_no'];
         $email = $_POST['email'];
         $user = $_POST['username'];
         $pass = $_POST['password'];
 
-        $query = "INSERT INTO user (firstname, lastname, address, city,zip, contact, email, username, password) VALUES ('$firstname', '$lastname', '$address', '$city','$zip', '$contact', '$email', '$user', '$pass')";
+        // Generate a random 6-digit verification code
+        $verification_code = mt_rand(100000, 999999);
+
+        // Insert data into the user table
+        $query = "INSERT INTO user (firstname, lastname, address, city, zip, contact, email, username, password, verification_code) VALUES ('$firstname', '$lastname', '$address', '$city', '$zip', '$contact', '$email', '$user', '$pass', '$verification_code')";
         $result = mysqli_query($conn, $query);
 
         if ($result) {
-            header("Location: 4login.php");
-            exit();
+            // Send the verification email using PHPMailer
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host = 'smtp.mailersend.net'; // Update this with your SMTP server
+                $mail->SMTPAuth = true;
+                $mail->Username = 'MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net'; // SMTP username
+                $mail->Password = 'fAtQJCLJh8TX4VSX'; // SMTP password
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
+
+                // Recipients
+                $mail->setFrom('MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net', 'Brigade');
+                $mail->addAddress($email);
+
+                // Content
+                $mail->isHTML(true);
+                $mail->Subject = 'Your Verification Code';
+                $mail->Body = "Your verification code is: <strong>$verification_code</strong>";
+
+                $mail->send();
+
+                // Store email in session for verification
+                $_SESSION['email'] = $email;
+                header("Location: otp_verification.php"); // Redirect to OTP verification page
+                exit();
+            } catch (Exception $e) {
+                echo "Mailer Error: {$mail->ErrorInfo}";
+            }
         } else {
             echo "Error: " . mysqli_error($conn);
         }
@@ -36,6 +74,7 @@ if (isset($_POST['next'])) {
 mysqli_close($conn);
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,7 +85,7 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="styles/single_styles.css">
+    <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
     <style>
         body {
@@ -59,7 +98,7 @@ mysqli_close($conn);
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             width: 600px;
-            margin: 30px auto; /* Center the form */
+            margin: 150px auto; /* Center the form */
             text-align: center;
         }
         h2 {
@@ -129,6 +168,17 @@ mysqli_close($conn);
         .footer-logo{
            cursor: default; 
         }
+        .form-control{
+            width: 100%;
+            padding: 7px;
+            margin: 15px 0;
+            border: 1px solid #444;
+            border-radius: 20px;
+            background-color: white;
+            color: gray;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
     </style>
 </head>
 
@@ -137,7 +187,7 @@ mysqli_close($conn);
     <div class="super_container">
         <header class="header trans_300">
             <!-- Top Navigation -->
-            <div class="top_nav">
+
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
@@ -153,7 +203,7 @@ mysqli_close($conn);
                         </div>
                     </div>
                 </div>
-            </div>
+
             <!-- Main Navigation -->
             <div class="main_nav_container">
                 <div class="container">
@@ -219,10 +269,19 @@ mysqli_close($conn);
                                 <input type="text" id="address" name="address" class="form-control" required>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="city">City:</label>
-                                    <input type="text" id="city" name="city" class="form-control" required>
-                                </div>
+            <div class="form-group col-md-6">
+                <label for="city">City:</label>
+                <select id="city" name="city" class="form-control" required>
+                    <option value="" disabled selected>Select your city</option>
+                    <option value="New York">New York</option>
+                    <option value="Los Angeles">Los Angeles</option>
+                    <option value="Chicago">Chicago</option>
+                    <option value="Houston">Houston</option>
+                    <option value="Miami">Miami</option>
+                    <option value="San Francisco">San Francisco</option>
+                    <option value="Seattle">Seattle</option>
+                </select>
+            </div>
                                 <div class="form-group col-md-6">
                                     <label for="zip">Zip Code:</label>
                                     <input type="text" id="zip" name="zip_code" class="form-control" required>
@@ -241,26 +300,30 @@ mysqli_close($conn);
                                 <label for="username">Username:</label>
                                 <input type="text" id="username" name="username" class="form-control" required>
                             </div>
-                            <div class="form-group">
-                                <label for="password">Password:</label>
-                                <div style="position: relative;">
-                                    <input type="password" id="signup-password" name="password" class="form-control" required oninput="checkPasswordStrength()">
-                                    <span id="password-strength" class="password-strength"></span>
-                                    <i id="toggle-signup-password-icon" class="fa fa-eye toggle-password" onclick="toggleSignupPassword()"></i>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="confirm-password">Confirm Password:</label>
-                                <div style="position: relative;">
-                                    <input type="password" id="confirm-password" class="form-control" required oninput="checkPasswordMatch()">
-                                    <i id="toggle-signup-password-icon" class="fa fa-eye toggle-password" onclick="toggleSignupPassword()"></i>
-                                    <span id="match-status" class="match-status"></span>
-                                </div>
+                          <div class="form-group">
+    <label for="password">Password:</label>
+    <div style="position: relative;">
+        <input type="password" id="signup-password" name="password" class="form-control" required oninput="checkPasswordStrength()">
+        <span id="password-strength" class="password-strength"></span>
+        <i id="toggle-password-icon" class="fa fa-eye toggle-password" onclick="togglePasswordVisibility('signup-password', 'toggle-password-icon')"></i>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="confirm-password">Confirm Password:</label>
+    <div style="position: relative;">
+        <input type="password" id="confirm-password" class="form-control" required oninput="checkPasswordMatch()">
+        <span id="match-status" class="match-status"></span>
+        <i id="toggle-confirm-password-icon" class="fa fa-eye toggle-password" onclick="togglePasswordVisibility('confirm-password', 'toggle-confirm-password-icon')"></i>
+    </div>
+    <input type="submit" name ="next" value="Sign Up" class="btn btn-primary">
+</div>
+
                                 
                                 
                                 
                             </div>
-                            <input type="submit" name ="next" value="Sign Up" class="btn btn-primary">
+                            
                             </div>
                           
                         </form>
@@ -271,7 +334,7 @@ mysqli_close($conn);
         </div>
 
         <!-- Footer -->
-        <br><br><br><br>
+
         <footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
             <div class="container">
                 <div class="row">
@@ -325,20 +388,33 @@ mysqli_close($conn);
         </footer>
     </div>
     <script>
-        function toggleSignupPassword() {
-            const passwordField = document.getElementById('signup-password');
-            const toggleIcon = document.getElementById('toggle-signup-password-icon');
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        }
+        function togglePasswordVisibility(fieldId, iconId) {
+    const passwordField = document.getElementById(fieldId);
+    const toggleIcon = document.getElementById(iconId);
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordField.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+    }
+}
+
     </script>
+     <script>
+    // JavaScript to make the navbar opaque when scrolling
+    window.addEventListener('scroll', function() {
+        const mainNav = document.querySelector('.main_nav_container');
+        
+        if (window.scrollY > 50) { // Adjust the scroll threshold as needed
+            mainNav.classList.add('opaque');
+        } else {
+            mainNav.classList.remove('opaque');
+        }
+    });
+</script>
 
 <script>
         function checkPasswordStrength() {

@@ -1553,3 +1553,104 @@ video {
 		opacity: 0; /* Fade out */
 	}
 }
+.navbar_user .dropdown-menu {
+    position: absolute;
+    top: 100%; /* Positioning the dropdown just below the icon */
+    right: 0;
+    display: none; /* Hidden by default */
+    min-width: 150px; /* Width of the dropdown */
+    background-color: #fff; /* Background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+/* Show the dropdown menu on hover */
+.navbar_user .dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Styling for each dropdown item */
+.navbar_user .dropdown-menu .dropdown-item {
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    display: block;
+}
+
+/* Hover effect for dropdown items */
+.navbar_user .dropdown-menu .dropdown-item:hover {
+    background-color: #f0f0f0; 
+    color: #000; 
+	width: 100%;
+}
+
+.navbar_user .search-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    display: none; /* Hidden by default */
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1000;
+    min-width: 300px;
+}
+
+/* Show dropdown when .show class is added */
+.navbar_user .search-dropdown.show {
+    display: block;
+}
+
+/* Styling the search input */
+.search-dropdown .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+/* Styling the name list */
+.name-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Styling each name item */
+.name-item {
+    display: flex;
+    align-items: center;  /* Align image and name text vertically */
+    padding: 10px;
+    cursor: pointer;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Hover effect for full-width highlight */
+.name-item:hover {
+    background-color: #f0f0f0;
+    width: 100%;
+}
+.name-item-img {
+    width: 30px;  /* Adjust size */
+    height: 30px; /* Adjust size */
+    border-radius: 50%;  /* Circle the image */
+    margin-right: 10px;  /* Space between image and text */
+    position: absolute;  /* Fix it to the left */
+    left: 10px;
+}
+
+/* Ensure text aligns properly with the image */
+.name-item-text {
+    padding-left: 50px; /* Create space for the fixed image */
+    width: 100%;
+}

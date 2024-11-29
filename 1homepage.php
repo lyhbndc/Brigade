@@ -23,6 +23,8 @@ $user = $_SESSION['user'];
 
 <body>
 <div class="super_container">
+
+	<header class="header trans_300">
 		<div class="top_nav">
 			<div class="container">
 				<div class="row">
@@ -43,31 +45,50 @@ $user = $_SESSION['user'];
 							<a href="#"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
-							<ul class="navbar_menu">
-							<li><a href="3shop.php">shop</a></li>
-                                    <li><a href="#">new</a></li>
-                                    <li><a href="#">on sale</a></li>
-                                    <li><a href="4recentorders.php">Recent Orders</a></li>
-									<li><a href="logout.php" class="logout">Logout</a></li>
-							</ul>
-							<ul class="navbar_user">
-								<li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-								<li><a href="4myacc.php"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-								<li class="checkout">
-									<a href="3cart.php">
-										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
-										<span id="checkout_items" class="checkout_items">0</span>
-									</a>
-								</li>
-							</ul>
-							<div class="hamburger_container">
-								<i class="fa fa-bars" aria-hidden="true"></i>
-							</div>
-						</nav>
-					</div>
-				</div>
-			</div>
-		</div>
+                    <ul class="navbar_menu">
+                        <li><a href="#">home</a></li>
+                        <li><a href="3shop.php">shop</a></li>
+                        <li><a href="3new.php">new</a></li>
+                        
+                    </ul>
+                    <ul class="navbar_user">
+					<li class="dropdown">
+    <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </a>
+    <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+        <ul id="nameList" class="name-list"></ul>
+    </div>
+</li>
+                        
+                        <!-- User Dropdown -->
+                        <li class="dropdown">
+                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="4login.php">Sign In</a>
+								<a class="dropdown-item" href="7adminlogin.php">Admin</a>
+                            </div>
+                        </li>
+                        
+                        <li class="checkout">
+                            <a href="3cart.php">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <span id="checkout_items" class="checkout_items">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="hamburger_container">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 	</header>
 
@@ -90,6 +111,8 @@ $user = $_SESSION['user'];
 				<li class="menu_item"><a href="3shop.php">shop</a></li>
 				<li class="menu_item"><a href="3new.php">new</a></li>
 				<li class="menu_item"><a href="3onsale.php">on sale</a></li>
+				<li><a href="4recentorders.php">Recent Orders</a></li>
+                <li> <a href="logout.php" class="logout">Logout</a><li></li>
 			</ul>
 		</div>
 	</div>
@@ -577,15 +600,14 @@ $user = $_SESSION['user'];
 					<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
 					<li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
 					<li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
-					<li class="p-b-10"><a href="3onsale.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
 				</ul>
 			</div>
 			<div class="col-sm-6 col-lg-3 p-b-50">
 				<br>
 				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
 				<ul>
-					<li class="p-b-10"><a href="https://shopee.ph/brigadeclothing?originalCategoryId=11044828#product_list" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
-					<li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing?path=index.htm&lang=en&pageTypeId=1" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
+					<li class="p-b-10"><a href="https://shopee.ph/brigadeclothing" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
+					<li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
 					<li class="p-b-10">
 						<a href="https://www.facebook.com/BrigadeWorld"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
 						<a href="https://www.instagram.com/brigadeclothing_official/"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
@@ -687,6 +709,81 @@ $user = $_SESSION['user'];
         }
     });
 </script>
+<script>
+	   const items = [
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "1", name: "LETS GET HIGH" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "2", name: "LUCKY BLACK" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "3", name: "CHASE DREAM BLUE" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "4", name: "COLDEST BLUE" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "5", name: "WORD OF KNIVES" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "6", name: "CHASE DREAM WHITE" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "7", name: "MULTIVERSE" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "8", name: "GLOBAL TERROR" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "9", name: "CYBER PUNK" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "10", name: "DAILY" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "11", name: "COOKIES" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "12", name: "WHAT EVER" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "13", name: "YOUR HIRED" },
+    { img: "assets/359801864_251602164294072_4089427261190148458_n.jpg", alt: "14", name: "CHICAGO" },
+];
+
+const nameList = document.getElementById('nameList');
+const searchInput = document.getElementById('searchInput');
+
+function renderList(filteredItems) {
+    nameList.innerHTML = ''; // Clear the list
+    filteredItems.forEach(item => {
+        const li = document.createElement('li');
+        li.classList.add('name-item');
+        li.innerHTML = `
+            <img src="${item.img}" alt="${item.alt}" class="name-item-img">
+            ${item.name}
+        `;
+        nameList.appendChild(li);
+    });
+}
+
+// Initial render
+renderList(items);
+
+function filterNames() {
+    const searchValue = searchInput.value.toLowerCase();
+    const filteredItems = items
+        .filter(item => item.name.toLowerCase().includes(searchValue)) // Filter items
+        .sort((a, b) => a.name.localeCompare(b.name)); // Sort filtered items alphabetically
+    renderList(filteredItems); // Render the filtered and sorted list
+}
+searchInput.addEventListener('keyup', filterNames);
+
+// Initialize the dropdown toggle behavior
+function toggleDropdown(event) {
+	const dropdownMenu = document.getElementById('searchDropdownMenu');
+	const isExpanded = dropdownMenu.style.display === 'block';
+	dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+}
+function closeSearchDropdown() {
+        const searchDropdownMenu = document.getElementById('searchDropdownMenu');
+        searchDropdownMenu.style.display = 'none';
+    }
+
+    // Attach event listener to the user dropdown
+    document.getElementById('userDropdown').addEventListener('click', function() {
+        closeSearchDropdown(); // Close the search dropdown when the user dropdown is clicked
+    });
+
+    // Function to toggle the search dropdown
+    function toggleSearchDropdown(event) {
+        const dropdownMenu = document.getElementById('searchDropdownMenu');
+        const isExpanded = dropdownMenu.style.display === 'block';
+        dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+        
+        // Close the user dropdown if it is open
+        const userDropdownMenu = document.querySelector('.dropdown-menu-right');
+        if (userDropdownMenu.style.display === 'block') {
+            userDropdownMenu.style.display = 'none';
+        }
+    }
+	</script>
 </body>
 
 </html>

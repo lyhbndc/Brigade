@@ -6,28 +6,35 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
+$error_message = ""; // Initialize an error message variable
+
 if (isset($_POST['login'])) {
     if (isset($_POST['username'], $_POST['password']) && !empty($_POST['username']) && !empty($_POST['password'])) {
         $user = $_POST['username'];
         $pass = $_POST['password'];
-       
-        $query = "SELECT * FROM user WHERE Username='$user' AND Password='$pass'";
-        $result = mysqli_query($conn, $query);
 
-        if (mysqli_num_rows($result) == 1) {
-            $row = mysqli_fetch_assoc($result);
+        // Use prepared statements to prevent SQL injection
+        $stmt = $conn->prepare("SELECT * FROM user WHERE Username=? AND Password=?");
+        $stmt->bind_param("ss", $user, $pass);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 1) {
+            $row = $result->fetch_assoc();
             $id = $row['ID'];
             $_SESSION['user'] = $user; // Save user data to session
             $_SESSION['id'] = $id;
-            header("Location: /Brigade/1homepage.php");
+            header("Location: /Brigade/1index.php");
             exit;
         } else {
-            echo "Invalid username or password";
+            $error_message = "Invalid username or password. Please try again.";
         }
     } else {
-        echo "Please fill in both fields";
+        $error_message = "Both fields are required.";
     }
 }
+?>
+
 
 mysqli_close($conn);
 ?>
@@ -35,18 +42,14 @@ mysqli_close($conn);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Brigade Clothing</title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="description" content="Brigade">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
-<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
-<link rel="stylesheet" type="text/css" href="styles/main_styles.css">
-<link rel="stylesheet" type="text/css" href="styles/responsive.css">
+    <title>Brigade Clothing</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
+    <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
+    <link rel="stylesheet" type="text/css" href="styles/responsive.css">
     <style>
         body {
             background-color: white;
@@ -58,7 +61,7 @@ mysqli_close($conn);
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             width: 350px;
-            margin: 200px auto; /* Center the form */
+            margin: 170px auto; 
             text-align: center;
         }
         h2 {
@@ -128,6 +131,31 @@ mysqli_close($conn);
         .footer-logo{
            cursor: default; 
         }
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 45%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        .toast.show {
+            visibility: visible;
+            animation: fadeInOut 3s;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            10%, 90% { opacity: 1; }
+        }
     </style>
 </head>
 
@@ -135,52 +163,34 @@ mysqli_close($conn);
 
 <div class="super_container">
 
-    <div class="top_nav">
+<header class="header trans_300">
+
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
                 <div class="top_nav_left">
-    </div>
+
                 
                 </div>
             </div>
         </div>
     </div>
+
             <!-- Main Navigation -->
             <div class="main_nav_container">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-12 text-right">
-						<div class="logo_container">
-							<a href="#"><img src="assets/1.png"></a>
-						</div>
-						<nav class="navbar">
-							<ul class="navbar_menu">
-								<li><a href="1homepage.php
-">home</a></li>
-								<li><a href="3shop.php">shop</a></li>
-								<li><a href="3new.php">new</a></li>
-								<li><a href="3onsale.php">on sale</a></li>
-							</ul>
-							<ul class="navbar_user">
-								<li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-								<li><a href="4myacc.php"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-								<li class="checkout">
-									<a href="3cart.php">
-										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
-										<span id="checkout_items" class="checkout_items">0</span>
-									</a>
-								</li>
-							</ul>
-							<div class="hamburger_container">
-								<i class="fa fa-bars" aria-hidden="true"></i>
-							</div>
-						</nav>
-					</div>
-				</div>
-			</div>
-		</div>
-
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 text-right">
+                            <div class="logo_container">
+                                <a href="1index.php"><img src="assets/1.png"></a>
+                            </div>
+                            <nav class="navbar">
+                                
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </header>
 
         <div class="fs_menu_overlay"></div>
@@ -226,71 +236,22 @@ mysqli_close($conn);
                             
                             <input type="submit" name="login" value="Login">
                             <div class="forgot-password">
-                                <a href="#">Forgot Password?</a>
+                                <a href="7forgotpass.php">Forgot Password?</a>
                             </div>
                             <br>
                             <div class="sign-up-link">
                                <a>Don't have an account? </a> <a href="4signup.php">Sign up</a>
                             </div>
                         </form>
+                        <?php if (!empty($error_message)): ?>
+                        <div id="toast" class="toast"><?php echo $error_message; ?></div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Footer -->
-        <br><br><br><br>
-        <footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6 col-lg-3 p-b-50">
-                        <br>
-                        <h4 class="stext-301 cl0 p-b-30">
-                            <a href="#"><img src="assets/Untitled design.png" class="footer-logo"></a>
-                        </h4>
-                        <p class="stext-107 cl7 size-201">
-                            Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
-                        </p>
-                    </div>
-                    <div class="col-sm-6 col-lg-3 p-b-50">
-                        <br>
-                        <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Company</h7>
-            
-                        <ul>
-                            <li class="p-b-10"><a href="5about.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
-                            <li class="p-b-10"><a href="5features.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-6 col-lg-3 p-b-50">
-                        <br>
-                        <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
-                        <ul>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
-                            <li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
-                            <li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
-                            <li class="p-b-10"><a href="3onsale.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-6 col-lg-3 p-b-50">
-                        <br>
-                        <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
-                        <ul>
-                            <li class="p-b-10"><a href="https://shopee.ph/brigadeclothing?originalCategoryId=11044828#product_list" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
-                            <li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing?path=index.htm&lang=en&pageTypeId=1" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
-                            <li class="p-b-10">
-                                <a href="https://www.facebook.com/BrigadeWorld"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
-                                <a href="https://www.instagram.com/brigadeclothing_official/"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <br><br><br>
-                <div class="footer-bottom text-center">
-                    <p>© 2024 Brigade Clothing. All rights reserved.</p>
-                </div>
-            </div>
-            <br><br>
-            </footer>
+ 
     </div>
     <script>
         function togglePassword() {
@@ -319,5 +280,12 @@ mysqli_close($conn);
         }
     });
 </script>
+<script>
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000); // Toast is visible for 3 seconds
+        </script>
 </body>
 </html>
