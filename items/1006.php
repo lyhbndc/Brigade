@@ -44,7 +44,7 @@
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="1index.php"><img src="images/1.png"></a>
+							<a href="../1index.php"><img src="images/1.png"></a>
 						</div>
 						<nav class="navbar">
                     <ul class="navbar_menu">
@@ -161,8 +161,8 @@
 						<h2>BRIGADE CLOTHING - Bay Area</h2>
 						<p>Elevate your casual style with the Brigade Clothing Mesh Shorts, available in sizes from S to XXL to ensure a perfect fit for everyone. Crafted with care and precision, these unisex shorts are locally made with pride, offering superior comfort and durability for everyday wear. Whether you're lounging at home or heading out for an active day, these mesh shorts provide the breathability and flexibility you need.</p>
 					</div>
-					<div class="original_price">₱750.00</div>
-					<div class="product_price">₱700.00</div>
+					<div class="original_price">₱500.00</div>
+					<div class="product_price">₱400.00</div>
 					<div class="product_size">
 						<br>
 						<span>Select Size:</span>

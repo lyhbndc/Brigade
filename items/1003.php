@@ -44,7 +44,7 @@
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="1index.php"><img src="images/1.png"></a>
+							<a href="../1index.php"><img src="images/1.png"></a>
 						</div>
 						<nav class="navbar">
                     <ul class="navbar_menu">
@@ -162,7 +162,7 @@
 						<p>The Brigade Clothing offers the perfect blend of comfort, style, and bold expression. Designed as a unisex basic T-shirt, this versatile piece is available in sizes ranging from S to XXL, ensuring a fit for everyone. Whether you're lounging or out with friends, this shirt adds an effortlessly cool vibe to your wardrobe.</p>
 					</div>
 					<div class="original_price">₱750.00</div>
-					<div class="product_price">₱700.00</div>
+					<div class="product_price">₱400.00</div>
 					<div class="product_size">
 						<br>
 						<span>Select Size:</span>

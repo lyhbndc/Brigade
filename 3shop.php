@@ -425,16 +425,16 @@ document.querySelectorAll('.add-to-cart').forEach(button => {
 
 <script>
     const items = [
-        { img: "items/images/1001/i1.png", alt: "1", name: "Let's Get High", href: "1001.php" },
- { img: "items/images/1002/i1.png", alt: "2", name: "On The Grind", href: "1002.php"},
- { img: "items/images/1003/i1.png", alt: "3", name: "Allergic", href: "1003.php" },
- { img: "items/images/1004/i1.png", alt: "4", name: "Summer Heist", href: "1004.php" },
- { img: "items/images/1005/i1.png", alt: "5", name: "Nectar", href: "1005.php" },
- { img: "items/images/1006/i1.png", alt: "6", name: "Bay Area", href: "1006.php" },
- { img: "items/images/1007/i1.png", alt: "7", name: "Sting", href: "1007.php" },
- { img: "items/images/1008/i1.png", alt: "8", name: "Daily", href: "1008.php" },
- { img: "items/images/1009/i1.png", alt: "9", name: "Warm Up", href: "1009.php" },
- { img: "items/images/10010/i1.png", alt: "10", name: "Earth", href: "10010.php" },
+		{ img: "items/images/1001/i1.png", alt: "1", name: "Let's Get High", href: "items/1001.php" },
+ { img: "items/images/1002/i1.png", alt: "2", name: "On The Grind", href: "items/1002.php"},
+ { img: "items/images/1003/i1.png", alt: "3", name: "Allergic", href: "items/1003.php" },
+ { img: "items/images/1004/i1.png", alt: "4", name: "Summer Heist", href: "items/1004.php" },
+ { img: "items/images/1005/i1.png", alt: "5", name: "Nectar", href: "items/1005.php" },
+ { img: "items/images/1006/i1.png", alt: "6", name: "Bay Area", href: "items/1006.php" },
+ { img: "items/images/1007/i1.png", alt: "7", name: "Sting", href: "items/1007.php" },
+ { img: "items/images/1008/i1.png", alt: "8", name: "Daily", href: "items/1008.php" },
+ { img: "items/images/1009/i1.png", alt: "9", name: "Warm Up", href: "items/1009.php" },
+ { img: "items/images/10010/i1.png", alt: "10", name: "Earth", href: "items/10010.php" },
 ];
 
 const nameList = document.getElementById('nameList');

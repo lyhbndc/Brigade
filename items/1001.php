@@ -44,7 +44,7 @@
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="1index.php"><img src="images/1.png"></a>
+							<a href="../1index.php"><img src="images/1.png"></a>
 						</div>
 						<nav class="navbar">
                     <ul class="navbar_menu">

@@ -44,7 +44,7 @@
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="1index.php"><img src="images/1.png"></a>
+							<a href="../1index.php"><img src="images/1.png"></a>
 						</div>
 						<nav class="navbar">
                     <ul class="navbar_menu">
@@ -161,8 +161,8 @@
 						<h2>BRIGADE CLOTHING - Earth</h2>
 						<p>Stay cozy and stylish with the Brigade Clothing Pullovers, available in sizes S to 3XL to ensure a comfortable fit for everyone. Crafted with care and pride, these unisex pullovers are locally made, offering a perfect combination of quality and comfort for any casual occasion. The 80% cotton and 20% polyester fabric blend provides warmth, breathability, and durability, making it your go-to pullover for every season.</p>
 					</div>
-					<div class="original_price">₱750.00</div>
-					<div class="product_price">₱700.00</div>
+					<div class="original_price">₱1700.00</div>
+					<div class="product_price">₱1350.00</div>
 					<div class="product_size">
 						<br>
 						<span>Select Size:</span>
