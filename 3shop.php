@@ -205,7 +205,7 @@ $result = $conn->query($sql);
 											<div class="product-item" data-id="<?php echo $productId; ?>">
 												<div class="product discount product_filter">
 													<div class="product_image">
-														<img src="<?php echo htmlspecialchars($row['image']); ?>" alt="">
+														<img src="/Brigade/uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="">
 													</div>
 													<div class="favorite favorite_left"></div>
 														<?php if ($isOutOfStock) { ?>
