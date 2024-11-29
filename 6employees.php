@@ -15,8 +15,9 @@ if (!$conn) {
 
 // Handle adding new employee
 if (isset($_POST['addEmployee'])) {
-    $firstName = mysqli_real_escape_string($conn, $_POST['firstName']);
-    $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
+    // Escape input values to prevent SQL injection
+    $firstName = mysqli_real_escape_string($conn, trim($_POST['firstName']));
+    $lastName = mysqli_real_escape_string($conn, trim($_POST['lastName']));
     $password = mysqli_real_escape_string($conn, $_POST['password']);
     $role = mysqli_real_escape_string($conn, $_POST['role']);
 
@@ -26,14 +27,27 @@ if (isset($_POST['addEmployee'])) {
     // Create the email based on the username (adding @brigade.com)
     $email = $username . '@brigade.com';
 
-    // Insert the new employee into the database
+    // Server-side password validation
+    if (strlen($password) < 8 || 
+        !preg_match('/[A-Z]/', $password) || 
+        !preg_match('/[0-9]/', $password) || 
+        !preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
+        // If password does not meet the conditions, redirect with error message
+        header("Location: 6employees.php?error=Invalid Password. Please match the required conditions.");
+        exit;
+    }
+
+    // SQL query to insert the new employee into the database
     $sql = "INSERT INTO employees (first_name, last_name, username, email, password, role) 
             VALUES ('$firstName', '$lastName', '$username', '$email', '$password', '$role')"; 
     
+    // Execute the query and handle success or error
     if (mysqli_query($conn, $sql)) {
+        // Redirect with success message
         header("Location: 6employees.php?success=Employee added");
         exit;
     } else {
+        // Display error message for debugging purposes
         echo "Error: " . mysqli_error($conn);
     }
 }
@@ -41,25 +55,83 @@ if (isset($_POST['addEmployee'])) {
 // Handle updating employee information
 if (isset($_POST['updateEmployee'])) {
     $employeeId = $_POST['employeeId'];
-    $firstName = mysqli_real_escape_string($conn, $_POST['firstName']);
-    $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
-    $username = strtolower(str_replace(' ', '', $firstName)) . '.' . strtolower(str_replace(' ', '', $lastName));
-    $email = $username . '@brigade.com';
+
+    // Sanitize input
+    $firstName = trim($_POST['firstName']);
+    $lastName = trim($_POST['lastName']);
     $role = $_POST['role'];
 
-    // Update the employee in the database (exclude password if not updated)
+    // Validate required fields, ensure changes are made
+    $query = "UPDATE employees SET ";
+    $params = [];
+    $types = "";
+    
+    if (!empty($firstName)) {
+        $query .= "first_name=?, ";
+        $params[] = $firstName;
+        $types .= "s";
+    }
+    if (!empty($lastName)) {
+        $query .= "last_name=?, ";
+        $params[] = $lastName;
+        $types .= "s";
+    }
+    if (!empty($role)) {
+        $query .= "role=?, ";
+        $params[] = $role;
+        $types .= "s";
+    }
+    
+    // Password validation and update if necessary
     if (!empty($_POST['password'])) {
-        $password = mysqli_real_escape_string($conn, $_POST['password']);
-        $updateSql = "UPDATE employees SET first_name='$firstName', last_name='$lastName', username='$username', email='$email', password='$password', role='$role' WHERE id=$employeeId";
-    } else {
-        $updateSql = "UPDATE employees SET first_name='$firstName', last_name='$lastName', username='$username', email='$email', role='$role' WHERE id=$employeeId";
+        $password = $_POST['password'];
+        $reenterPassword = $_POST['reenterPassword'];
+
+        // Validate password conditions
+        $isLengthValid = strlen($password) >= 8;
+        $hasUppercase = preg_match('/[A-Z]/', $password);
+        $hasNumber = preg_match('/\d/', $password);
+        $hasSpecialChar = preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password);
+
+        if (!$isLengthValid || !$hasUppercase || !$hasNumber || !$hasSpecialChar) {
+            echo "Invalid Password. Please match the required conditions.";
+            exit;
+        }
+
+        if ($password !== $reenterPassword) {
+            echo "Passwords do not match.";
+            exit;
+        }
+
+        $query .= "password=?, ";
+        $params[] = $password;  // Keep password as is (no hashing)
+        $types .= "s";
     }
 
-    if (mysqli_query($conn, $updateSql)) {
-        header("Location: 6employees.php?success=Employee updated");
-        exit;
+    // Remove the trailing comma
+    $query = rtrim($query, ", ");
+
+    // Add the WHERE clause
+    $query .= " WHERE id=?";
+    $params[] = $employeeId;
+    $types .= "i";  // Integer for employee ID
+
+    // Use prepared statements
+    if ($stmt = $conn->prepare($query)) {
+        // Bind parameters dynamically
+        $stmt->bind_param($types, ...$params);
+
+        // Execute the query
+        if ($stmt->execute()) {
+            header("Location: 6employees.php?success=Employee updated");
+            exit;
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
     } else {
-        echo "Error: " . mysqli_error($conn);
+        echo "Error: " . $conn->error;
     }
 }
 
@@ -125,37 +197,46 @@ $result = $conn->query($sql);
                     </div>
                     <div class="modal-body">
                         <form method="POST" action="6employees.php">
-                            <div class="mb-3">
+                            <div class="mb-3"> <!-- First Name -->
                                 <label for="firstName" class="form-label">First Name</label>
                                 <input type="text" id="firstName" name="firstName" class="form-control" oninput="updateUserEmail()" required>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3"> <!-- Last Name -->
                                 <label for="lastName" class="form-label">Last Name</label>
                                 <input type="text" id="lastName" name="lastName" class="form-control" oninput="updateUserEmail()" required>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3"> <!-- Username -->
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" id="username" name="username" class="form-control" readonly>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3"> <!-- Email -->
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" id="email" name="email" class="form-control" readonly>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3"> <!-- Password -->
                                 <label for="password" class="form-label">Password</label>
                                 <div style="position: relative;">
-                                    <input type="password" id="password" name="password" class="form-control" required>
+                                    <input type="password" id="password" name="password" class="form-control" oninput="validatePassword()" required>
                                     <i id="togglePassword" class="fa fa-eye toggle-password" style="position: absolute; right: 10px; top: 10px; cursor: pointer;"></i>
                                 </div>
                             </div>
-                            <div class="mb-3">
+                            <div id="passwordConditions" class="mb-3"> <!-- Password Conditions -->
+                                <ul>
+                                    <li id="lengthCondition" style="color: red;">At least 8 characters long</li>
+                                    <li id="uppercaseCondition" style="color: red;">Contains at least 1 uppercase character</li>
+                                    <li id="numberCondition" style="color: red;">Contains at least 1 number</li>
+                                    <li id="specialCharCondition" style="color: red;">Contains at least 1 special character</li>
+                                </ul>
+                            </div>
+                            <div class="mb-3"> <!-- Role -->
                                 <label for="role" class="form-label">Role</label>
                                 <select id="role" name="role" class="form-select" required>
                                     <option value="admin">Admin</option>
                                     <option value="user">User</option>
                                 </select>
                             </div>
-                            <button type="submit" name="addEmployee" class="btn btn-primary">Add Employee</button>
+                            <!-- Submit Button -->
+                            <button type="submit" id="submitButton" name="addEmployee" class="btn btn-primary" disabled>Add Employee</button>
                         </form>
                     </div>
                 </div>
@@ -196,53 +277,64 @@ $result = $conn->query($sql);
                         </tr>
 
                         <!-- Edit Employee Modal -->
-                            <div class="modal fade" id="editEmployeeModal<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="POST" action="6employees.php">
-                                                <input type="hidden" name="employeeId" value="<?php echo $row['id']; ?>">
-                                                <div class="mb-3">
-                                                    <label for="firstName" class="form-label">First Name</label>
-                                                    <input type="text" id="firstName<?php echo $row['id']; ?>" name="firstName" class="form-control" value="<?php echo $row['first_name']; ?>" required oninput="updateUsernameEmail(<?php echo $row['id']; ?>)">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="lastName" class="form-label">Last Name</label>
-                                                    <input type="text" id="lastName<?php echo $row['id']; ?>" name="lastName" class="form-control" value="<?php echo $row['last_name']; ?>" required oninput="updateUsernameEmail(<?php echo $row['id']; ?>)">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="username" class="form-label">Username</label>
-                                                    <input type="text" id="username<?php echo $row['id']; ?>" name="username" class="form-control" value="<?php echo $row['username']; ?>" readonly>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="email" class="form-label">Email</label>
-                                                    <input type="email" id="email<?php echo $row['id']; ?>" name="email" class="form-control" value="<?php echo $row['email']; ?>" readonly>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="role" class="form-label">Role</label>
-                                                    <select name="role" class="form-control">
-                                                        <option value="admin" <?php echo $row['role'] == 'admin' ? 'selected' : ''; ?>>Admin</option>
-                                                        <option value="user" <?php echo $row['role'] == 'user' ? 'selected' : ''; ?>>User</option>
-                                                    </select>
-                                                </div>
+                        <div class="modal fade" id="editEmployeeModal<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="POST" action="6employees.php">
+                                            <!-- Hidden field for employee ID -->
+                                            <input type="hidden" name="employeeId" value="<?php echo $row['id']; ?>">
 
-                                                <!-- Update Password Section -->
+                                            <!-- First Name -->
+                                            <div class="mb-3">
+                                                <label for="firstName" class="form-label">First Name</label>
+                                                <input type="text" id="firstName<?php echo $row['id']; ?>" name="firstName" class="form-control" value="<?php echo $row['first_name']; ?>" required oninput="updateUsernameEmail(<?php echo $row['id']; ?>)">
+                                            </div>
+
+                                            <!-- Last Name -->
+                                            <div class="mb-3">
+                                                <label for="lastName" class="form-label">Last Name</label>
+                                                <input type="text" id="lastName<?php echo $row['id']; ?>" name="lastName" class="form-control" value="<?php echo $row['last_name']; ?>" required oninput="updateUsernameEmail(<?php echo $row['id']; ?>)">
+                                            </div>
+
+                                            <!-- Username -->
+                                            <div class="mb-3">
+                                                <label for="username" class="form-label">Username</label>
+                                                <input type="text" id="username<?php echo $row['id']; ?>" name="username" class="form-control" value="<?php echo $row['username']; ?>" readonly>
+                                            </div>
+
+                                            <!-- Email -->
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Email</label>
+                                                <input type="email" id="email<?php echo $row['id']; ?>" name="email" class="form-control" value="<?php echo $row['email']; ?>" readonly>
+                                            </div>
+
+                                            <!-- Role -->
+                                            <div class="mb-3">
+                                                <label for="role" class="form-label">Role</label>
+                                                <select name="role" class="form-control">
+                                                    <option value="admin" <?php echo $row['role'] == 'admin' ? 'selected' : ''; ?>>Admin</option>
+                                                    <option value="user" <?php echo $row['role'] == 'user' ? 'selected' : ''; ?>>User</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Update Password -->
                                                 <div class="mb-3">
                                                     <button type="button" class="btn btn-primary" id="togglePasswordForm<?php echo $row['id']; ?>" onclick="togglePasswordForm(<?php echo $row['id']; ?>)">Update Password</button>
                                                     <button type="button" class="btn btn-secondary d-none" id="cancelPasswordUpdate<?php echo $row['id']; ?>" onclick="togglePasswordForm(<?php echo $row['id']; ?>)">Cancel Update</button>
                                                 </div>
                                                 <div id="passwordForm<?php echo $row['id']; ?>" style="display:none;">
                                                     <div class="mb-3">
-                                                        <label for="newPassword" class="form-label">Enter New Password</label>
-                                                        <input type="password" id="newPassword<?php echo $row['id']; ?>" name="newPassword" class="form-control" oninput="validatePassword(<?php echo $row['id']; ?>)">
+                                                        <label for="newPassword<?php echo $row['id']; ?>" class="form-label">Enter New Password</label>
+                                                        <input type="password" id="newPassword<?php echo $row['id']; ?>" name="newPassword" class="form-control" oninput="trackChanges(<?php echo $row['id']; ?>)">
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="reenterNewPassword" class="form-label">Re-enter New Password</label>
-                                                        <input type="password" id="reenterNewPassword<?php echo $row['id']; ?>" name="reenterNewPassword" class="form-control" oninput="validatePassword(<?php echo $row['id']; ?>)">
+                                                        <label for="reenterNewPassword<?php echo $row['id']; ?>" class="form-label">Re-enter New Password</label>
+                                                        <input type="password" id="reenterNewPassword<?php echo $row['id']; ?>" name="reenterNewPassword" class="form-control" oninput="trackChanges(<?php echo $row['id']; ?>)">
                                                     </div>
                                                     <div id="passwordConditions<?php echo $row['id']; ?>" class="mb-3">
                                                         <ul>
@@ -255,13 +347,14 @@ $result = $conn->query($sql);
                                                     </div>
                                                 </div>
 
-                                                <button type="submit" name="updateEmployee" class="btn btn-primary">Save Changes</button>
+                                                <!-- Save Changes -->
+                                                <button type="submit" name="updateEmployee" id="saveChanges<?php echo $row['id']; ?>" class="btn btn-primary" disabled>Save Changes</button>
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            </form>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     <?php endwhile; ?>
                 </tbody>
             </table>
@@ -274,67 +367,89 @@ $result = $conn->query($sql);
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script> //Real-time display of Username and Email while filling-out the ADD employee form
+    <script> // Real-time display of Username and Email while filling out the ADD employee form
         function updateUserEmail() {
-            // Get first and last names, trim them, and replace spaces with empty strings
-            const firstName = document.getElementById('firstName').value.trim().toLowerCase().replace(/\s+/g, '');
-            const lastName = document.getElementById('lastName').value.trim().toLowerCase().replace(/\s+/g, '');
-            
-            const usernameField = document.getElementById('username');
-            const emailField = document.getElementById('email');
+            const firstName = document.getElementById("firstName").value.trim();
+            const lastName = document.getElementById("lastName").value.trim();
 
-            // If both first and last names are present, construct the username and email
-            if (firstName && lastName) {
-                const username = `${firstName}.${lastName}`;
-                usernameField.value = username; // Update the username field
-                emailField.value = `${username}@brigade.com`; // Update the email field
-            } else {
-                // Clear username and email if names are incomplete
-                usernameField.value = "";
-                emailField.value = "";
-            }
+            // Process the names: remove spaces and make lowercase
+            const formattedFirstName = firstName.replace(/\s+/g, '').toLowerCase();
+            const formattedLastName = lastName.replace(/\s+/g, '').toLowerCase();
+
+            // Concatenate for username and email
+            const username = `${formattedFirstName}.${formattedLastName}`;
+            const email = `${username}@brigade.com`;
+
+            // Update the fields
+            document.getElementById("username").value = username;
+            document.getElementById("email").value = email;
         }
 
-        document.getElementById('togglePassword').addEventListener('click', function () {
-            const passwordField = document.getElementById('password');
-            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordField.setAttribute('type', type);
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
+        // Function to validate password
+        function validatePassword() {
+            const password = document.getElementById("password").value;
+
+            // Validation rules
+            const minLength = password.length >= 8;
+            const hasUppercase = /[A-Z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+            // Debugging: Log the conditions for testing
+            console.log({ minLength, hasUppercase, hasNumber, hasSpecialChar });
+
+            // Update UI for conditions
+            document.getElementById("lengthCondition").style.color = minLength ? "green" : "red";
+            document.getElementById("uppercaseCondition").style.color = hasUppercase ? "green" : "red";
+            document.getElementById("numberCondition").style.color = hasNumber ? "green" : "red";
+            document.getElementById("specialCharCondition").style.color = hasSpecialChar ? "green" : "red";
+
+            // Enable or disable the submit button
+            const submitButton = document.getElementById("submitButton");
+            submitButton.disabled = !(minLength && hasUppercase && hasNumber && hasSpecialChar);
+
+            // Debugging: Log the state of the submit button
+            console.log("Submit Button Disabled:", submitButton.disabled);
+        }
+
+        // Add event listeners for real-time updates
+        document.getElementById("password").addEventListener("input", validatePassword);
+        document.getElementById("firstName").addEventListener("input", updateUserEmail);
+        document.getElementById("lastName").addEventListener("input", updateUserEmail);
+
+
+        // Toggle password visibility
+        document.getElementById("togglePassword").addEventListener("click", function () {
+            const passwordInput = document.getElementById("password");
+            const type = passwordInput.type === "password" ? "text" : "password";
+            passwordInput.type = type;
+            this.classList.toggle("fa-eye-slash");
         });
     </script>
 
-    <script> //Real-time EDIT Module changes
-        // Toggle Password Form
-        function togglePasswordForm(id) {
-            const passwordForm = document.getElementById(`passwordForm${id}`);
-            const toggleButton = document.getElementById(`togglePasswordForm${id}`);
-            const cancelButton = document.getElementById(`cancelPasswordUpdate${id}`);
+    <script>
+        // Track changes to enable Save Changes button
+        function trackChanges(id) {
+            const firstName = document.getElementById(`firstName${id}`).value.trim();
+            const lastName = document.getElementById(`lastName${id}`).value.trim();
+            const role = document.getElementById(`role${id}`).value.trim();
+            const newPassword = document.getElementById(`newPassword${id}`).value.trim();
+            const reenterPassword = document.getElementById(`reenterNewPassword${id}`).value.trim();
 
-            if (passwordForm.style.display === "none") {
-                passwordForm.style.display = "block";
-                toggleButton.classList.add("d-none");
-                cancelButton.classList.remove("d-none");
+            // Check if there are any changes in the form fields
+            const isChanged = firstName || lastName || role || newPassword || reenterPassword;
+
+            // Enable or disable Save Changes button based on changes
+            const saveButton = document.getElementById(`saveChanges${id}`);
+            if (isChanged && isPasswordValid(id)) {
+                saveButton.disabled = false;
             } else {
-                passwordForm.style.display = "none";
-                toggleButton.classList.remove("d-none");
-                cancelButton.classList.add("d-none");
+                saveButton.disabled = true;
             }
         }
 
-        // Update Username and Email
-        function updateUsernameEmail(id) {
-            const firstName = document.getElementById(`firstName${id}`).value.toLowerCase().replace(/\s+/g, '');
-            const lastName = document.getElementById(`lastName${id}`).value.toLowerCase().replace(/\s+/g, '');
-            const username = `${firstName}.${lastName}`;
-            const email = `${username}@brigade.com`;
-
-            document.getElementById(`username${id}`).value = username;
-            document.getElementById(`email${id}`).value = email;
-        }
-
-        // Validate Password
-        function validatePassword(id) {
+        // Validate password in real-time
+        function isPasswordValid(id) {
             const newPassword = document.getElementById(`newPassword${id}`).value;
             const reenterPassword = document.getElementById(`reenterNewPassword${id}`).value;
             const lengthCondition = newPassword.length >= 8;
@@ -348,8 +463,22 @@ $result = $conn->query($sql);
             document.getElementById(`numberCondition${id}`).style.color = numberCondition ? "green" : "red";
             document.getElementById(`specialCharCondition${id}`).style.color = specialCharCondition ? "green" : "red";
             document.getElementById(`matchCondition${id}`).style.color = matchCondition ? "green" : "red";
+
+            return lengthCondition && uppercaseCondition && numberCondition && specialCharCondition && matchCondition;
+        }
+
+        // Disable Save Changes when Update Password is selected
+        function togglePasswordForm(id) {
+            const passwordForm = document.getElementById(`passwordForm${id}`);
+            const saveButton = document.getElementById(`saveChanges${id}`);
+            if (passwordForm.style.display === "none") {
+                passwordForm.style.display = "block";
+                saveButton.disabled = true; // Disable Save Changes button when password is being updated
+            } else {
+                passwordForm.style.display = "none";
+                saveButton.disabled = !isPasswordValid(id); // Re-enable Save Changes button if password conditions are met
+            }
         }
     </script>
-    
 </body>
 </html>
