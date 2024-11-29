@@ -144,7 +144,6 @@
 								<ul>
 									<li><img src="images\1001\t1.png" alt="" data-image="images/1001/1.png"></li>
 									<li class="active"><img src="images\1001\t2.png" alt="" data-image="images/1001/2.png"></li>
-									<li><img src="images\1001\t3.png" alt="" data-image="images/1001/3.png"></li>
 								</ul>
 							</div>
 						</div>
