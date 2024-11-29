@@ -31,9 +31,10 @@ $conn->close();
         <a href="6cancelorders.php">Cancel Orders</a>
         <a href="6refundorders.php">Refund Orders</a>
 
-        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+        <?php if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
             <a href="6employees.php">Employees</a>
         <?php endif; ?>
+
     </div>
 
     <table class="table table-striped table-bordered">

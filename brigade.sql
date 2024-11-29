@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 29, 2024 at 05:17 PM
+-- Generation Time: Nov 29, 2024 at 06:36 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -105,7 +105,9 @@ INSERT INTO `employees` (`ID`, `username`, `first_name`, `last_name`, `email`, `
 (4, 'johnlexer.calleja', 'John Lexer', 'Calleja', 'johnlexer.calleja@brigade.com', 'Password123@', 'user'),
 (5, 'aaliyah.bondoc', 'Aaliyah', 'Bondoc', 'aaliyah.bondoc@brigade.com', 'Password123?', 'user'),
 (6, 'adrienneberlin.delacruz', 'Adrienne Berlin', 'Dela Cruz', 'adrienneberlin.delacruz@brigade.com', 'Password1', 'admin'),
-(7, 'aizheelyn.limit', 'Aizheelyn', 'Limit', 'aizheelyn.limit@brigade.com', 'Password123?', 'admin');
+(7, 'aizheelyn.limit', 'Aizheelyn', 'Limit', 'aizheelyn.limit@brigade.com', 'Password123?', 'admin'),
+(8, 'renmark.pesigan', 'Renmark', 'Pesigan', 'renmark.pesigan@brigade.com', 'superadmin', 'superadmin'),
+(9, 'test.admin', 'test', 'admin', 'test.admin@brigade.com', 'Password1?', 'admin');
 
 -- --------------------------------------------------------
 
@@ -274,7 +276,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `products`
