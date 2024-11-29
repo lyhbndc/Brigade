@@ -32,6 +32,25 @@
         .sidebar a:hover {
             background-color: #495057;
         }
+
+        .logout-button {
+            position: absolute;
+            bottom: 20px; /* Align with the bottom of the sidebar */
+            left: 40px;   /* Nudges it 20px further right from the sidebar padding */
+            color: #fff;  /* White text */
+            background-color: #555; /* Grey background */
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+            z-index: 11; /* Ensure it stays above sidebar content */
+        }
+        
+        .logout-button:hover {
+            background-color: #333; /* Darker grey on hover */
+        }
+
         .content {
             margin-left: 220px; 
             padding: 20px;
