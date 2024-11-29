@@ -3,7 +3,7 @@ session_start();
 $user = $_SESSION['user'];
 $conn = mysqli_connect("localhost", "root", "", "brigade");
 
-$sql = "SELECT id, name, image, price, small_stock, medium_stock, large_stock, xl_stock, xxl_stock FROM products";
+$sql = "SELECT id, name, image, price, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock FROM products";
 $result = $conn->query($sql);
 ?>
 
@@ -146,17 +146,13 @@ $result = $conn->query($sql);
 						<div class="sidebar_title">
 							<h5>Sizes</h5>
 						</div>
-						<div class="sidebar_section">
-
-						<ul class="radio-buttons">
-							<li><input type="radio" id="sizeS" name="size" value="S"><label for="sizeS">S</label></li>
-							<li><input type="radio" id="sizeM" name="size" value="M"><label for="sizeM">M</label></li>
-							<li><input type="radio" id="sizeL" name="size" value="L"><label for="sizeL">L</label></li>
-							<li><input type="radio" id="sizeXL" name="size" value="XL"><label for="sizeXL">XL</label></li>
-							<li><input type="radio" id="sizeXXL" name="size" value="XXL"><label for="sizeXXL">XXL</label></li>
+						<ul class="checkboxes">
+							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>S</span></li>
+							<li class="active"><i class="fa fa-square" aria-hidden="true"></i><span>M</span></li>
+							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>L</span></li>
+							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XL</span></li>
+							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XXL</span></li>
 						</ul>
-</div>
-
 					</div>
 
 
@@ -191,55 +187,53 @@ $result = $conn->query($sql);
 								<!-- Product Grid -->
 
 								<div class="product-grid">
-    <?php 
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $productId = str_pad($row['id'], 7, '0', STR_PAD_LEFT);
+									<?php 
+									if ($result->num_rows > 0) {
+										while ($row = $result->fetch_assoc()) {
+											$productId = str_pad($row['id'], 7, '0', STR_PAD_LEFT);
 
-            // Check if all sizes are out of stock
-            $isOutOfStock = (
-                $row['small_stock'] == 0 && 
-                $row['medium_stock'] == 0 && 
-                $row['large_stock'] == 0 && 
-                $row['xl_stock'] == 0 && 
-                $row['xxl_stock'] == 0
-            );
-            ?>
-            <div class="product-item" data-id="<?php echo $productId; ?>">
-                <div class="product discount product_filter">
-                    <div class="product_image">
-                        <img src="<?php echo htmlspecialchars($row['image']); ?>" alt="">
-                    </div>
-                    <div class="favorite favorite_left"></div>
-                    <?php if ($isOutOfStock) { ?>
-                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
-                            <span>Sold</span>
-                        </div>
-                    <?php } ?>
-                    <div class="product_info">
-                        <h6 class="product_name"><a href="single.html"><?php echo htmlspecialchars($row['name']); ?></a></h6>
-                        <div class="product_price">₱<?php echo number_format($row['price'], 2); ?></div>
-                    </div>
-                </div>
-                <div class="red_button add_to_cart_button">
-                    <?php if (!$isOutOfStock) { ?>
-                        <a href="#" class="add-to-cart" data-id="<?php echo $productId; ?>">Add to Cart</a>
-                    <?php } else { ?>
-                        <span style="color: gray;">Out of Stock</span>
-                    <?php } ?>
-                </div>
-            </div>
-        <?php 
-        }
-    } else {
-        echo "<p>No products found.</p>";
-    }
-    ?>
-</div>
-
-
+											// Check if all sizes are out of stock
+											$isOutOfStock = (
+												$row['small_stock'] == 0 && 
+												$row['medium_stock'] == 0 && 
+												$row['large_stock'] == 0 && 
+												$row['xl_stock'] == 0 && 
+												$row['xxl_stock'] == 0 &&
+												$row['xxxl_stock'] == 0 
+											);
+											?>
+											<div class="product-item" data-id="<?php echo $productId; ?>">
+												<div class="product discount product_filter">
+													<div class="product_image">
+														<img src="<?php echo htmlspecialchars($row['image']); ?>" alt="">
+													</div>
+													<div class="favorite favorite_left"></div>
+														<?php if ($isOutOfStock) { ?>
+															<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+																<span>Sold</span>
+															</div>
+														<?php } ?>
+													<div class="product_info">
+														<h6 class="product_name"><a href="single.html"><?php echo htmlspecialchars($row['name']); ?></a></h6>
+														<div class="product_price">₱<?php echo number_format($row['price'], 2); ?></div>
+													</div>
+												</div>
+												<div class="red_button add_to_cart_button">
+													<?php if (!$isOutOfStock) { ?>
+														<a href="#" class="add-to-cart" data-id="<?php echo $productId; ?>">Add to Cart</a>
+													<?php } else { ?>
+														<span style="color: gray;">Out of Stock</span>
+													<?php } ?>
+												</div>
+											</div>
+										<?php 
+											}
+										} else {
+											echo "<p>No products found.</p>";
+										}
+										?>
+									</div>
 								</div>
-						
 							</div>
 						</div>
 					</div>
@@ -297,55 +291,56 @@ $result = $conn->query($sql);
 
 	<br><br><br><br>
 	<footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-6 col-lg-3 p-b-50">
-				<br>
-				<h4 class="stext-301 cl0 p-b-30">
-					<a href="1index.php"><img src="assets/Untitled design.png" class="footer-logo"></a>
-				</h4>
-				<p class="stext-107 cl7 size-201">
-					Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
-				</p>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 col-lg-3 p-b-50">
+					<br>
+					<h4 class="stext-301 cl0 p-b-30">
+						<a href="#"><img src="assets/Untitled design.png" class="footer-logo"></a>
+					</h4>
+					<p class="stext-107 cl7 size-201">
+						Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
+					</p>
+				</div>
+				<div class="col-sm-6 col-lg-3 p-b-50">
+					<br>
+					<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Company</h7>
+		
+					<ul>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-6 col-lg-3 p-b-50">
+					<br>
+					<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
+					<ul>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-6 col-lg-3 p-b-50">
+					<br>
+					<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
+					<ul>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
+						<li class="p-b-10">
+							<a href="#"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
+							<a href="#"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
+						</li>
+					</ul>
+				</div>
 			</div>
-			<div class="col-sm-6 col-lg-3 p-b-50">
-				<br>
-				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Company</h7>
-	
-				<ul>
-					<li class="p-b-10"><a href="5about.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
-					<li class="p-b-10"><a href="5features.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
-				</ul>
-			</div>
-			<div class="col-sm-6 col-lg-3 p-b-50">
-				<br>
-				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
-				<ul>
-					<li class="p-b-10"><a href="1index.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
-					<li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
-					<li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
-				</ul>
-			</div>
-			<div class="col-sm-6 col-lg-3 p-b-50">
-				<br>
-				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
-				<ul>
-					<li class="p-b-10"><a href="https://shopee.ph/brigadeclothing" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
-					<li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
-					<li class="p-b-10">
-						<a href="https://www.facebook.com/BrigadeWorld"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
-						<a href="https://www.instagram.com/brigadeclothing_official/"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
-					</li>
-				</ul>
+			<br><br><br>
+			<div class="footer-bottom text-center">
+				<p>© 2024 Brigade Clothing. All rights reserved.</p>
 			</div>
 		</div>
-		<br><br><br>
-		<div class="footer-bottom text-center">
-			<p>© 2024 Brigade Clothing. All rights reserved.</p>
-		</div>
-	</div>
-	<br><br>
-	</footer>
+		<br><br>
+		</footer>
 
 
 <script src="js/jquery-3.2.1.min.js"></script>
