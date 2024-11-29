@@ -74,8 +74,7 @@ $conn->close();
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="sidebar" id="sidebar">
-        <a><img src="assets/Untitled design.png" class="footer-logo"></a>
+    <div class="sidebar">
         <a href="6dashboard.php">Dashboard</a>
         <a href="6inventory.php">Stocks</a>
         <a href="6onprocess.php">On Process</a>
@@ -86,6 +85,8 @@ $conn->close();
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
             <a href="6employees.php">Employees</a>
         <?php endif; ?>
+
+        <a href="logout.php" class="logout-button">Logout</a>
     </div>
 
 <div class="content" id="content">
