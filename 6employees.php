@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-// Role validation to check if ADMIN before allowing view and access on the page
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    // Redirect non-admin users to another page (e.g., dashboard)
+// Role validation to check if the user is ADMIN or SUPERADMIN before allowing access to the page
+if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])) {
+    // Redirect non-admin and non-superadmin users to another page (e.g., dashboard)
     header("Location: 6dashboard.php");
     exit;
 }
