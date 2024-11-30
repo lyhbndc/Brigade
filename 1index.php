@@ -124,7 +124,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 
 	<!-- Slider -->
 
-	<div class="main_slider" style="background-image:url(assets/123002712_2673177159678936_1187946119846381727_n.jpg)">
+	<div class="main_slider" style="background-image:url(assets/bg.png)">
 		<div class="container fill_height">
 			<div class="row align-items-center fill_height">
 
@@ -140,21 +140,21 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 		<div class="container">
 			<div class="row">
 				<div class="col-md-4">
-					<div class="banner_item align-items-center" style="background-image:url(assets/453485296_468885235899096_513308116720846128_n.jpg)">
+					<div class="banner_item align-items-center" style="background-image:url(assets/h.png)">
 						<div class="banner_category">
 							<a href="2hoodies.php">HOODIES</a>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4">
-					<div class="banner_item align-items-center" style="background-image:url(assets/449066098_449706761150277_4189243537820075673_n.jpg)">
+					<div class="banner_item align-items-center" style="background-image:url(assets/t.png)">
 						<div class="banner_category">
 							<a href="2tees.php">TEES</a>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4">
-					<div class="banner_item align-items-center" style="background-image:url(assets/359801864_251602164294072_4089427261190148458_n.jpg)">
+					<div class="banner_item align-items-center" style="background-image:url(assets/s.png)">
 						<div class="banner_category">
 							<a href="2shorts.php">SHORTS</a>
 						</div>
@@ -189,150 +189,88 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 				<div class="col">
 					<div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
 
-					<div class="product-item tees" data-id="3">
+					<div class="product-item tees" data-id="1001">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
+                                                <img src="items/images/1001/front.png" alt="">
                                             </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                            <div class="favorite favorite_left"></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Chase Dream (Blue)</a></h6>
+                                                <h6 class="product_name"><a href="items/1001.php">Brigade Clothing - Let's Get High</a></h6>
                                                 <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
 
-									<div class="product-item tees" data-id="5">
+									<div class="product-item tees" data-id="1003">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
+                                                <img src="items/images/1003/front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Word of Knives (Black)</a></h6>
+                                                <h6 class="product_name"><a href="items/1003.php">Brigade Clothing - Allergic (White)</a></h6>
                                                 <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
 
-									<div class="product-item tees" data-id="6">
+									<div class="product-item shorts" data-id="1005">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
+                                                <img src="items/images/1005/front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Chase Dream (White)</a></h6>
+                                                <h6 class="product_name"><a href="items/1005.php">Brigade Clothing - Nectar</a></h6>
                                                 <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
 
-									<div class="product-item tees" data-id="7">
+									<div class="product-item shorts" data-id="1007">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
+                                                <img src="items/images/1007/front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Multiverse (White)</a></h6>
+                                                <h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Sting</a></h6>
                                                 <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
 
-						<div class="product-item tees" data-id="10">
+						<div class="product-item hoodies" data-id="1008">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
+                                                <img src="items/images/1008/front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Daily (Longsleeve)</a></h6>
+                                                <h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Daily (Longsleeve)</a></h6>
                                                 <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
-									<div class="product-item tees" data-id="11">
+									<div class="product-item hoodies" data-id="1009">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
+                                                <img src="items/images/1009/front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Cookies (Longsleeve)</a></h6>
+                                                <h6 class="product_name"><a href="items/1009.php">Brigade Clothing - Warm Up</a></h6>
                                                 <div class="product_price">$520.00<span>$590.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
                                     </div>
-									<div class="product-item hoodies" data-id="13">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - You're Hired (Pullovers)</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-									<div class="product-item shorts" data-id="14">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Chicago</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-									<div class="product-item shorts" data-id="15">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Snake</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-									<div class="product-item shorts" data-id="17">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - Grizzly</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-
 					</div>
 				</div>
 			</div>
@@ -359,16 +297,15 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 
 							
 
-							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="1">
+						<div class="owl-item product_slider_item">
+								<div class="product-item" data-id="1002">
 									<div class="product discount">
 										<div class="product_image">
-											<img src="images/product_1.png" alt="">
+											<img src="items/images/1002/front.png" alt="">
 										</div>
 										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
 										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - Let's Get High (Black)</a></h6>
+											<h6 class="product_name"><a href="items/1002.php">Brigade Clothing - On The Grind</a></h6>
 											<div class="product_price">P700.00<span>750.00</span></div>
 										</div>
 									</div>
@@ -378,15 +315,14 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 							<!-- Slide 2 -->
 
 							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="2">
+								<div class="product-item" data-id="1004">
 									<div class="product discount">
 										<div class="product_image">
-											<img src="images/product_1.png" alt="">
+											<img src="items/images/1004/front.png" alt="">
 										</div>
 										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
 										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - Lucky (Black)</a></h6>
+											<h6 class="product_name"><a href="items/1004.php">Brigade Clothing - Summer Heist</a></h6>
 											<div class="product_price">P700.00<span>750.00</span></div>
 										</div>
 									</div>
@@ -396,15 +332,14 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 							
 
 							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="4">
+								<div class="product-item" data-id="1006">
 									<div class="product discount">
 										<div class="product_image">
-											<img src="images/product_1.png" alt="">
+											<img src="items/images/1006/front.png" alt="">
 										</div>
 										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
 										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - Coldest (Blue)</a></h6>
+											<h6 class="product_name"><a href="items/1006.php">Brigade Clothing - Bay Area</a></h6>
 											<div class="product_price">P700.00<span>750.00</span></div>
 										</div>
 									</div>
@@ -414,15 +349,14 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 							
 
 							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="8">
+								<div class="product-item" data-id="1003">
 									<div class="product discount">
 										<div class="product_image">
-											<img src="images/product_1.png" alt="">
+											<img src="items/images/1003/front.png" alt="">
 										</div>
 										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
 										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - Global Terror (White)</a></h6>
+											<h6 class="product_name"><a href="items/1003.php">Brigade Clothing - Allergic (White)</a></h6>
 											<div class="product_price">P700.00<span>750.00</span></div>
 										</div>
 									</div>
@@ -432,15 +366,14 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 							
 
 							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="9">
+								<div class="product-item" data-id="1009">
 									<div class="product discount">
 										<div class="product_image">
-											<img src="images/product_1.png" alt="">
+											<img src="items/images/1009/front.png" alt="">
 										</div>
 										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
 										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - Cyber Punk (Longsleeve)</a></h6>
+											<h6 class="product_name"><a href="items/1009.php">Brigade Clothing - Warm Up</a></h6>
 											<div class="product_price">P700.00<span>750.00</span></div>
 										</div>
 									</div>
@@ -450,65 +383,14 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 							
 
 							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="12">
+								<div class="product-item" data-id="10010">
 									<div class="product discount">
 										<div class="product_image">
-											<img src="images/product_1.png" alt="">
+											<img src="items/images/10010/front.png" alt="">
 										</div>
 										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
 										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - What Ever (Pullovers)</a></h6>
-											<div class="product_price">P700.00<span>750.00</span></div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							
-
-							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="14">
-									<div class="product discount">
-										<div class="product_image">
-											<img src="images/product_1.png" alt="">
-										</div>
-										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Racer Sweater (White)</a></h6>
-											<div class="product_price">P700.00<span>750.00</span></div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="16">
-									<div class="product discount">
-										<div class="product_image">
-											<img src="images/product_1.png" alt="">
-										</div>
-										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - Mystery Machine</a></h6>
-											<div class="product_price">P700.00<span>750.00</span></div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="18">
-									<div class="product discount">
-										<div class="product_image">
-											<img src="images/product_1.png" alt="">
-										</div>
-										<div class="favorite favorite_left"></div>
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-										<div class="product_info">
-											<h6 class="product_name"><a href="5items.php">Brigade Clothing - Bay Area</a></h6>
+											<h6 class="product_name"><a href="items/10010.php">Brigade Clothing - Earth</a></h6>
 											<div class="product_price">P700.00<span>750.00</span></div>
 										</div>
 									</div>

@@ -113,7 +113,7 @@
 
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
-						<li><a href="1index2.php">Home</a></li>
+						<li><a href="1index.php">Home</a></li>
 						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Hoodies</a></li>
 					</ul>
 				</div>
@@ -202,14 +202,14 @@
 
 									<!-- Product 1 -->
 
-									<div class="product-item hoodies" data-id="12">
+									<div class="product-item hoodies" data-id="1008">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
+                                                <img src="items/images/1008/front.png" alt="">
                                             </div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - What Ever (Pullovers)</a></h6>
-                                                <div class="product_price">₱1500.00</div>
+                                                <h6 class="product_name"><a href="items/1008.php">Brigade Clothing - Daily (Longsleeve)</a></h6>
+                                                <div class="product_price">₱850.00</div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
@@ -217,15 +217,29 @@
 
 									<!-- Product 2 -->
 
-									<div class="product-item hoodies" data-id="13">
+									<div class="product-item hoodies" data-id="1009">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="images/product_1.png" alt="">
+                                                <img src="items/images/1009/front.png" alt="">
                                             </div>
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">Brigade Clothing - You're Hired (Pullovers)</a></h6>
+                                                <h6 class="product_name"><a href="items/1009.php">Brigade Clothing - Warm Up</a></h6>
                                                 <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                    </div>
+
+									<div class="product-item hoodies" data-id="10010">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="items/images/10010/front.png" alt="">
+                                            </div>
+                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="items/10010.php">Brigade Clothing - Earth</a></h6>
+                                                <div class="product_price">₱1350.00<span>₱1700.00</span></div>
                                             </div>
                                         </div>
                                         <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
