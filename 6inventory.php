@@ -69,9 +69,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $xxl_stock = $_POST['xxl_stock'];
         $xxxl_stock = $_POST['xxxl_stock'];
         $price = $_POST['price'];
-    
+        
         // Fetch current values from the database
-        $query = "SELECT small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, quantity FROM products WHERE id = ?";
+        $query = "SELECT small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, quantity, image FROM products WHERE id = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -84,21 +84,91 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                            $current['xl_stock'] + $current['xxl_stock'] + $current['xxxl_stock'];
         $newSizesSum = $small_stock + $medium_stock + $large_stock + $xl_stock + $xxl_stock + $xxxl_stock;
         $quantityDifference = $newSizesSum - $currentSizesSum;
-    
-        // Update the database
-        $updateQuery = "UPDATE products 
-                        SET small_stock = ?, medium_stock = ?, large_stock = ?, xl_stock = ?, xxl_stock = ?, xxxl_stock = ?, price = ?, quantity = quantity + ? 
-                        WHERE id = ?";
-        $stmt = $conn->prepare($updateQuery);
-        $stmt->bind_param("iiiiiidii", $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $quantityDifference, $id);
         
-        if ($stmt->execute()) {
-            header("Location: 6inventory.php");
-            exit;
-        } else {
-            echo "Error updating record: " . $stmt->error;
+        if (isset($_POST['id'])) {//EDIT STOCK MODULE
+            // Get form data
+            $id = $_POST['id'];
+            $small_stock = $_POST['small_stock'];
+            $medium_stock = $_POST['medium_stock'];
+            $large_stock = $_POST['large_stock'];
+            $xl_stock = $_POST['xl_stock'];
+            $xxl_stock = $_POST['xxl_stock'];
+            $xxxl_stock = $_POST['xxxl_stock'];
+            $price = $_POST['price'];
+            
+            // Fetch current values from the database
+            $query = "SELECT small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, quantity, image FROM products WHERE id = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $current = $result->fetch_assoc();
+            
+            // Calculate the total difference in quantity
+            $currentTotal = $current['quantity'];
+            $currentSizesSum = $current['small_stock'] + $current['medium_stock'] + $current['large_stock'] + 
+                               $current['xl_stock'] + $current['xxl_stock'] + $current['xxxl_stock'];
+            $newSizesSum = $small_stock + $medium_stock + $large_stock + $xl_stock + $xxl_stock + $xxxl_stock;
+            $quantityDifference = $newSizesSum - $currentSizesSum;
+            
+            // Handle image upload
+            if (!empty($_FILES['image']['name'])) {
+                $imageName = $_FILES['image']['name'];
+                $imageTmpName = $_FILES['image']['tmp_name'];
+                $imageSize = $_FILES['image']['size'];
+                $imageError = $_FILES['image']['error'];
+                
+                // Define allowed file types and max file size (for example, 5MB)
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                $maxSize = 5 * 1024 * 1024; // 5MB
+                
+                // Get the file extension
+                $imageExt = pathinfo($imageName, PATHINFO_EXTENSION);
+                $imageExt = strtolower($imageExt);
+                
+                // Check if the file type is allowed and size is within limit
+                if (in_array($_FILES['image']['type'], $allowedTypes) && $imageSize <= $maxSize) {
+                    // Generate a unique name for the image
+                    $newImageName = uniqid('product_', true) . '.' . $imageExt;
+                    $uploadDir = 'uploads/images/';
+                    
+                    // Ensure the directory exists
+                    if (!is_dir($uploadDir)) {
+                        mkdir($uploadDir, 0777, true);
+                    }
+                    
+                    // Move the file to the upload directory
+                    if (move_uploaded_file($imageTmpName, $uploadDir . $newImageName)) {
+                        // Image uploaded successfully, update the database with the new image path
+                        $imagePath = $uploadDir . $newImageName;
+                    } else {
+                        echo "Error uploading the image.";
+                        exit;
+                    }
+                } else {
+                    echo "Invalid file type or size exceeds the limit.";
+                    exit;
+                }
+            } else {
+                // If no new image is uploaded, use the current image
+                $imagePath = $current['image'];
+            }
+            
+            // Update the database with the new image, size, price, and quantity
+            $updateQuery = "UPDATE products 
+                            SET small_stock = ?, medium_stock = ?, large_stock = ?, xl_stock = ?, xxl_stock = ?, xxxl_stock = ?, price = ?, quantity = quantity + ?, image = ? 
+                            WHERE id = ?";
+            $stmt = $conn->prepare($updateQuery);
+            $stmt->bind_param("iiiiiiidsi", $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $quantityDifference, $imagePath, $id);
+            
+            if ($stmt->execute()) {
+                header("Location: 6inventory.php");
+                exit;
+            } else {
+                echo "Error updating record: " . $stmt->error;
+            }
         }
-    }    
+    }        
 
     if (isset($_POST['deleteitemID'])) {//DELETE STOCK MODULE
         // Delete item
@@ -330,7 +400,10 @@ $conn->close();
                                                     <input type="number" step="0.01" id="price" name="price" class="form-control" value="<?php echo $row['price']; ?>" required>
                                                 </div>
                                             </div>
-                                            
+                                            <div class="mb-3"> 
+                                                <label for="imageUpload" class="form-label">Change Image</label>
+                                                <input type="file" id="imageUpload<?php echo $row['id']; ?>" name="image" class="form-control" onchange="trackChanges(<?php echo $row['id']; ?>)">
+                                            </div>
                                             <div class="d-flex justify-content-between">
                                                 <button type="submit" class="btn btn-primary">Save Changes</button>
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

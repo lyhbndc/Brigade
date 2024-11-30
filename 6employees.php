@@ -55,83 +55,43 @@ if (isset($_POST['addEmployee'])) {
 // Handle updating employee information
 if (isset($_POST['updateEmployee'])) {
     $employeeId = $_POST['employeeId'];
-
-    // Sanitize input
-    $firstName = trim($_POST['firstName']);
-    $lastName = trim($_POST['lastName']);
+    $firstName = mysqli_real_escape_string($conn, $_POST['firstName']);
+    $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
+    $username = strtolower(str_replace(' ', '', $firstName)) . '.' . strtolower(str_replace(' ', '', $lastName));
+    $email = $username . '@brigade.com';
     $role = $_POST['role'];
-
-    // Validate required fields, ensure changes are made
-    $query = "UPDATE employees SET ";
-    $params = [];
-    $types = "";
     
-    if (!empty($firstName)) {
-        $query .= "first_name=?, ";
-        $params[] = $firstName;
-        $types .= "s";
-    }
-    if (!empty($lastName)) {
-        $query .= "last_name=?, ";
-        $params[] = $lastName;
-        $types .= "s";
-    }
-    if (!empty($role)) {
-        $query .= "role=?, ";
-        $params[] = $role;
-        $types .= "s";
-    }
-    
-    // Password validation and update if necessary
-    if (!empty($_POST['password'])) {
-        $password = $_POST['password'];
-        $reenterPassword = $_POST['reenterPassword'];
+    // Check if password fields are set
+    if (!empty($_POST['newPassword']) && !empty($_POST['reenterNewPassword'])) {
+        $password = mysqli_real_escape_string($conn, $_POST['newPassword']);
+        $reenterPassword = mysqli_real_escape_string($conn, $_POST['reenterNewPassword']);
 
-        // Validate password conditions
+        // Check password conditions
         $isLengthValid = strlen($password) >= 8;
         $hasUppercase = preg_match('/[A-Z]/', $password);
         $hasNumber = preg_match('/\d/', $password);
         $hasSpecialChar = preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password);
 
-        if (!$isLengthValid || !$hasUppercase || !$hasNumber || !$hasSpecialChar) {
-            echo "Invalid Password. Please match the required conditions.";
-            exit;
+        if ($password !== $reenterPassword || !$isLengthValid || !$hasUppercase || !$hasNumber || !$hasSpecialChar) {
+            echo "Password does not meet the required conditions.";
+            exit; // Stop further execution if password conditions are not met
         }
-
-        if ($password !== $reenterPassword) {
-            echo "Passwords do not match.";
-            exit;
-        }
-
-        $query .= "password=?, ";
-        $params[] = $password;  // Keep password as is (no hashing)
-        $types .= "s";
     }
 
-    // Remove the trailing comma
-    $query = rtrim($query, ", ");
-
-    // Add the WHERE clause
-    $query .= " WHERE id=?";
-    $params[] = $employeeId;
-    $types .= "i";  // Integer for employee ID
-
-    // Use prepared statements
-    if ($stmt = $conn->prepare($query)) {
-        // Bind parameters dynamically
-        $stmt->bind_param($types, ...$params);
-
-        // Execute the query
-        if ($stmt->execute()) {
-            header("Location: 6employees.php?success=Employee updated");
-            exit;
-        } else {
-            echo "Error: " . $stmt->error;
-        }
-
-        $stmt->close();
+    // Update the employee in the database (exclude password if not updated)
+    if (!empty($_POST['newPassword'])) {
+        // If password is updated, include it in the query
+        $updateSql = "UPDATE employees SET first_name='$firstName', last_name='$lastName', username='$username', email='$email', password='$password', role='$role' WHERE id=$employeeId";
     } else {
-        echo "Error: " . $conn->error;
+        // If password is not updated, exclude it from the query
+        $updateSql = "UPDATE employees SET first_name='$firstName', last_name='$lastName', username='$username', email='$email', role='$role' WHERE id=$employeeId";
+    }
+
+    if (mysqli_query($conn, $updateSql)) {
+        header("Location: 6employees.php?success=Employee updated");
+        exit;
+    } else {
+        echo "Error: " . mysqli_error($conn);
     }
 }
 
@@ -287,34 +247,23 @@ $result = $conn->query($sql);
                                     </div>
                                     <div class="modal-body">
                                         <form method="POST" action="6employees.php">
-                                            <!-- Hidden field for employee ID -->
                                             <input type="hidden" name="employeeId" value="<?php echo $row['id']; ?>">
-
-                                            <!-- First Name -->
                                             <div class="mb-3">
                                                 <label for="firstName" class="form-label">First Name</label>
                                                 <input type="text" id="firstName<?php echo $row['id']; ?>" name="firstName" class="form-control" value="<?php echo $row['first_name']; ?>" required oninput="updateUsernameEmail(<?php echo $row['id']; ?>)">
                                             </div>
-
-                                            <!-- Last Name -->
                                             <div class="mb-3">
                                                 <label for="lastName" class="form-label">Last Name</label>
                                                 <input type="text" id="lastName<?php echo $row['id']; ?>" name="lastName" class="form-control" value="<?php echo $row['last_name']; ?>" required oninput="updateUsernameEmail(<?php echo $row['id']; ?>)">
                                             </div>
-
-                                            <!-- Username -->
                                             <div class="mb-3">
                                                 <label for="username" class="form-label">Username</label>
                                                 <input type="text" id="username<?php echo $row['id']; ?>" name="username" class="form-control" value="<?php echo $row['username']; ?>" readonly>
                                             </div>
-
-                                            <!-- Email -->
                                             <div class="mb-3">
                                                 <label for="email" class="form-label">Email</label>
                                                 <input type="email" id="email<?php echo $row['id']; ?>" name="email" class="form-control" value="<?php echo $row['email']; ?>" readonly>
                                             </div>
-
-                                            <!-- Role -->
                                             <div class="mb-3">
                                                 <label for="role" class="form-label">Role</label>
                                                 <select name="role" class="form-control">
@@ -323,19 +272,19 @@ $result = $conn->query($sql);
                                                 </select>
                                             </div>
 
-                                            <!-- Update Password -->
-                                                <div class="mb-3">
+                                            <!-- Update Password Section -->
+                                            <div class="mb-3">
                                                     <button type="button" class="btn btn-primary" id="togglePasswordForm<?php echo $row['id']; ?>" onclick="togglePasswordForm(<?php echo $row['id']; ?>)">Update Password</button>
                                                     <button type="button" class="btn btn-secondary d-none" id="cancelPasswordUpdate<?php echo $row['id']; ?>" onclick="togglePasswordForm(<?php echo $row['id']; ?>)">Cancel Update</button>
                                                 </div>
                                                 <div id="passwordForm<?php echo $row['id']; ?>" style="display:none;">
                                                     <div class="mb-3">
-                                                        <label for="newPassword<?php echo $row['id']; ?>" class="form-label">Enter New Password</label>
-                                                        <input type="password" id="newPassword<?php echo $row['id']; ?>" name="newPassword" class="form-control" oninput="trackChanges(<?php echo $row['id']; ?>)">
+                                                        <label for="newPassword" class="form-label">Enter New Password</label>
+                                                        <input type="password" id="newPassword<?php echo $row['id']; ?>" name="newPassword" class="form-control" oninput="validatePassword(<?php echo $row['id']; ?>)">
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="reenterNewPassword<?php echo $row['id']; ?>" class="form-label">Re-enter New Password</label>
-                                                        <input type="password" id="reenterNewPassword<?php echo $row['id']; ?>" name="reenterNewPassword" class="form-control" oninput="trackChanges(<?php echo $row['id']; ?>)">
+                                                        <label for="reenterNewPassword" class="form-label">Re-enter New Password</label>
+                                                        <input type="password" id="reenterNewPassword<?php echo $row['id']; ?>" name="reenterNewPassword" class="form-control" oninput="validatePassword(<?php echo $row['id']; ?>)">
                                                     </div>
                                                     <div id="passwordConditions<?php echo $row['id']; ?>" class="mb-3">
                                                         <ul>
@@ -348,9 +297,9 @@ $result = $conn->query($sql);
                                                     </div>
                                                 </div>
 
-                                                <!-- Save Changes -->
-                                                <button type="submit" name="updateEmployee" id="saveChanges<?php echo $row['id']; ?>" class="btn btn-primary" disabled>Save Changes</button>
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <!-- Save Changes -->
+                                            <button type="submit" name="updateEmployee" id="saveChanges<?php echo $row['id']; ?>" class="btn btn-primary">Save Changes</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                         </form>
                                     </div>
                                 </div>
@@ -428,29 +377,37 @@ $result = $conn->query($sql);
         });
     </script>
 
-    <script>
-        // Track changes to enable Save Changes button
-        function trackChanges(id) {
-            const firstName = document.getElementById(`firstName${id}`).value.trim();
-            const lastName = document.getElementById(`lastName${id}`).value.trim();
-            const role = document.getElementById(`role${id}`).value.trim();
-            const newPassword = document.getElementById(`newPassword${id}`).value.trim();
-            const reenterPassword = document.getElementById(`reenterNewPassword${id}`).value.trim();
+    <script> //Real-time EDIT Module changes
+        // Toggle Password Form
+        function togglePasswordForm(id) {
+            const passwordForm = document.getElementById(`passwordForm${id}`);
+            const toggleButton = document.getElementById(`togglePasswordForm${id}`);
+            const cancelButton = document.getElementById(`cancelPasswordUpdate${id}`);
 
-            // Check if there are any changes in the form fields
-            const isChanged = firstName || lastName || role || newPassword || reenterPassword;
-
-            // Enable or disable Save Changes button based on changes
-            const saveButton = document.getElementById(`saveChanges${id}`);
-            if (isChanged && isPasswordValid(id)) {
-                saveButton.disabled = false;
+            if (passwordForm.style.display === "none") {
+                passwordForm.style.display = "block";
+                toggleButton.classList.add("d-none");
+                cancelButton.classList.remove("d-none");
             } else {
-                saveButton.disabled = true;
+                passwordForm.style.display = "none";
+                toggleButton.classList.remove("d-none");
+                cancelButton.classList.add("d-none");
             }
         }
 
-        // Validate password in real-time
-        function isPasswordValid(id) {
+        // Update Username and Email
+        function updateUsernameEmail(id) {
+            const firstName = document.getElementById(`firstName${id}`).value.toLowerCase().replace(/\s+/g, '');
+            const lastName = document.getElementById(`lastName${id}`).value.toLowerCase().replace(/\s+/g, '');
+            const username = `${firstName}.${lastName}`;
+            const email = `${username}@brigade.com`;
+
+            document.getElementById(`username${id}`).value = username;
+            document.getElementById(`email${id}`).value = email;
+        }
+
+        // Validate Password
+        function validatePassword(id) {
             const newPassword = document.getElementById(`newPassword${id}`).value;
             const reenterPassword = document.getElementById(`reenterNewPassword${id}`).value;
             const lengthCondition = newPassword.length >= 8;
@@ -464,21 +421,6 @@ $result = $conn->query($sql);
             document.getElementById(`numberCondition${id}`).style.color = numberCondition ? "green" : "red";
             document.getElementById(`specialCharCondition${id}`).style.color = specialCharCondition ? "green" : "red";
             document.getElementById(`matchCondition${id}`).style.color = matchCondition ? "green" : "red";
-
-            return lengthCondition && uppercaseCondition && numberCondition && specialCharCondition && matchCondition;
-        }
-
-        // Disable Save Changes when Update Password is selected
-        function togglePasswordForm(id) {
-            const passwordForm = document.getElementById(`passwordForm${id}`);
-            const saveButton = document.getElementById(`saveChanges${id}`);
-            if (passwordForm.style.display === "none") {
-                passwordForm.style.display = "block";
-                saveButton.disabled = true; // Disable Save Changes button when password is being updated
-            } else {
-                passwordForm.style.display = "none";
-                saveButton.disabled = !isPasswordValid(id); // Re-enable Save Changes button if password conditions are met
-            }
         }
     </script>
 </body>
