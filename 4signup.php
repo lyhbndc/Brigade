@@ -273,13 +273,21 @@ mysqli_close($conn);
                 <label for="city">City:</label>
                 <select id="city" name="city" class="form-control" required>
                     <option value="" disabled selected>Select your city</option>
-                    <option value="New York">New York</option>
-                    <option value="Los Angeles">Los Angeles</option>
-                    <option value="Chicago">Chicago</option>
-                    <option value="Houston">Houston</option>
-                    <option value="Miami">Miami</option>
-                    <option value="San Francisco">San Francisco</option>
-                    <option value="Seattle">Seattle</option>
+                    <option value="Manila">Manila</option>
+                    <option value="Quezon City">Quezon City</option>
+                    <option value="Taguig">Taguig</option>
+                    <option value="Caloocan">Caloocan</option>
+                    <option value="Makati">Makati</option>
+                    <option value="Pasig">Pasig</option>
+                    <option value="Pasay">Pasay</option>
+                    <option value="Valenzuela">Valenzuela</option>
+                    <option value="Navotas">Navotas</option>
+                    <option value="Malabon">Malabon</option>
+                    <option value="Paranaque">Paranaque</option>
+                    <option value="Muntinlupa">Muntinlupa</option>
+                    <option value="Las Pinas">Las Pinas</option>
+                    <option value="Mandaluyong">Mandaluyong</option>
+                    <option value="Pateros">Pateros</option>
                 </select>
             </div>
                                 <div class="form-group col-md-6">

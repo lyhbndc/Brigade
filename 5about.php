@@ -129,12 +129,12 @@
                 <p>Founded on October 10, 2017, Brigade is the creation of a visionary architect, during a pivotal moment in life—newly married, expecting a child, and out of work—who invested his last savings into a business he believed in. With no experience in printing or branding, he dedicated himself to building a brand that initially catered to skaters and has since grown to capture a broader audience. What makes Brigade unique is our commitment to trend-driven, adaptable designs that resonate with a wide range of customers. Every piece reflects the resilience and creativity that defines us, providing quality and innovation with each collection.</p>
             </div>
             <div class="col-lg-6">
-                <img src="assets/449066098_449706761150277_4189243537820075673_n.jpg" alt="About Brigade Clothing" class="img-fluid" style="max-width: 100%; height: auto;">
+                <img src="assets/a2.png" alt="About Brigade Clothing" class="img-fluid" style="max-width: 100%; height: auto;">
             </div>
         </div>
         <div class="row" style="margin-top: 30px;">
             <div class="col-lg-6">
-                <img src="assets/449066098_449706761150277_4189243537820075673_n.jpg" alt="About Brigade Clothing" class="img-fluid" style="max-width: 100%; height: auto;">
+                <img src="assets/a1.png" alt="About Brigade Clothing" class="img-fluid" style="max-width: 100%; height: auto;">
             </div>
             <div class="col-lg-6">
                 <h1>Our Mission</h1>
