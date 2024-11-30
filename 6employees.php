@@ -55,107 +55,43 @@ if (isset($_POST['addEmployee'])) {
 // Handle updating employee information
 if (isset($_POST['updateEmployee'])) {
     $employeeId = $_POST['employeeId'];
-
-    // Sanitize input
-    $firstName = trim($_POST['firstName']);
-    $lastName = trim($_POST['lastName']);
+    $firstName = mysqli_real_escape_string($conn, $_POST['firstName']);
+    $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
+    $username = strtolower(str_replace(' ', '', $firstName)) . '.' . strtolower(str_replace(' ', '', $lastName));
+    $email = $username . '@brigade.com';
     $role = $_POST['role'];
+    
+    // Check if password fields are set
+    if (!empty($_POST['newPassword']) && !empty($_POST['reenterNewPassword'])) {
+        $password = mysqli_real_escape_string($conn, $_POST['newPassword']);
+        $reenterPassword = mysqli_real_escape_string($conn, $_POST['reenterNewPassword']);
 
-    // Prepare query and parameters
-    $query = "UPDATE employees SET ";
-    $params = [];
-    $types = "";
-
-    // Update first name
-    if (!empty($firstName)) {
-        $query .= "first_name=?, ";
-        $params[] = $firstName;
-        $types .= "s";
-    }
-
-    // Update last name
-    if (!empty($lastName)) {
-        $query .= "last_name=?, ";
-        $params[] = $lastName;
-        $types .= "s";
-    }
-
-    // Update role
-    if (!empty($role)) {
-        $query .= "role=?, ";
-        $params[] = $role;
-        $types .= "s";
-    }
-
-    // Handle password update
-    if (!empty($_POST['newPassword'])) {
-        $password = $_POST['newPassword'];
-        $reenterPassword = $_POST['reenterNewPassword'];
-
-        // Validate password conditions
+        // Check password conditions
         $isLengthValid = strlen($password) >= 8;
         $hasUppercase = preg_match('/[A-Z]/', $password);
         $hasNumber = preg_match('/\d/', $password);
         $hasSpecialChar = preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password);
 
-        if (!$isLengthValid || !$hasUppercase || !$hasNumber || !$hasSpecialChar) {
-            echo "Invalid Password. Please match the required conditions.";
-            exit;
-        }
-
-        if ($password !== $reenterPassword) {
-            echo "Passwords do not match.";
-            exit;
-        }
-
-    }
-
-    // Handle image upload
-    if (!empty($_FILES['image']['name'])) {
-        $uploadDir = "uploads/"; // Directory to store uploaded images
-        $imageName = basename($_FILES['image']['name']);
-        $targetFile = $uploadDir . $imageName;
-
-        // Validate the image
-        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-
-        if (!in_array($imageFileType, $allowedExtensions)) {
-            echo "Invalid file type. Only JPG, JPEG, PNG, and GIF files are allowed.";
-            exit;
-        }
-
-        // Move uploaded file to the target directory
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
-            $query .= "image=?, ";
-            $params[] = $targetFile; // Save the file path in the database
-            $types .= "s";
-        } else {
-            echo "Failed to upload the image.";
-            exit;
+        if ($password !== $reenterPassword || !$isLengthValid || !$hasUppercase || !$hasNumber || !$hasSpecialChar) {
+            echo "Password does not meet the required conditions.";
+            exit; // Stop further execution if password conditions are not met
         }
     }
 
-    // Finalize query
-    $query = rtrim($query, ", "); // Remove trailing comma
-    $query .= " WHERE id=?";
-    $params[] = $employeeId;
-    $types .= "i"; // Employee ID is an integer
-
-    // Execute the prepared statement
-    if ($stmt = $conn->prepare($query)) {
-        $stmt->bind_param($types, ...$params);
-
-        if ($stmt->execute()) {
-            header("Location: 6employees.php?success=Employee updated");
-            exit;
-        } else {
-            echo "Error: " . $stmt->error;
-        }
-
-        $stmt->close();
+    // Update the employee in the database (exclude password if not updated)
+    if (!empty($_POST['newPassword'])) {
+        // If password is updated, include it in the query
+        $updateSql = "UPDATE employees SET first_name='$firstName', last_name='$lastName', username='$username', email='$email', password='$password', role='$role' WHERE id=$employeeId";
     } else {
-        echo "Error: " . $conn->error;
+        // If password is not updated, exclude it from the query
+        $updateSql = "UPDATE employees SET first_name='$firstName', last_name='$lastName', username='$username', email='$email', role='$role' WHERE id=$employeeId";
+    }
+
+    if (mysqli_query($conn, $updateSql)) {
+        header("Location: 6employees.php?success=Employee updated");
+        exit;
+    } else {
+        echo "Error: " . mysqli_error($conn);
     }
 }
 
@@ -335,10 +271,6 @@ $result = $conn->query($sql);
                                                     <option value="user" <?php echo $row['role'] == 'user' ? 'selected' : ''; ?>>User</option>
                                                 </select>
                                             </div>
-                                            <div class="mb-3"> <!-- Image Upload -->
-                                                <label for="imageUpload" class="form-label">Change Image</label>
-                                                <input type="file" id="imageUpload<?php echo $row['id']; ?>" name="image" class="form-control" onchange="trackChanges(<?php echo $row['id']; ?>)">
-                                            </div>
 
                                             <!-- Update Password Section -->
                                             <div class="mb-3">
@@ -366,7 +298,7 @@ $result = $conn->query($sql);
                                                 </div>
 
                                             <!-- Save Changes -->
-                                            <button type="submit" name="updateEmployee" id="saveChanges<?php echo $row['id']; ?>" class="btn btn-primary" disabled>Save Changes</button>
+                                            <button type="submit" name="updateEmployee" id="saveChanges<?php echo $row['id']; ?>" class="btn btn-primary">Save Changes</button>
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                         </form>
                                     </div>
