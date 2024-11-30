@@ -142,6 +142,11 @@
             </div>
         </div>
         <div class="row" style="margin-top: 50px;">
+        <div class="col-lg-12">
+            <img src="assets/DSC03096.JPG" alt="Header Image" class="img-fluid" style="max-width: 100%; height: auto;">
+        </div>
+    </div>
+        <div class="row" style="margin-top: 50px;">
             <div class="col-lg-12">
                 <h1>Find Us Here</h1>
                 <p>Visit us at our store in Brgy. Sta Ana, Taytay, Rizal.</p>
