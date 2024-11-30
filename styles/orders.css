@@ -310,8 +310,8 @@ section
     position: absolute;
     bottom: 20px; /* Align with the bottom of the sidebar */
     left: 40px;   /* Nudges it 20px further right from the sidebar padding */
-    color: #fff;  /* White text */
-    background-color: #555; /* Grey background */
+    background-color: black;
+    color: white;
     padding: 10px 15px;
     border-radius: 5px;
     text-decoration: none;
@@ -501,4 +501,3 @@ h6, p {
         color: white;
         border: none;
     }
- 

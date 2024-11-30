@@ -26,6 +26,7 @@ $conn->close();
 </head>
 <body>
     <div class="sidebar">
+    <a><img src="assets/Untitled design.png" class="footer-logo"></a>
         <a href="6dashboard.php">Dashboard</a>
         <a href="6inventory.php">Stocks</a>
         <a href="6onprocess.php">On Process</a>
