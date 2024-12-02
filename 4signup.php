@@ -25,7 +25,19 @@ if (isset($_POST['next'])) {
         $email = $_POST['email'];
         $user = $_POST['username'];
         $pass = $_POST['password'];
-
+        
+        // Check if the email already exists
+        $check_email_query = "SELECT * FROM user WHERE email = '$email'";
+        $email_result = mysqli_query($conn, $check_email_query);
+        if (mysqli_num_rows($email_result) > 0) {
+            echo "<script>
+            if (confirm('Email already exists. Would you like to log in instead?')) {
+                window.location.href = '4login.php';
+            } else {
+                document.getElementById('email').value = '';
+            }
+          </script>";
+        } else {
         // Generate a random 6-digit verification code
         $verification_code = mt_rand(100000, 999999);
 
@@ -66,6 +78,7 @@ if (isset($_POST['next'])) {
         } else {
             echo "Error: " . mysqli_error($conn);
         }
+    }
     } else {
         echo "Please fill in all fields.";
     }
@@ -458,7 +471,11 @@ mysqli_close($conn);
                 matchStatus.style.color = 'red';
             }
         }
+<<<<<<< HEAD
     </script>
     
+=======
+    </script>   
+>>>>>>> lele
 </body>
 </html>

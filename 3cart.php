@@ -395,4 +395,3 @@ function closeSearchDropdown() {
 </body>
 
 </html>
-

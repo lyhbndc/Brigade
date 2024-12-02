@@ -499,5 +499,4 @@ function closeSearchDropdown() {
  </script>
 
 </body>
-
 </html>
