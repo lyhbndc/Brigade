@@ -108,6 +108,7 @@ $result = $conn->query($sql);
 				<li class="menu_item"><a href="1homepage.php">home</a></li>
 				<li class="menu_item"><a href="3shop.php">shop</a></li>
 				<li class="menu_item"><a href="3new.php">new</a></li>
+				<li class="menu_item"><a href="#">on sale</a></li>
 			</ul>
 		</div>
 	</div>
@@ -320,6 +321,7 @@ $result = $conn->query($sql);
 						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
 						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
 						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
 					</ul>
 				</div>
 				<div class="col-sm-6 col-lg-3 p-b-50">
@@ -499,4 +501,5 @@ function closeSearchDropdown() {
  </script>
 
 </body>
+
 </html>
