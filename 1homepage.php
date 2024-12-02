@@ -7,31 +7,28 @@ $user = $_SESSION['user'];
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Brigade Clothing</title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="description" content="Brigade">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
-<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
-<link rel="stylesheet" type="text/css" href="styles/main_styles.css">
-<link rel="stylesheet" type="text/css" href="styles/responsive.css">
+	<title>Brigade Clothing</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="Brigade">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
+	<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
+	<link rel="stylesheet" type="text/css" href="styles/main_styles.css">
+	<link rel="stylesheet" type="text/css" href="styles/responsive.css">
 </head>
 
 <body>
 <div class="super_container">
-
 	<header class="header trans_300">
 		<div class="top_nav">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-6">
-					<div class="top_nav_left">
-        </div>
-					
+						<div class="top_nav_left"></div>
 					</div>
 				</div>
 			</div>
@@ -45,51 +42,49 @@ $user = $_SESSION['user'];
 							<a href="#"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
-                    <ul class="navbar_menu">
-                        <li><a href="#">home</a></li>
-                        <li><a href="3shop.php">shop</a></li>
-                        <li><a href="3new.php">new</a></li>
-                        
-                    </ul>
-                    <ul class="navbar_user">
-					<li class="dropdown">
-    <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </a>
-    <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
-        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
-        <ul id="nameList" class="name-list"></ul>
-    </div>
-</li>
-                        
-                        <!-- User Dropdown -->
-                        <li class="dropdown">
-                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="4login.php">Sign In</a>
-								<a class="dropdown-item" href="7adminlogin.php">Admin</a>
-                            </div>
-                        </li>
-                        
-                        <li class="checkout">
-                            <a href="3cart.php">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                <span id="checkout_items" class="checkout_items">0</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="hamburger_container">
-                        <i class="fa fa-bars" aria-hidden="true"></i>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
-
-
+							<ul class="navbar_menu">
+								<li><a href="#">home</a></li>
+								<li><a href="3shop.php">shop</a></li>
+								<li><a href="3new.php">new</a></li>
+								
+							</ul>
+							<ul class="navbar_user">
+								<li class="dropdown">
+									<a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-search" aria-hidden="true"></i>
+									</a>
+									<div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+										<input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+										<ul id="nameList" class="name-list"></ul>
+									</div>
+								</li>
+									
+								<!-- User Dropdown -->
+								<li class="dropdown">
+									<a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-user" aria-hidden="true"></i>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+										<a class="dropdown-item" href="4login.php">Sign In</a>
+										<a class="dropdown-item" href="7adminlogin.php">Admin</a>
+									</div>
+								</li>
+									
+								<li class="checkout">
+									<a href="3cart.php">
+										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+										<span id="checkout_items" class="checkout_items">0</span>
+									</a>
+								</li>
+							</ul>
+							<div class="hamburger_container">
+								<i class="fa fa-bars" aria-hidden="true"></i>
+							</div>
+                		</nav>
+					</div>
+				</div>
+			</div>
+		</div>
 	</header>
 
 	<div class="fs_menu_overlay"></div>
@@ -112,7 +107,7 @@ $user = $_SESSION['user'];
 				<li class="menu_item"><a href="3new.php">new</a></li>
 				<li class="menu_item"><a href="3onsale.php">on sale</a></li>
 				<li><a href="4recentorders.php">Recent Orders</a></li>
-                <li> <a href="logout.php" class="logout">Logout</a><li></li>
+				<li><a href="logout.php" class="logout">Logout</a><li></li>
 			</ul>
 		</div>
 	</div>
@@ -121,11 +116,7 @@ $user = $_SESSION['user'];
 
 	<div class="main_slider" style="background-image:url(assets/bg.png)">
 		<div class="container fill_height">
-			<div class="row align-items-center fill_height">
-
-					</div>
-				</div>
-			</div>
+			<div class="row align-items-center fill_height"></div>
 		</div>
 	</div>
 
@@ -159,6 +150,7 @@ $user = $_SESSION['user'];
 		</div>
 	</div>
 
+	<!-- NEW ARRIVALS-->
 	<div class="new_arrivals">
 		<div class="container">
 			<div class="row">
@@ -183,101 +175,101 @@ $user = $_SESSION['user'];
 			<div class="row">
 				<div class="col">
 					<div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
+						<div class="product-item tees" data-id="1001">
+							<div class="product discount product_filter">
+								<div class="product_image">
+									<img src="items/images/1001/front.png" alt="">
+								</div>
+								<div class="favorite favorite_left"></div>
+								<div class="product_info">
+									<h6 class="product_name"><a href="items/1001.php">Brigade Clothing - Let's Get High</a></h6>
+									<div class="product_price">$520.00<span>$590.00</span></div>
+								</div>
+							</div>
+							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+						</div>
 
-					<div class="product-item tees" data-id="1001">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="items/images/1001/front.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="items/1001.php">Brigade Clothing - Let's Get High</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
+						<div class="product-item tees" data-id="1003">
+							<div class="product discount product_filter">
+								<div class="product_image">
+									<img src="items/images/1003/front.png" alt="">
+								</div>
+								<div class="favorite favorite_left"></div>
+								<div class="product_info">
+									<h6 class="product_name"><a href="items/1003.php">Brigade Clothing - Allergic (White)</a></h6>
+									<div class="product_price">$520.00<span>$590.00</span></div>
+								</div>
+							</div>
+							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+						</div>
 
-									<div class="product-item tees" data-id="1003">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="items/images/1003/front.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="items/1003.php">Brigade Clothing - Allergic (White)</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
+						<div class="product-item shorts" data-id="1005">
+							<div class="product discount product_filter">
+								<div class="product_image">
+									<img src="items/images/1005/front.png" alt="">
+								</div>
+								<div class="favorite favorite_left"></div>
+								<div class="product_info">
+									<h6 class="product_name"><a href="items/1005.php">Brigade Clothing - Nectar</a></h6>
+									<div class="product_price">$520.00<span>$590.00</span></div>
+								</div>
+							</div>
+							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+						</div>
 
-									<div class="product-item shorts" data-id="1005">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="items/images/1005/front.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="items/1005.php">Brigade Clothing - Nectar</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-
-									<div class="product-item shorts" data-id="1007">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="items/images/1007/front.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Sting</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
+						<div class="product-item shorts" data-id="1007">
+							<div class="product discount product_filter">
+								<div class="product_image">
+									<img src="items/images/1007/front.png" alt="">
+								</div>
+								<div class="favorite favorite_left"></div>
+								<div class="product_info">
+									<h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Sting</a></h6>
+									<div class="product_price">$520.00<span>$590.00</span></div>
+								</div>
+							</div>
+							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+						</div>
 
 						<div class="product-item hoodies" data-id="1008">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="items/images/1008/front.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Daily (Longsleeve)</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-									<div class="product-item hoodies" data-id="1009">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="items/images/1009/front.png" alt="">
-                                            </div>
-                                            <div class="favorite favorite_left"></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="items/1009.php">Brigade Clothing - Warm Up</a></h6>
-                                                <div class="product_price">$520.00<span>$590.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-									
+							<div class="product discount product_filter">
+								<div class="product_image">
+									<img src="items/images/1008/front.png" alt="">
+								</div>
+								<div class="favorite favorite_left"></div>
+								<div class="product_info">
+									<h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Daily (Longsleeve)</a></h6>
+									<div class="product_price">$520.00<span>$590.00</span></div>
+								</div>
+							</div>
+							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+						</div>
 
+						<div class="product-item hoodies" data-id="1009">
+							<div class="product discount product_filter">
+								<div class="product_image">
+									<img src="items/images/1009/front.png" alt="">
+								</div>
+								<div class="favorite favorite_left"></div>
+								<div class="product_info">
+									<h6 class="product_name"><a href="items/1009.php">Brigade Clothing - Warm Up</a></h6>
+									<div class="product_price">$520.00<span>$590.00</span></div>
+								</div>
+							</div>
+							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-<br><br>
+	<br><br>
+
 	<video autoplay muted loop>
 		<source src="assets/1102.mp4" type="video/mp4">
 		Your browser does not support the video tag.
 	</video>
+
 	<div class="best_sellers">
 		<div class="container">
 			<div class="row">
@@ -291,9 +283,6 @@ $user = $_SESSION['user'];
 				<div class="col">
 					<div class="product_slider_container">
 						<div class="owl-carousel owl-theme product_slider">
-
-							
-
 							<div class="owl-item product_slider_item">
 								<div class="product-item" data-id="1002">
 									<div class="product discount">
@@ -326,8 +315,6 @@ $user = $_SESSION['user'];
 								</div>
 							</div>
 
-							
-
 							<div class="owl-item product_slider_item">
 								<div class="product-item" data-id="1006">
 									<div class="product discount">
@@ -342,8 +329,6 @@ $user = $_SESSION['user'];
 									</div>
 								</div>
 							</div>
-
-							
 
 							<div class="owl-item product_slider_item">
 								<div class="product-item" data-id="1003">
@@ -360,8 +345,6 @@ $user = $_SESSION['user'];
 								</div>
 							</div>
 
-							
-
 							<div class="owl-item product_slider_item">
 								<div class="product-item" data-id="1009">
 									<div class="product discount">
@@ -377,8 +360,6 @@ $user = $_SESSION['user'];
 								</div>
 							</div>
 
-							
-
 							<div class="owl-item product_slider_item">
 								<div class="product-item" data-id="10010">
 									<div class="product discount">
@@ -393,9 +374,8 @@ $user = $_SESSION['user'];
 									</div>
 								</div>
 							</div>
-
 						</div>
-							<div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
+						<div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
 							<i class="fa fa-chevron-left" aria-hidden="true"></i>
 						</div>
 						<div class="product_slider_nav_right product_slider_nav d-flex align-items-center justify-content-center flex-column">
@@ -407,7 +387,6 @@ $user = $_SESSION['user'];
 		</div>
 	</div>
 	
-
 	<!-- Benefit -->
 
 	<div class="benefit">
@@ -454,7 +433,6 @@ $user = $_SESSION['user'];
 	</div>
 
 <!-- Footer -->
-
 <br><br><br><br>
 <footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
 	<div class="container">
@@ -505,8 +483,7 @@ $user = $_SESSION['user'];
 		</div>
 	</div>
 	<br><br>
-	</footer>
-
+</footer>
 
 <script>
       

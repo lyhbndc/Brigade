@@ -428,7 +428,7 @@
  { img: "images/1007/i1.png", alt: "7", name: "Sting", href: "1007.php" },
  { img: "images/1008/i1.png", alt: "8", name: "Daily", href: "1008.php" },
  { img: "images/1009/i1.png", alt: "9", name: "Warm Up", href: "1009.php" },
- { img: "images/10010/i1.png", alt: "10", name: "Earth", href: "10010.php" },
+ { img: "images/1010/i1.png", alt: "10", name: "Earth", href: "1010.php" },
 ];
 
 const nameList = document.getElementById('nameList');

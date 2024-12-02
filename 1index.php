@@ -114,10 +114,9 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 						<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
 					</ul>
 				</li>
-				<li class="menu_item"><a href="#">home</a></li>
+				<li class="menu_item"><a href="1homepage.php">home</a></li>
 				<li class="menu_item"><a href="3shop.php">shop</a></li>
 				<li class="menu_item"><a href="3new.php">new</a></li>
-				<li class="menu_item"><a href="3onsale.php">on sale</a></li>
 			</ul>
 		</div>
 	</div>

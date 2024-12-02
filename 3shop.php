@@ -10,22 +10,21 @@ $result = $conn->query($sql);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Brigade Clothing</title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css"åç href="styles/bootstrap4/bootstrap.min.css">
-<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
-<link rel="stylesheet" type="text/css" href="plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
-<link rel="stylesheet" type="text/css" href="styles/categories_styles.css">
-<link rel="stylesheet" type="text/css" href="styles/categories_responsive.css">
+	<title>Brigade Clothing</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css"åç href="styles/bootstrap4/bootstrap.min.css">
+	<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
+	<link rel="stylesheet" type="text/css" href="plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="styles/categories_styles.css">
+	<link rel="stylesheet" type="text/css" href="styles/categories_responsive.css">
 </head>
 
 <body>
-
 <div class="super_container">
 
 	<!-- Header -->
@@ -42,50 +41,50 @@ $result = $conn->query($sql);
 							<a href="1index.php"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
-                    <ul class="navbar_menu">
-                        <li><a href="1index.php">home</a></li>
-                        <li><a href="3shop.php">shop</a></li>
-                        <li><a href="3new.php">new</a></li>
-                        
-                    </ul>
-                    <ul class="navbar_user">
-					<li class="dropdown">
-    <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </a>
-    <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
-        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
-        <ul id="nameList" class="name-list"></ul>
-    </div>
-</li>
-                        
-                        <!-- User Dropdown -->
-                        <li class="dropdown">
-                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-								<a class="dropdown-item" href="4myacc.php">Account</a>
-								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
-								<a class="dropdown-item" href="logout.php">Logout</a>
-                            </div>
-                        </li>
-                        
-                        <li class="checkout">
-                            <a href="3cart.php">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                <span id="checkout_items" class="checkout_items">0</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="hamburger_container">
-                        <i class="fa fa-bars" aria-hidden="true"></i>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
+							<ul class="navbar_menu">
+								<li><a href="1index.php">home</a></li>
+								<li><a href="3shop.php">shop</a></li>
+								<li><a href="3new.php">new</a></li>
+								
+							</ul>
+							<ul class="navbar_user">
+								<li class="dropdown">
+									<a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-search" aria-hidden="true"></i>
+									</a>
+									<div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+										<input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+										<ul id="nameList" class="name-list"></ul>
+									</div>
+								</li>
+								
+								<!-- User Dropdown -->
+								<li class="dropdown">
+									<a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-user" aria-hidden="true"></i>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+										<a class="dropdown-item" href="4myacc.php">Account</a>
+										<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+										<a class="dropdown-item" href="logout.php">Logout</a>
+									</div>
+								</li>
+								
+								<li class="checkout">
+									<a href="3cart.php">
+										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+										<span id="checkout_items" class="checkout_items">0</span>
+									</a>
+								</li>
+							</ul>
+							<div class="hamburger_container">
+								<i class="fa fa-bars" aria-hidden="true"></i>
+							</div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
 	</header>
 
 	<div class="fs_menu_overlay"></div>
@@ -106,10 +105,9 @@ $result = $conn->query($sql);
 						<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
 					</ul>
 				</li>
-				<li class="menu_item"><a href="#">home</a></li>
-				<li class="menu_item"><a href="#">shop</a></li>
-				<li class="menu_item"><a href="#">new</a></li>
-				<li class="menu_item"><a href="#">on sale</a></li>
+				<li class="menu_item"><a href="1homepage.php">home</a></li>
+				<li class="menu_item"><a href="3shop.php">shop</a></li>
+				<li class="menu_item"><a href="3new.php">new</a></li>
 			</ul>
 		</div>
 	</div>
@@ -214,7 +212,11 @@ $result = $conn->query($sql);
 															</div>
 														<?php } ?>
 													<div class="product_info">
-														<h6 class="product_name"><a href="single.html"><?php echo htmlspecialchars($row['name']); ?></a></h6>
+														<h6 class="product_name">
+															<a href="<?php echo htmlspecialchars('items/' . $row['id'] . '.php'); ?>">
+																<?php echo htmlspecialchars($row['name']); ?>
+															</a>
+														</h6>
 														<div class="product_price">₱<?php echo number_format($row['price'], 2); ?></div>
 													</div>
 												</div>
@@ -318,7 +320,6 @@ $result = $conn->query($sql);
 						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
 						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
 						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
-						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
 					</ul>
 				</div>
 				<div class="col-sm-6 col-lg-3 p-b-50">

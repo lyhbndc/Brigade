@@ -97,10 +97,9 @@
 						<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
 					</ul>
 				</li>
-				<li class="menu_item"><a href="#">home</a></li>
-				<li class="menu_item"><a href="#">shop</a></li>
-				<li class="menu_item"><a href="#">new</a></li>
-				<li class="menu_item"><a href="#">on sale</a></li>
+				<li class="menu_item"><a href="1homepage.php">home</a></li>
+				<li class="menu_item"><a href="3shop.php">shop</a></li>
+				<li class="menu_item"><a href="3new.php">new</a></li>
 			</ul>
 		</div>
 	</div>

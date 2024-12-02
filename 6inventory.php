@@ -15,7 +15,7 @@ $result = $conn->query($sql);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['name'])) { // ADD ITEM MODULE
         // Process the form
-        $name = $_POST['name'];
+        $name = "Brigade Clothing - " . trim($_POST['name']); // Concatenate the prefix with the input name
     
         // Use null coalescing to default to 0 if not set, and check if the value is numeric
         $small_stock = isset($_POST['small_stock']) && is_numeric($_POST['small_stock']) ? (int)$_POST['small_stock'] : 0;

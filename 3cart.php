@@ -118,7 +118,6 @@ if (!$user) {
                     <li class="menu_item"><a href="1homepage.php">home</a></li>
                     <li class="menu_item"><a href="3shop.php">shop</a></li>
                     <li class="menu_item"><a href="3new.php">new</a></li>
-                    <li class="menu_item"><a href="3onsale.php">on sale</a></li>
                 </ul>
             </div>
         </div>
