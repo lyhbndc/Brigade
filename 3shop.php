@@ -3,7 +3,7 @@ session_start();
 $user = $_SESSION['user'];
 $conn = mysqli_connect("localhost", "root", "", "brigade");
 
-$sql = "SELECT id, name, image, price, stock FROM products";
+$sql = "SELECT id, name, image, price, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock FROM products";
 $result = $conn->query($sql);
 ?>
 
@@ -42,33 +42,50 @@ $result = $conn->query($sql);
 							<a href="1index.php"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
-							<ul class="navbar_menu">
-							<li><a href="1homepage.php">home</a></li>
-                                    <li><a href="3shop.php">shop</a></li>
-                                    <li><a href="#">new</a></li>
-                                    <li><a href="#">on sale</a></li>
-                                    <li><a href="4recentorders.php">Recent Orders</a></li>
-									<li><a href="logout.php" class="logout">Logout</a></li>
-							</ul>
-							<ul class="navbar_user">
-								<li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-								<li><a href="4myacc.php"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-								<li class="checkout">
-									<a href="3cart.php">
-										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
-										<span id="checkout_items" class="checkout_items">2</span>
-									</a>
-								</li>
-							</ul>
-							<div class="hamburger_container">
-								<i class="fa fa-bars" aria-hidden="true"></i>
-							</div>
-						</nav>
-					</div>
-				</div>
-			</div>
-		</div>
-
+                    <ul class="navbar_menu">
+                        <li><a href="1index.php">home</a></li>
+                        <li><a href="3shop.php">shop</a></li>
+                        <li><a href="3new.php">new</a></li>
+                        
+                    </ul>
+                    <ul class="navbar_user">
+					<li class="dropdown">
+    <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </a>
+    <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+        <ul id="nameList" class="name-list"></ul>
+    </div>
+</li>
+                        
+                        <!-- User Dropdown -->
+                        <li class="dropdown">
+                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+								<a class="dropdown-item" href="4myacc.php">Account</a>
+								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+								<a class="dropdown-item" href="logout.php">Logout</a>
+                            </div>
+                        </li>
+                        
+                        <li class="checkout">
+                            <a href="3cart.php">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <span id="checkout_items" class="checkout_items">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="hamburger_container">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
 	</header>
 
 	<div class="fs_menu_overlay"></div>
@@ -105,7 +122,7 @@ $result = $conn->query($sql);
 
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
-						<li><a href="1index2.php">Home</a></li>
+						<li><a href="1index.php">Home</a></li>
 						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Shop</a></li>
 					</ul>
 				</div>
@@ -124,6 +141,18 @@ $result = $conn->query($sql);
 						</p>
 						<div id="slider-range"></div>
 						<div class="filter_button"><span>filter</span></div>
+					</div>
+					<div class="sidebar_section">
+						<div class="sidebar_title">
+							<h5>Sizes</h5>
+						</div>
+						<ul class="checkboxes">
+							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>S</span></li>
+							<li class="active"><i class="fa fa-square" aria-hidden="true"></i><span>M</span></li>
+							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>L</span></li>
+							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XL</span></li>
+							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XXL</span></li>
+						</ul>
 					</div>
 
 
@@ -162,42 +191,49 @@ $result = $conn->query($sql);
 									if ($result->num_rows > 0) {
 										while ($row = $result->fetch_assoc()) {
 											$productId = str_pad($row['id'], 7, '0', STR_PAD_LEFT);
-											$stock = $row['stock'];
+
+											// Check if all sizes are out of stock
+											$isOutOfStock = (
+												$row['small_stock'] == 0 && 
+												$row['medium_stock'] == 0 && 
+												$row['large_stock'] == 0 && 
+												$row['xl_stock'] == 0 && 
+												$row['xxl_stock'] == 0 &&
+												$row['xxxl_stock'] == 0 
+											);
 											?>
 											<div class="product-item" data-id="<?php echo $productId; ?>">
 												<div class="product discount product_filter">
 													<div class="product_image">
-														<img src="<?php echo htmlspecialchars($row['image']); ?>" alt="">
+														<img src="/Brigade/uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="">
 													</div>
 													<div class="favorite favorite_left"></div>
-													<?php if ($stock == 0) { ?>
-														<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
-															<span>Sold</span>
-														</div>
-													<?php } ?>
+														<?php if ($isOutOfStock) { ?>
+															<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+																<span>Sold</span>
+															</div>
+														<?php } ?>
 													<div class="product_info">
 														<h6 class="product_name"><a href="single.html"><?php echo htmlspecialchars($row['name']); ?></a></h6>
 														<div class="product_price">₱<?php echo number_format($row['price'], 2); ?></div>
 													</div>
 												</div>
 												<div class="red_button add_to_cart_button">
-													<?php if ($stock > 0) { ?>
-														<a href="#" class="add-to-cart" data-id="<?php echo $productId; ?>">add to cart</a>
+													<?php if (!$isOutOfStock) { ?>
+														<a href="#" class="add-to-cart" data-id="<?php echo $productId; ?>">Add to Cart</a>
 													<?php } else { ?>
 														<span style="color: gray;">Out of Stock</span>
 													<?php } ?>
 												</div>
 											</div>
 										<?php 
+											}
+										} else {
+											echo "<p>No products found.</p>";
 										}
-									} else {
-										echo "<p>No products found.</p>";
-									}
-									?>
+										?>
+									</div>
 								</div>
-
-								</div>
-						
 							</div>
 						</div>
 					</div>
@@ -271,8 +307,8 @@ $result = $conn->query($sql);
 					<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Company</h7>
 		
 					<ul>
-						<li class="p-b-10"><a href="5about.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
-						<li class="p-b-10"><a href="5features.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
 					</ul>
 				</div>
 				<div class="col-sm-6 col-lg-3 p-b-50">
@@ -280,20 +316,20 @@ $result = $conn->query($sql);
 					<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
 					<ul>
 						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
-						<li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
-						<li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
-						<li class="p-b-10"><a href="3onsale.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
 					</ul>
 				</div>
 				<div class="col-sm-6 col-lg-3 p-b-50">
 					<br>
 					<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
 					<ul>
-						<li class="p-b-10"><a href="https://shopee.ph/brigadeclothing?originalCategoryId=11044828#product_list" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
-						<li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing?path=index.htm&lang=en&pageTypeId=1" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
+						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
 						<li class="p-b-10">
-							<a href="https://www.facebook.com/BrigadeWorld"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
-							<a href="https://www.instagram.com/brigadeclothing_official/"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
+							<a href="#"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
+							<a href="#"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
 						</li>
 					</ul>
 				</div>
@@ -304,7 +340,7 @@ $result = $conn->query($sql);
 			</div>
 		</div>
 		<br><br>
-	</footer>
+		</footer>
 
 
 <script src="js/jquery-3.2.1.min.js"></script>
@@ -328,33 +364,47 @@ $result = $conn->query($sql);
     cartCountElement.textContent = cartItems.length;
 }
 
+document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault();
+        const productItem = button.closest('.product-item');
+        const productId = productItem.getAttribute('data-id');
+        const productName = productItem.querySelector('.product_name a').textContent;
+        const productImage = productItem.querySelector('.product_image img').src;
+        const productPrice = productItem.querySelector('.product_price').textContent;
 
-            const productItem = button.closest('.product-item');
-            const productId = productItem.getAttribute('data-id');
-            const productName = productItem.querySelector('.product_name a').textContent;
-            const productImage = productItem.querySelector('.product_image img').src;
-            const productPrice = productItem.querySelector('.product_price').textContent;
+        // Get the selected size from the sidebar
+        const selectedSize = document.querySelector('.checkboxes .active span').textContent;
 
-            // Check if the item is already in the cart
-            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
-            if (existingItemIndex > -1) {
-                // Increase quantity if item already exists
-                cartItems[existingItemIndex].quantity += 1;
-            } else {
-                // Add new item with default quantity of 1
-                cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
-            }
+        if (!selectedSize) {
+            alert("Please select a size from the sidebar.");
+            return;
+        }
 
-            // Save updated cart to localStorage and update the cart display
-            localStorage.setItem(cartKey, JSON.stringify(cartItems));
-            updateCart();
-            alert(`${productName} has been added to your cart!`);
-        });
+        // Check if the item is already in the cart with the selected size
+        const existingItemIndex = cartItems.findIndex(item => item.id === productId && item.size === selectedSize);
+        if (existingItemIndex > -1) {
+            // Increase quantity if item already exists
+            cartItems[existingItemIndex].quantity += 1;
+        } else {
+            // Add new item with default quantity of 1
+            cartItems.push({
+                id: productId,
+                name: productName,
+                image: productImage,
+                price: productPrice,
+                size: selectedSize,
+                quantity: 1
+            });
+        }
+
+        // Save updated cart to localStorage and update the cart display
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        updateCart();
+        alert(`${productName} (Size: ${selectedSize}) has been added to your cart!`);
     });
+});
 
     // Update cart count on page load
     document.addEventListener('DOMContentLoaded', updateCart);
@@ -372,6 +422,80 @@ $result = $conn->query($sql);
         }
     });
 </script>
+
+<script>
+    const items = [
+		{ img: "items/images/1001/i1.png", alt: "1", name: "Let's Get High", href: "items/1001.php" },
+ { img: "items/images/1002/i1.png", alt: "2", name: "On The Grind", href: "items/1002.php"},
+ { img: "items/images/1003/i1.png", alt: "3", name: "Allergic", href: "items/1003.php" },
+ { img: "items/images/1004/i1.png", alt: "4", name: "Summer Heist", href: "items/1004.php" },
+ { img: "items/images/1005/i1.png", alt: "5", name: "Nectar", href: "items/1005.php" },
+ { img: "items/images/1006/i1.png", alt: "6", name: "Bay Area", href: "items/1006.php" },
+ { img: "items/images/1007/i1.png", alt: "7", name: "Sting", href: "items/1007.php" },
+ { img: "items/images/1008/i1.png", alt: "8", name: "Daily", href: "items/1008.php" },
+ { img: "items/images/1009/i1.png", alt: "9", name: "Warm Up", href: "items/1009.php" },
+ { img: "items/images/10010/i1.png", alt: "10", name: "Earth", href: "items/10010.php" },
+];
+
+const nameList = document.getElementById('nameList');
+const searchInput = document.getElementById('searchInput');
+
+function renderList(filteredItems) {
+ nameList.innerHTML = ''; // Clear the list
+ filteredItems.forEach(item => {
+     const li = document.createElement('li');
+     li.classList.add('name-item');
+     li.innerHTML = `
+         <a href="${item.href || '#'}" class="name-item-link" style="color: ${item.color || '#000'}">
+                <img src="${item.img}" alt="${item.alt}" class="name-item-img">
+                <span class="name-item-text">${item.name}</span>
+            </a>
+     `;
+     nameList.appendChild(li);
+ });
+}
+
+// Initial render
+renderList(items);
+
+function filterNames() {
+ const searchValue = searchInput.value.toLowerCase();
+ const filteredItems = items
+     .filter(item => item.name.toLowerCase().includes(searchValue)) // Filter items
+     .sort((a, b) => a.name.localeCompare(b.name)); // Sort filtered items alphabetically
+ renderList(filteredItems); // Render the filtered and sorted list
+}
+searchInput.addEventListener('keyup', filterNames);
+
+// Initialize the dropdown toggle behavior
+function toggleDropdown(event) {
+ const dropdownMenu = document.getElementById('searchDropdownMenu');
+ const isExpanded = dropdownMenu.style.display === 'block';
+ dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+}
+function closeSearchDropdown() {
+     const searchDropdownMenu = document.getElementById('searchDropdownMenu');
+     searchDropdownMenu.style.display = 'none';
+ }
+
+ // Attach event listener to the user dropdown
+ document.getElementById('userDropdown').addEventListener('click', function() {
+     closeSearchDropdown(); // Close the search dropdown when the user dropdown is clicked
+ });
+
+ // Function to toggle the search dropdown
+ function toggleSearchDropdown(event) {
+     const dropdownMenu = document.getElementById('searchDropdownMenu');
+     const isExpanded = dropdownMenu.style.display === 'block';
+     dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+     
+     // Close the user dropdown if it is open
+     const userDropdownMenu = document.querySelector('.dropdown-menu-right');
+     if (userDropdownMenu.style.display === 'block') {
+         userDropdownMenu.style.display = 'none';
+     }
+ }
+ </script>
 
 </body>
 </html>

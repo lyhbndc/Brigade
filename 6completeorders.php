@@ -5,7 +5,7 @@ $conn = mysqli_connect("localhost", "root", "", "brigade");
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
-$sql = "SELECT OrderID, Product, Quantity, Status, Total, Date FROM complete_order WHERE Status = 'Order Completed'";
+$sql = "SELECT OrderID, Customer, Product, Quantity, Status, Total, Date FROM complete_order WHERE Status = 'Order Completed'";
 $result = $conn->query($sql);
 
 $conn->close();
@@ -19,202 +19,38 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brigade Clothing</title>
     <link rel="stylesheet" href="styles/bootstrap4/bootstrap.min.css">
-    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/orders.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-    @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,900');
-    
-    body {
-        font-size: 14px;
-        display: flex;
-        height: 100vh;
-        overflow: hidden;
-        background-color: #C1C1C1;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    h6, p {
-        font-size: 14px;
-        line-height: 1.7;
-        font-weight: 500;
-        color: black;
-        -webkit-font-smoothing: antialiased;
-        -webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
-        text-shadow: rgba(0,0,0,.01) 0 0 1px;
-    }
-
-    .sidebar {
-        width: 215px;
-        background-color: black;
-        color: white;
-        padding: 15px;
-        position: fixed;
-        height: 100%;
-        overflow-y: auto;
-        transition: transform 0.3s ease;
-        z-index: 1000;
-    }
-
-    .sidebar h2 {
-        color: #fff;
-    }
-
-    .sidebar a {
-        color: white;
-        text-decoration: none;
-        display: block;
-        padding: 10px;
-        margin: 5px 0;
-        border-radius: 4px;
-    }
-
-    .sidebar a:hover {
-        background-color: #495057;
-    }
-
-    .content {
-        margin-left: 220px;
-        padding: 20px;
-        flex-grow: 1;
-        transition: margin-left 0.3s ease;
-        overflow-y: auto;
-    }
-
-    .hamburger {
-        cursor: pointer;
-        margin: 15px;
-        display: none;
-    }
-
-    .footer-logo {
-        width: 168px;
-        height: auto;
-        cursor: default;
-    }
-
-    .card {
-        border-radius: 20px;
-        background-color: white;
-        margin-bottom: 15px;
-    }
-
-    .card-body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-    }
-
-    /* Responsive Styles */
-    @media (max-width: 768px) {
-        .sidebar {
-            position: fixed;
-            transform: translateX(-100%);
-            width: 100%;
-            height: 100%;
-        }
-        .content {
-            margin-left: 0;
-        }
-        .hamburger {
-            display: block;
-        }
-    }
-
-    /* Table Styling */
-    .table {
-        width: 100%;
-        margin: 20px 0;
-        border-collapse: collapse;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .table th, .table td {
-        text-align: center;
-        vertical-align: middle;
-        padding: 10px;
-    }
-
-    .table th {
-        background-color: #343a40;
-        color: white;
-    }
-
-    .table-striped tbody tr:nth-of-type(odd) {
-        background-color: #f9f9f9;
-    }
-
-    .table-bordered {
-        border: 1px solid #dee2e6;
-    }
-
-    .table-bordered th, .table-bordered td {
-        border: 1px solid #dee2e6;
-    }
-
-    .table tbody tr:hover {
-        background-color: #f1f1f1;
-    }
-
-    .badge {
-        font-size: 12px;
-        padding: 5px 10px;
-        border-radius: 5px;
-        background-color: #28a745;
-        color: white;
-    }
-
-    /* Button Styles */
-    .btn {
-        padding: 5px 10px;
-        font-size: 14px;
-    }
-
-    .btn-success {
-        background-color: #28a745;
-        color: white;
-        border: none;
-    }
-
-    .btn-warning {
-        background-color: #ffc107;
-        color: white;
-        border: none;
-    }
-
-    .btn-danger {
-        background-color: #dc3545;
-        color: white;
-        border: none;
-    }
-</style>
 
     
 </head>
 <body>
-
-<div class="sidebar" id="sidebar">
+    <div class="sidebar">
     <a><img src="assets/Untitled design.png" class="footer-logo"></a>
-    <a href="6dashboard.php">Dashboard</a>
-    <a href="6inventory.php">Stocks</a>
-    <a href="#">Report</a>
-    <a href="6completeorders.php">Complete Orders</a>
-    <a href="6cancelorders.php">Cancel Orders</a>
-    <a href="6refundorders.php">Refund Orders</a>
-</div>
+        <a href="6dashboard.php">Dashboard</a>
+        <a href="6inventory.php">Stocks</a>
+        <a href="6onprocess.php">On Process</a>
+        <a href="6completeorders.php">Complete Orders</a>
+        <a href="6cancelorders.php">Cancel Orders</a>
+        <a href="6refundorders.php">Refund Orders</a>
 
-<h2>Completed Orders</h2>
+        <?php if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
+            <a href="6employees.php">Employees</a>
+        <?php endif; ?>
+
+        <a href="logout.php" class="logout-button">Logout</a>
+    </div>
+    
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th>Order ID</th>
+                <th>Customer</th>
                 <th>Product</th>
                 <th>Quantity</th>
                 <th>Status</th>
                 <th>Total</th>
                 <th>Date</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -223,17 +59,12 @@ $conn->close();
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['OrderID']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['Customer']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['Product']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['Quantity']) . "</td>";
                     echo "<td><span class='badge badge-success'>" . htmlspecialchars($row['Status']) . "</span></td>";
                     echo "<td>" . htmlspecialchars($row['Total']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['Date']) . "</td>";
-                    echo "<td>
-                            <button class='btn btn-success btn-sm'>Received</button>
-                            <button class='btn btn-warning btn-sm'>Refund</button>
-                            <button class='btn btn-danger btn-sm'>Cancel</button>
-                          </td>";
-                    echo "</tr>";
                 }
             } else {
                 echo "<tr><td colspan='7'>No completed orders found.</td></tr>";
