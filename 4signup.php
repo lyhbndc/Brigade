@@ -14,6 +14,8 @@ if (!$conn) {
 }
 
 if (isset($_POST['next'])) {
+    echo "Form is submitted"; // Debugging form submission
+
     if (isset($_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['password'], $_POST['city'], $_POST['zip_code'], $_POST['contact_no'], $_POST['email'], $_POST['username']) && !empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['zip_code']) && !empty($_POST['contact_no']) && !empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['password'])) {
 
         $firstname = $_POST['first_name'];
@@ -26,45 +28,58 @@ if (isset($_POST['next'])) {
         $user = $_POST['username'];
         $pass = $_POST['password'];
 
-        // Generate a random 6-digit verification code
-        $verification_code = mt_rand(100000, 999999);
+        // Check if the email already exists
+        $check_email_query = "SELECT * FROM user WHERE email = '$email'";
+        $email_result = mysqli_query($conn, $check_email_query);
 
-        // Insert data into the user table
-        $query = "INSERT INTO user (firstname, lastname, address, city, zip, contact, email, username, password, verification_code) VALUES ('$firstname', '$lastname', '$address', '$city', '$zip', '$contact', '$email', '$user', '$pass', '$verification_code')";
-        $result = mysqli_query($conn, $query);
-
-        if ($result) {
-            // Send the verification email using PHPMailer
-            $mail = new PHPMailer(true);
-            try {
-                $mail->isSMTP();
-                $mail->Host = 'smtp.mailersend.net'; // Update this with your SMTP server
-                $mail->SMTPAuth = true;
-                $mail->Username = 'MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net'; // SMTP username
-                $mail->Password = 'fAtQJCLJh8TX4VSX'; // SMTP password
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                $mail->Port = 587;
-
-                // Recipients
-                $mail->setFrom('MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net', 'Brigade');
-                $mail->addAddress($email);
-
-                // Content
-                $mail->isHTML(true);
-                $mail->Subject = 'Your Verification Code';
-                $mail->Body = "Your verification code is: <strong>$verification_code</strong>";
-
-                $mail->send();
-
-                // Store email in session for verification
-                $_SESSION['email'] = $email;
-                header("Location: otp_verification.php"); // Redirect to OTP verification page
-                exit();
-            } catch (Exception $e) {
-                echo "Mailer Error: {$mail->ErrorInfo}";
-            }
+        if (mysqli_num_rows($email_result) > 0) {
+            echo "The email address is already registered. Please use a different email.";
         } else {
-            echo "Error: " . mysqli_error($conn);
+            // Generate a random 6-digit verification code
+            $verification_code = mt_rand(100000, 999999);
+
+            // Insert data into the user table
+            $query = "INSERT INTO user (firstname, lastname, address, city, zip, contact, email, username, password, verification_code) VALUES ('$firstname', '$lastname', '$address', '$city', '$zip', '$contact', '$email', '$user', '$pass', '$verification_code')";
+            $result = mysqli_query($conn, $query);
+
+            if ($result) {
+                // Send the verification email using PHPMailer
+                $mail = new PHPMailer(true);
+                try {
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.mailersend.net'; // Update this with your SMTP server
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net'; // SMTP username
+                    $mail->Password = 'fAtQJCLJh8TX4VSX'; // SMTP password
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->Port = 587;
+
+                    // Recipients
+                    $mail->setFrom('MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net', 'Brigade');
+                    $mail->addAddress($email);
+
+                    // Content
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Your Verification Code';
+                    $mail->Body = "Your verification code is: <strong>$verification_code</strong>";
+
+                    $mail->send();
+
+                    // Store email in session for verification
+                    $_SESSION['email'] = $email;
+
+                    // Debugging the session
+                    echo "Session email set: " . $_SESSION['email']; 
+
+                    // Redirect to OTP verification page
+                    header("Location: /Brigade/otp_verification.php");
+                    exit();
+                } catch (Exception $e) {
+                    echo "Mailer Error: {$mail->ErrorInfo}";
+                }
+            } else {
+                echo "Error: " . mysqli_error($conn);
+            }
         }
     } else {
         echo "Please fill in all fields.";
@@ -85,7 +100,7 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
+    <link rel="stylesheet" type="text/css" href="styles/single_styles.css">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
     <style>
         body {
@@ -98,7 +113,7 @@ mysqli_close($conn);
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             width: 600px;
-            margin: 150px auto; /* Center the form */
+            margin: 30px auto; /* Center the form */
             text-align: center;
         }
         h2 {
@@ -168,17 +183,6 @@ mysqli_close($conn);
         .footer-logo{
            cursor: default; 
         }
-        .form-control{
-            width: 100%;
-            padding: 7px;
-            margin: 15px 0;
-            border: 1px solid #444;
-            border-radius: 20px;
-            background-color: white;
-            color: gray;
-            font-size: 14px;
-            transition: border 0.3s;
-        }
     </style>
 </head>
 
@@ -187,7 +191,7 @@ mysqli_close($conn);
     <div class="super_container">
         <header class="header trans_300">
             <!-- Top Navigation -->
-
+            <div class="top_nav">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
@@ -203,7 +207,7 @@ mysqli_close($conn);
                         </div>
                     </div>
                 </div>
-
+            </div>
             <!-- Main Navigation -->
             <div class="main_nav_container">
                 <div class="container">
@@ -269,27 +273,10 @@ mysqli_close($conn);
                                 <input type="text" id="address" name="address" class="form-control" required>
                             </div>
                             <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="city">City:</label>
-                <select id="city" name="city" class="form-control" required>
-                    <option value="" disabled selected>Select your city</option>
-                    <option value="Manila">Manila</option>
-                    <option value="Quezon City">Quezon City</option>
-                    <option value="Taguig">Taguig</option>
-                    <option value="Caloocan">Caloocan</option>
-                    <option value="Makati">Makati</option>
-                    <option value="Pasig">Pasig</option>
-                    <option value="Pasay">Pasay</option>
-                    <option value="Valenzuela">Valenzuela</option>
-                    <option value="Navotas">Navotas</option>
-                    <option value="Malabon">Malabon</option>
-                    <option value="Paranaque">Paranaque</option>
-                    <option value="Muntinlupa">Muntinlupa</option>
-                    <option value="Las Pinas">Las Pinas</option>
-                    <option value="Mandaluyong">Mandaluyong</option>
-                    <option value="Pateros">Pateros</option>
-                </select>
-            </div>
+                                <div class="form-group col-md-6">
+                                    <label for="city">City:</label>
+                                    <input type="text" id="city" name="city" class="form-control" required>
+                                </div>
                                 <div class="form-group col-md-6">
                                     <label for="zip">Zip Code:</label>
                                     <input type="text" id="zip" name="zip_code" class="form-control" required>
@@ -342,14 +329,14 @@ mysqli_close($conn);
         </div>
 
         <!-- Footer -->
-
+        <br><br><br><br>
         <footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6 col-lg-3 p-b-50">
                         <br>
                         <h4 class="stext-301 cl0 p-b-30">
-                            <a href="#"><img src="assets/Untitled design.png" class="footer-logo"></a>
+                            <img src="assets/Untitled design.png" class="footer-logo">
                         </h4>
                         <p class="stext-107 cl7 size-201">
                             Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
@@ -358,10 +345,9 @@ mysqli_close($conn);
                     <div class="col-sm-6 col-lg-3 p-b-50">
                         <br>
                         <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Company</h7>
-            
                         <ul>
-                            <li class="p-b-10"><a href="5about.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
-                            <li class="p-b-10"><a href="5features.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
+                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
+                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-6 col-lg-3 p-b-50">
@@ -369,20 +355,20 @@ mysqli_close($conn);
                         <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
                         <ul>
                             <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
-                            <li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
-                            <li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
-                            <li class="p-b-10"><a href="3onsale.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
+                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
+                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
+                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-6 col-lg-3 p-b-50">
                         <br>
                         <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
                         <ul>
-                            <li class="p-b-10"><a href="https://shopee.ph/brigadeclothing?originalCategoryId=11044828#product_list" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
-                            <li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing?path=index.htm&lang=en&pageTypeId=1" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
+                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
+                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
                             <li class="p-b-10">
-                                <a href="https://www.facebook.com/BrigadeWorld"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
-                                <a href="https://www.instagram.com/brigadeclothing_official/"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
+                                <a href="#"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
+                                <a href="#"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
                             </li>
                         </ul>
                     </div>
@@ -411,18 +397,6 @@ mysqli_close($conn);
 }
 
     </script>
-     <script>
-    // JavaScript to make the navbar opaque when scrolling
-    window.addEventListener('scroll', function() {
-        const mainNav = document.querySelector('.main_nav_container');
-        
-        if (window.scrollY > 50) { // Adjust the scroll threshold as needed
-            mainNav.classList.add('opaque');
-        } else {
-            mainNav.classList.remove('opaque');
-        }
-    });
-</script>
 
 <script>
         function checkPasswordStrength() {
@@ -458,11 +432,7 @@ mysqli_close($conn);
                 matchStatus.style.color = 'red';
             }
         }
-<<<<<<< HEAD
     </script>
     
-=======
-    </script>   
->>>>>>> lele
 </body>
 </html>
