@@ -142,14 +142,14 @@
 						<div class="col-lg-3 thumbnails_col order-lg-1 order-2">
 							<div class="single_product_thumbnails">
 								<ul>
-									<li class="active"><img src="images\10010\t1.png" alt="" data-image="images/10010/1.png"></li>
-									<li ><img src="images\10010\t2.png" alt="" data-image="images/10010/2.png"></li>
+									<li class="active"><img src="images\1010\t1.png" alt="" data-image="images/1010/1.png"></li>
+									<li ><img src="images\1010\t2.png" alt="" data-image="images/1010/2.png"></li>
 								</ul>
 							</div>
 						</div>
 						<div class="col-lg-9 image_col order-lg-2 order-1">
 							<div class="single_product_image">
-								<div class="single_product_image_background" style="background-image:url(images/10010/1.png)"></div>
+								<div class="single_product_image_background" style="background-image:url(images/1010/1.png)"></div>
 							</div>
 						</div>
 					</div>
@@ -222,7 +222,7 @@
 							</div>
 							<div class="col-lg-5 offset-lg-2 desc_col">
 								<div class="tab_image">
-									<img src="images\10010\i1.png" alt="">
+									<img src="images\1010\i1.png" alt="">
 								</div>
 
 							</div>
@@ -428,7 +428,7 @@
  { img: "images/1007/i1.png", alt: "7", name: "Sting", href: "1007.php" },
  { img: "images/1008/i1.png", alt: "8", name: "Daily", href: "1008.php" },
  { img: "images/1009/i1.png", alt: "9", name: "Warm Up", href: "1009.php" },
- { img: "images/10010/i1.png", alt: "10", name: "Earth", href: "10010.php" },
+ { img: "images/1010/i1.png", alt: "10", name: "Earth", href: "1010.php" },
 ];
 
 const nameList = document.getElementById('nameList');
