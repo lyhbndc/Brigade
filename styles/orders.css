@@ -266,6 +266,17 @@ section
     width: 100%;
     margin-bottom: 20px;
 }
+.footer-logo {
+    cursor: default; /* Keeps the cursor in default state */
+}
+
+.footer-logo:hover {
+    /* Disable any hover effect */
+    color: inherit; /* Prevents color change on hover */
+    text-decoration: none; /* Disables underline or other text decoration */
+    transform: none; /* If there's any transform effect, remove it */
+}
+
 
 .sidebar h2 {
     color: #fff;

@@ -348,7 +348,7 @@ $conn->close();
                             <td style="width: 5%"><?php echo $row['xl_stock']; ?></td>
                             <td style="width: 5%"><?php echo $row['xxl_stock']; ?></td>
                             <td style="width: 5%"><?php echo $row['xxxl_stock']; ?></td>
-                            <td style="width: 10%"><?php echo '$' . number_format($row['price'], 2); ?></td>
+                            <td style="width: 10%"><?php echo '₱' . number_format($row['price'], 2); ?></td>
                             <td style="width: 10%">
                                 <button class="btn btn-warning btn-sm custom-btn" data-bs-toggle="modal" data-bs-target="#editStockModal<?php echo $row['id']; ?>">Edit</button>
                                 <button class="btn btn-danger btn-sm custom-btn" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $row['id']; ?>">Delete</button>

@@ -1,28 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Custom Captcha</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-</head>
-<body>
-  <div class="wrapper">
-    <header>Captcha</header>
-    <div class="captcha-area">
-      <div class="captcha-img">
-        <img src="captcha-bg.png" alt="Captch Background">
-        <span class="captcha"></span>
-      </div>
-      <button class="reload-btn"><i class="fas fa-redo-alt"></i></button>
-    </div>
-    <form action="#" class="input-area">
-      <input type="text" placeholder="Enter captcha" maxlength="6" spellcheck="false" required>
-      <button class="check-btn">Check</button>
-    </form>
-    <div class="status-text"></div>
-  </div>
-  <script src="script.js"></script>
-</body>
-</html>
+<?php
+session_start();
+
+header('Content-Type: image/png');
+
+// Generate a random 5-character CAPTCHA code
+$captcha_code = substr(md5(rand()), 0, 5);
+
+// Store the CAPTCHA code in the session
+$_SESSION['captcha_code'] = $captcha_code;
+
+// Create a blank image
+$image = imagecreatetruecolor(120, 40);
+
+// Generate a random background color
+$background_color = imagecolorallocate($image, rand(0, 255), rand(0, 255), rand(0, 255));
+
+// Fill the image with the background color
+imagefill($image, 0, 0, $background_color);
+
+// Set the text color (black)
+$text_color = imagecolorallocate($image, 0, 0, 0);
+
+// Add the CAPTCHA code to the image
+imagestring($image, 5, 35, 10, $captcha_code, $text_color);
+
+// Output the image as PNG
+imagepng($image);
+
+// Free up memory
+imagedestroy($image);
+?>
