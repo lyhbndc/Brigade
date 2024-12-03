@@ -437,7 +437,7 @@ document.querySelectorAll('.add-to-cart').forEach(button => {
  { img: "items/images/1007/i1.png", alt: "7", name: "Sting", href: "items/1007.php" },
  { img: "items/images/1008/i1.png", alt: "8", name: "Daily", href: "items/1008.php" },
  { img: "items/images/1009/i1.png", alt: "9", name: "Warm Up", href: "items/1009.php" },
- { img: "items/images/10010/i1.png", alt: "10", name: "Earth", href: "items/10010.php" },
+ { img: "items/images/1010/i1.png", alt: "10", name: "Earth", href: "items/1010.php" },
 ];
 
 const nameList = document.getElementById('nameList');
