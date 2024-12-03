@@ -30,25 +30,25 @@
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="1index.php"><img src="assets/1.png"></a>
+							<a href="1homepage.php"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
                     <ul class="navbar_menu">
-                        <li><a href="1index.php">home</a></li>
+                        <li><a href="1homepage.php">home</a></li>
                         <li><a href="3shop.php">shop</a></li>
                         <li><a href="3new.php">new</a></li>
                         
                     </ul>
                     <ul class="navbar_user">
-					<li class="dropdown">
-    <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </a>
-    <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
-        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
-        <ul id="nameList" class="name-list"></ul>
-    </div>
-</li>
+						<li class="dropdown">
+							<a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+								<i class="fa fa-search" aria-hidden="true"></i>
+							</a>
+							<div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+								<input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+								<ul id="nameList" class="name-list"></ul>
+							</div>
+						</li>
                         
                         <!-- User Dropdown -->
                         <li class="dropdown">
@@ -88,13 +88,13 @@
 		<div class="hamburger_menu_content text-right">
 			<ul class="menu_top_nav">
 				<li class="menu_item has-children">
-					<a href="#">
+					<a href="3acc.php">
 						My Account
 						<i class="fa fa-angle-down"></i>
 					</a>
 					<ul class="menu_selection">
-						<li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-						<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+						<li><a href="4login.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+						<li><a href="4signup.php"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
 					</ul>
 				</li>
 				<li class="menu_item"><a href="1homepage.php">home</a></li>
@@ -112,8 +112,8 @@
 
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
-						<li><a href="1index.php">Home</a></li>
-						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Hoodies</a></li>
+						<li><a href="1homepage.php">Home</a></li>
+						<li class="active"><a href="2hoodies.php"><i class="fa fa-angle-right" aria-hidden="true"></i>Hoodies</a></li>
 					</ul>
 				</div>
 
@@ -211,7 +211,7 @@
                                                 <div class="product_price">₱850.00</div>
                                             </div>
                                         </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                        <div class="red_button add_to_cart_button"><a href="3" class="add-to-cart">add to cart</a></div>
                                     </div>
 
 									<!-- Product 2 -->
@@ -227,7 +227,7 @@
                                                 <div class="product_price">₱1500.00<span>₱1700.00</span></div>
                                             </div>
                                         </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                        <div class="red_button add_to_cart_button"><a href="3cart.php" class="add-to-cart">add to cart</a></div>
                                     </div>
 
 									<div class="product-item hoodies" data-id="10010">
@@ -241,7 +241,7 @@
                                                 <div class="product_price">₱1350.00<span>₱1700.00</span></div>
                                             </div>
                                         </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
+                                        <div class="red_button add_to_cart_button"><a href="3cart.php" class="add-to-cart">add to cart</a></div>
                                     </div>
 									
 								</div>
@@ -308,7 +308,7 @@
 			<div class="col-sm-6 col-lg-3 p-b-50">
 				<br>
 				<h4 class="stext-301 cl0 p-b-30">
-					<a href="1index.php"><img src="assets/Untitled design.png" class="footer-logo"></a>
+					<a href="1homepage.php"><img src="assets/Untitled design.png" class="footer-logo"></a>
 				</h4>
 				<p class="stext-107 cl7 size-201">
 					Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
@@ -327,7 +327,7 @@
 				<br>
 				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
 				<ul>
-					<li class="p-b-10"><a href="1index.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
+					<li class="p-b-10"><a href="1homepage.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
 					<li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
 					<li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
 				</ul>
