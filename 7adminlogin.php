@@ -182,7 +182,7 @@ if (isset($_POST['login'])) {
                     <div class="row">
                         <div class="col-lg-12 text-right">
                             <div class="logo_container">
-                                <a href="#"><img src="assets/1.png"></a>
+                                <a href="1homepage.php"><img src="assets/1.png"></a>
                             </div>
                             <nav class="navbar">
                                 
@@ -235,13 +235,8 @@ if (isset($_POST['login'])) {
                             </div>
                             
                             <input type="submit" name="login" value="Login">
-                            <div class="forgot-password">
-                                <a href="#">Forgot Password?</a>
-                            </div>
+                          
                             <br>
-                            <div class="sign-up-link">
-                               <a>Don't have an account? </a> <a href="4signup.php">Sign up</a>
-                            </div>
                         </form>
                         <?php if (!empty($error_message)): ?>
                         <div id="toast" class="toast"><?php echo $error_message; ?></div>
