@@ -34,6 +34,9 @@ if ($result && mysqli_num_rows($result) > 0) {
     }
 }
 
+// Include database connection (adjust the connection as per your setup)
+include 'db_connection.php';
+
 // Handle profile update
 if (isset($_POST['update_profile'])) {
     $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
@@ -42,16 +45,59 @@ if (isset($_POST['update_profile'])) {
     $address = mysqli_real_escape_string($conn, $_POST['address']);
     $city = mysqli_real_escape_string($conn, $_POST['city']);
 
-    $updateQuery = "
-        UPDATE user 
-        SET FirstName = '$firstname', LastName = '$lastname', Email = '$email', Address = '$address', City = '$city' 
-        WHERE Username = '$user'
-    ";
-    if (mysqli_query($conn, $updateQuery)) {
-        echo "Profile updated successfully!";
-        header("Refresh:0"); // Refresh the page to show updated info
+    // Only update non-empty fields
+    $updateQuery = "UPDATE user SET";
+    $fieldsToUpdate = [];
+
+    if (!empty($firstname)) $fieldsToUpdate[] = " FirstName = '$firstname'";
+    if (!empty($lastname)) $fieldsToUpdate[] = " LastName = '$lastname'";
+    if (!empty($email)) $fieldsToUpdate[] = " Email = '$email'";
+    if (!empty($address)) $fieldsToUpdate[] = " Address = '$address'";
+    if (!empty($city)) $fieldsToUpdate[] = " City = '$city'";
+
+    if (!empty($fieldsToUpdate)) {
+        $updateQuery .= implode(", ", $fieldsToUpdate) . " WHERE Username = '$user'";
+
+        if (mysqli_query($conn, $updateQuery)) {
+            echo "Profile updated successfully!";
+            header("Refresh:0"); // Refresh the page to show updated info
+        } else {
+            echo "Error updating profile: " . mysqli_error($conn);
+        }
+    }
+}
+
+// Handle password update
+if (isset($_POST['update_password'])) {
+    $currentPassword = mysqli_real_escape_string($conn, $_POST['current_password']);
+    $newPassword = mysqli_real_escape_string($conn, $_POST['new_password']);
+    $reenterPassword = mysqli_real_escape_string($conn, $_POST['reenter_password']);
+
+    // Check current password
+    $userCheckQuery = "SELECT Password FROM user WHERE Username = '$user'";
+    $result = mysqli_query($conn, $userCheckQuery);
+    $row = mysqli_fetch_assoc($result);
+
+    if ($row['Password'] === $currentPassword) {
+        // Validate password criteria
+        if ($newPassword === $reenterPassword &&
+            strlen($newPassword) >= 8 &&
+            preg_match('/[A-Z]/', $newPassword) &&
+            preg_match('/\d/', $newPassword) &&
+            preg_match('/[\W_]/', $newPassword)) {
+
+            // Update password in the database
+            $updatePasswordQuery = "UPDATE user SET Password = '$newPassword' WHERE Username = '$user'";
+            if (mysqli_query($conn, $updatePasswordQuery)) {
+                echo "Password updated successfully!";
+            } else {
+                echo "Error updating password: " . mysqli_error($conn);
+            }
+        } else {
+            echo "Invalid password. Ensure it matches criteria.";
+        }
     } else {
-        echo "Error updating profile: " . mysqli_error($conn);
+        echo "Current password is incorrect.";
     }
 }
 
@@ -196,26 +242,45 @@ mysqli_close($conn);
     </div>
 
     <!-- Edit Profile Form Section -->
-    <div class="edit-profile-form" id="editProfileForm" style="display: none;">
+    <div class="edit-profile-form" id="editProfileForm">
         <form method="post">
+            <!-- Account Information -->
             <label for="firstname">First Name:</label>
-            <input type="text" name="firstname" id="editFirstname" value="<?php echo htmlspecialchars($firstname); ?>" required><br>
+            <input type="text" name="firstname" id="editFirstname" value="<?php echo htmlspecialchars($firstname); ?>"><br>
 
             <label for="lastname">Last Name:</label>
-            <input type="text" name="lastname" id="editLastname" value="<?php echo htmlspecialchars($lastname); ?>" required><br>
+            <input type="text" name="lastname" id="editLastname" value="<?php echo htmlspecialchars($lastname); ?>"><br>
 
             <label for="email">Email:</label>
-            <input type="email" name="email" id="editEmail" value="<?php echo htmlspecialchars($email); ?>" required><br>
+            <input type="email" name="email" id="editEmail" value="<?php echo htmlspecialchars($email); ?>"><br>
 
             <label for="address">Address:</label>
-            <input type="text" name="address" id="editAddress" value="<?php echo htmlspecialchars($address); ?>" required><br>
+            <input type="text" name="address" id="editAddress" value="<?php echo htmlspecialchars($address); ?>"><br>
 
             <label for="city">City:</label>
-            <input type="text" name="city" id="editCity" value="<?php echo htmlspecialchars($city); ?>" required>
-
-            <button type="submit" name="update_profile">Save Changes</button>
-            <button type="button" onclick="cancelEdit()">Cancel</button>
+            <input type="text" name="city" id="editCity" value="<?php echo htmlspecialchars($city); ?>"><br>
         </form>
+
+        <!-- Update Password Section -->
+        <button id="updatePasswordButton" onclick="togglePasswordUpdate()">Update Password</button>
+        <div id="passwordUpdateSection" style="display: none;">
+            <form method="post">
+                <label for="current_password">Enter Current Password:</label>
+                <input type="password" name="current_password" id="currentPassword" required>
+                <span id="currentPasswordCheck"></span><br>
+
+                <label for="new_password">Enter New Password:</label>
+                <input type="password" name="new_password" id="newPassword" required>
+                <span id="passwordCriteria"></span><br>
+
+                <label for="reenter_password">Re-enter Password:</label>
+                <input type="password" name="reenter_password" id="reenterPassword" required>
+                <span id="passwordMatchCheck"></span><br>
+            </form>
+        </div>
+        
+        <button type="submit" name="update_password">Save Changes</button>
+        <button type="button" onclick="togglePasswordUpdate()">Cancel</button>
     </div>
 </div>
 
@@ -280,7 +345,7 @@ mysqli_close($conn);
 	</footer>
     </div>
 
-    <script>
+<script>
     // Define the cart key based on the user session
     const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`;
     let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
@@ -367,18 +432,59 @@ document.querySelectorAll('.action-button').forEach(button => {
 });
 
 </script>
-<script>
-function editProfile() {
-    // Hide the account details and show the edit form
-    document.getElementById('accountDetails').style.display = 'none';
-    document.getElementById('editProfileForm').style.display = 'block';
-}
 
-function cancelEdit() {
-    // Hide the edit form and show the account details again
-    document.getElementById('editProfileForm').style.display = 'none';
-    document.getElementById('accountDetails').style.display = 'block';
-}
+<script>//UPDATE PROFILE
+    function editProfile() {
+        // Hide the account details and show the edit form
+        document.getElementById('accountDetails').style.display = 'none';
+        document.getElementById('editProfileForm').style.display = 'block';
+    }
+
+    function cancelEdit() {
+        // Hide the edit form and show the account details again
+        document.getElementById('editProfileForm').style.display = 'none';
+        document.getElementById('accountDetails').style.display = 'block';
+    }
+</script>
+
+<script> //UPDATE PASSWORD
+    function togglePasswordUpdate() {
+        const section = document.getElementById("passwordUpdateSection");
+        const button = document.getElementById("updatePasswordButton");
+        section.style.display = section.style.display === "none" ? "block" : "none";
+        button.textContent = section.style.display === "none" ? "Update Password" : "Cancel Update";
+    }
+
+    // Real-time password validation
+    const newPassword = document.getElementById("newPassword");
+    const reenterPassword = document.getElementById("reenterPassword");
+    const passwordCriteria = document.getElementById("passwordCriteria");
+    const passwordMatchCheck = document.getElementById("passwordMatchCheck");
+
+    newPassword.addEventListener("input", () => {
+        const value = newPassword.value;
+        let criteriaMet = true;
+
+        if (value.length < 8 || !/[A-Z]/.test(value) || !/\d/.test(value) || !/[\W_]/.test(value)) {
+            passwordCriteria.textContent = "Password does not meet criteria.";
+            passwordCriteria.style.color = "red";
+            criteriaMet = false;
+        } else {
+            passwordCriteria.textContent = "Password meets criteria.";
+            passwordCriteria.style.color = "green";
+        }
+        return criteriaMet;
+    });
+
+    reenterPassword.addEventListener("input", () => {
+        if (newPassword.value !== reenterPassword.value) {
+            passwordMatchCheck.textContent = "Passwords do not match.";
+            passwordMatchCheck.style.color = "red";
+        } else {
+            passwordMatchCheck.textContent = "Passwords match.";
+            passwordMatchCheck.style.color = "green";
+        }
+    });
 </script>
 
 <script>
