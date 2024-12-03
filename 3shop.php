@@ -42,7 +42,7 @@ $result = $conn->query($sql);
 						</div>
 						<nav class="navbar">
 							<ul class="navbar_menu">
-								<li><a href="1index.php">home</a></li>
+								<li><a href="1homepage.php">home</a></li>
 								<li><a href="3shop.php">shop</a></li>
 								<li><a href="3new.php">new</a></li>
 								
