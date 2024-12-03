@@ -65,9 +65,15 @@ $user = $_SESSION['user'];
 										<i class="fa fa-user" aria-hidden="true"></i>
 									</a>
 									<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-										<a class="dropdown-item" href="4login.php">Sign In</a>
-										<a class="dropdown-item" href="7adminlogin.php">Admin</a>
-									</div>
+		<?php if ($user): ?>
+			<a class="dropdown-item" href="4myacc.php">Account</a>
+			<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+			<a class="dropdown-item" href="logout.php">Logout</a>
+		<?php else: ?>
+			<a class="dropdown-item" href="4login.php">Sign In</a>
+			<a class="dropdown-item" href="7adminlogin.php">Admin</a>
+		<?php endif; ?>
+	</div>
 								</li>
 									
 								<li class="checkout">

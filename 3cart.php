@@ -270,8 +270,11 @@ if (!$user) {
         const quantityInput = document.getElementById(`quantity-${index}`);
         let quantity = parseInt(quantityInput.value) + delta;
         if (quantity < 1) {
-            quantity = 1; // Minimum quantity is 1
-        }
+        quantity = 1; // Minimum quantity is 1
+    } else if (quantity > 5) {
+        quantity = 5; // Maximum quantity is 5
+        alert("You can only add up to 5 items of this product.");
+    }
         quantityInput.value = quantity;
 
         // Update the item in the cartItems array
