@@ -49,6 +49,7 @@ if (isset($_POST['next'])) {
             // Send the verification email using PHPMailer
             $mail = new PHPMailer(true);
             try {
+                
                 $mail->isSMTP();
                 $mail->Host = 'smtp.mailersend.net'; // Update this with your SMTP server
                 $mail->SMTPAuth = true;
@@ -57,10 +58,14 @@ if (isset($_POST['next'])) {
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
+                $mail->SMTPDebug = 2; // Debug levels: 0 = off, 1 = client messages, 2 = client and server messages
+                $mail->Debugoutput = 'html'; // Output debug information in HTML format
+                
                 // Recipients
                 $mail->setFrom('MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net', 'Brigade');
                 $mail->addAddress($email);
 
+                
                 // Content
                 $mail->isHTML(true);
                 $mail->Subject = 'Your Verification Code';

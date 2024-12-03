@@ -25,6 +25,8 @@ $result = mysqli_query($conn, $query);
 
 if ($result && mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
+        $firstname = $row["FirstName"];
+        $lastname = $row["LastName"];
         $city = $row["City"];
         $email = $row["Email"];
         $address = $row["Address"];
@@ -53,29 +55,6 @@ if (isset($_POST['update_profile'])) {
     }
 }
 
-if (isset($_POST['delete_account'])) {
-    // Deleting from user-related tables
-    $deleteUserQuery = "DELETE FROM user WHERE Username = '$user'"; 
-    $deleteOrdersQuery = "DELETE FROM order WHERE FirstName = '$firstname' AND LastName = '$lastname'";
-    $deleteCompleteOrdersQuery = "DELETE FROM complete_order WHERE FirstName = '$firstname' AND LastName = '$lastname'";
-    $deleteCancelOrdersQuery = "DELETE FROM cancel_order WHERE FirstName = '$firstname' AND LastName = '$lastname'";
-    $deleteRefundOrdersQuery = "DELETE FROM refund_order WHERE FirstName = '$firstname' AND LastName = '$lastname'";
-
-    // Run all delete queries
-    if (mysqli_query($conn, $deleteUserQuery) && 
-        mysqli_query($conn, $deleteOrdersQuery) && 
-        mysqli_query($conn, $deleteCompleteOrdersQuery) && 
-        mysqli_query($conn, $deleteCancelOrdersQuery) && 
-        mysqli_query($conn, $deleteRefundOrdersQuery) && 
-        mysqli_query($conn, $deleteCartQuery)) {
-        
-        echo "Account and all related data deleted successfully!";
-        session_destroy();  // Destroy session after deletion
-        header("Location: 4login.php"); // Redirect to login page
-    } else {
-        echo "Error deleting account: " . mysqli_error($conn);
-    }
-}
 mysqli_close($conn);
 ?>
 
@@ -214,7 +193,6 @@ mysqli_close($conn);
         <button class="recent-order-btn" onclick="editProfile()">Edit Profile</button>
         <button class="recent-order-btn" onclick="window.location.href='4recentorders.php';">Recent Orders</button>
         <button class="recent-order-btn" onclick="window.location.href='logout.php';">Logout</button>
-        <button  class="del" onclick="confirmDelete()">Delete Account</button>
     </div>
 
     <!-- Edit Profile Form Section -->
@@ -302,26 +280,6 @@ mysqli_close($conn);
 	</footer>
     </div>
 
-<script>
-    function confirmDelete() {
-        // First confirmation dialog
-        let firstConfirmation = confirm("Are you sure you want to delete your account? All your information, including orders, will be permanently deleted.");
-
-        if (firstConfirmation) {
-            // Second confirmation dialog
-            let secondConfirmation = confirm("This action cannot be undone. Do you really want to delete your account and all related data?");
-            
-            if (secondConfirmation) {
-                // Redirect to PHP script to handle deletion
-                window.location.href = "delete_account.php";  // Ensure the PHP script for deletion is here
-            } else {
-                alert("Account deletion was canceled.");
-            }
-        } else {
-            alert("Account deletion was canceled.");
-        }
-    }
-</script>
     <script>
     // Define the cart key based on the user session
     const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`;
