@@ -37,9 +37,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 			<div class="container">
 				<div class="row">
 					<div class="col-md-6">
-					<div class="top_nav_left">
-        </div>
-					
+						<div class="top_nav_left"></div>
 					</div>
 				</div>
 			</div>
@@ -53,50 +51,55 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 							<a href="#"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
-                    <ul class="navbar_menu">
-                        <li><a href="#">home</a></li>
-                        <li><a href="3shop.php">shop</a></li>
-                        <li><a href="3new.php">new</a></li>
+							<ul class="navbar_menu">
+								<li><a href="#">home</a></li>
+								<li><a href="3shop.php">shop</a></li>
+								<li><a href="3new.php">new</a></li>
+								
+							</ul>
+							<ul class="navbar_user">
+								<li class="dropdown">
+									<a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-search" aria-hidden="true"></i>
+									</a>
+									<div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+										<input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+										<ul id="nameList" class="name-list"></ul>
+									</div>
+								</li>
                         
-                    </ul>
-                    <ul class="navbar_user">
-					<li class="dropdown">
-    <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </a>
-    <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
-        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
-        <ul id="nameList" class="name-list"></ul>
-    </div>
-</li>
+                        		<!-- User Dropdown -->
+								<li class="dropdown">
+									<a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-user" aria-hidden="true"></i>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+									<?php if ($user): ?>
+										<a class="dropdown-item" href="4myacc.php">Account</a>
+										<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+										<a class="dropdown-item" href="logout.php">Logout</a>
+									<?php else: ?>
+										<a class="dropdown-item" href="4login.php">Sign In</a>
+										<a class="dropdown-item" href="7adminlogin.php">Admin</a>
+									<?php endif; ?>
+								</div>
+								</li>
                         
-                        <!-- User Dropdown -->
-                        <li class="dropdown">
-                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-								<a class="dropdown-item" href="4myacc.php">Account</a>
-								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
-								<a class="dropdown-item" href="logout.php">Logout</a>
-                            </div>
-                        </li>
-                        
-                        <li class="checkout">
-                            <a href="3cart.php">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                <span id="checkout_items" class="checkout_items">0</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="hamburger_container">
-                        <i class="fa fa-bars" aria-hidden="true"></i>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
+								<li class="checkout">
+									<a href="3cart.php">
+										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+										<span id="checkout_items" class="checkout_items">0</span>
+									</a>
+								</li>
+                    		</ul>
+							<div class="hamburger_container">
+								<i class="fa fa-bars" aria-hidden="true"></i>
+							</div>
+                		</nav>
+					</div>
+				</div>
+			</div>
+		</div>
  
 	</header>
 	<div class="fs_menu_overlay"></div>
@@ -191,7 +194,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 					<div class="product-item tees" data-id="1001">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="items/images/1001/front.png" alt="">
+                                                <img src="items/images/1001/1front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_info">
@@ -205,7 +208,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 									<div class="product-item tees" data-id="1003">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="items/images/1003/front.png" alt="">
+                                                <img src="items/images/1003/3front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_info">
@@ -219,7 +222,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 									<div class="product-item shorts" data-id="1005">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="items/images/1005/front.png" alt="">
+                                                <img src="items/images/1005/5front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_info">
@@ -233,7 +236,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 									<div class="product-item shorts" data-id="1007">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="items/images/1007/front.png" alt="">
+                                                <img src="items/images/1007/7front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_info">
@@ -247,7 +250,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 						<div class="product-item hoodies" data-id="1008">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="items/images/1008/front.png" alt="">
+                                                <img src="items/images/1008/8front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_info">
@@ -260,7 +263,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 									<div class="product-item hoodies" data-id="1009">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="items/images/1009/front.png" alt="">
+                                                <img src="items/images/1009/9front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_info">
@@ -300,7 +303,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 								<div class="product-item" data-id="1002">
 									<div class="product discount">
 										<div class="product_image">
-											<img src="items/images/1002/front.png" alt="">
+											<img src="items/images/1002/2front.png" alt="">
 										</div>
 										<div class="favorite favorite_left"></div>
 										<div class="product_info">
@@ -317,7 +320,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 								<div class="product-item" data-id="1004">
 									<div class="product discount">
 										<div class="product_image">
-											<img src="items/images/1004/front.png" alt="">
+											<img src="items/images/1004/4front.png" alt="">
 										</div>
 										<div class="favorite favorite_left"></div>
 										<div class="product_info">
@@ -334,7 +337,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 								<div class="product-item" data-id="1006">
 									<div class="product discount">
 										<div class="product_image">
-											<img src="items/images/1006/front.png" alt="">
+											<img src="items/images/1006/6front.png" alt="">
 										</div>
 										<div class="favorite favorite_left"></div>
 										<div class="product_info">
@@ -351,7 +354,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 								<div class="product-item" data-id="1003">
 									<div class="product discount">
 										<div class="product_image">
-											<img src="items/images/1003/front.png" alt="">
+											<img src="items/images/1003/3front.png" alt="">
 										</div>
 										<div class="favorite favorite_left"></div>
 										<div class="product_info">
@@ -368,7 +371,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 								<div class="product-item" data-id="1009">
 									<div class="product discount">
 										<div class="product_image">
-											<img src="items/images/1009/front.png" alt="">
+											<img src="items/images/1009/9front.png" alt="">
 										</div>
 										<div class="favorite favorite_left"></div>
 										<div class="product_info">
@@ -382,14 +385,14 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 							
 
 							<div class="owl-item product_slider_item">
-								<div class="product-item" data-id="10010">
+								<div class="product-item" data-id="1010">
 									<div class="product discount">
 										<div class="product_image">
-											<img src="items/images/10010/front.png" alt="">
+											<img src="items/images/1010/10front.png" alt="">
 										</div>
 										<div class="favorite favorite_left"></div>
 										<div class="product_info">
-											<h6 class="product_name"><a href="items/10010.php">Brigade Clothing - Earth</a></h6>
+											<h6 class="product_name"><a href="items/1010.php">Brigade Clothing - Earth</a></h6>
 											<div class="product_price">P700.00<span>750.00</span></div>
 										</div>
 									</div>
@@ -646,7 +649,7 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
  { img: "items/images/1007/i1.png", alt: "7", name: "Sting", href: "items/1007.php" },
  { img: "items/images/1008/i1.png", alt: "8", name: "Daily", href: "items/1008.php" },
  { img: "items/images/1009/i1.png", alt: "9", name: "Warm Up", href: "items/1009.php" },
- { img: "items/images/10010/i1.png", alt: "10", name: "Earth", href: "items/10010.php" },
+ { img: "items/images/1010/i1.png", alt: "10", name: "Earth", href: "items/1010.php" },
 ];
 
 const nameList = document.getElementById('nameList');
