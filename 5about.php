@@ -53,15 +53,15 @@
                         
                     </ul>
                     <ul class="navbar_user">
-					<li class="dropdown">
-    <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </a>
-    <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
-        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
-        <ul id="nameList" class="name-list"></ul>
-    </div>
-</li>
+                        <li class="dropdown">
+                            <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+                                <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+                                <ul id="nameList" class="name-list"></ul>
+                            </div>
+                        </li>
                         
                         <!-- User Dropdown -->
                         <li class="dropdown">
@@ -101,13 +101,13 @@
 		<div class="hamburger_menu_content text-right">
 			<ul class="menu_top_nav">
 				<li class="menu_item has-children">
-					<a href="#">
+					<a href="4myacc.php">
 						My Account
 						<i class="fa fa-angle-down"></i>
 					</a>
 					<ul class="menu_selection">
-						<li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-						<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+						<li><a href="3login.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+						<li><a href="33signup.php"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
 					</ul>
 				</li>
 				<li class="menu_item"><a href="1homepage.php">home</a></li>

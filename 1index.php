@@ -48,18 +48,18 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="#"><img src="assets/1.png"></a>
+							<a href="1homepage.php"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
 							<ul class="navbar_menu">
-								<li><a href="#">home</a></li>
+								<li><a href="1homepage.php">home</a></li>
 								<li><a href="3shop.php">shop</a></li>
 								<li><a href="3new.php">new</a></li>
 								
 							</ul>
 							<ul class="navbar_user">
 								<li class="dropdown">
-									<a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+									<a href="1homepage.php" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
 										<i class="fa fa-search" aria-hidden="true"></i>
 									</a>
 									<div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
@@ -108,13 +108,13 @@ $isLoggedIn = isset($_SESSION['user']); // Check if user is logged in
 		<div class="hamburger_menu_content text-right">
 			<ul class="menu_top_nav">
 				<li class="menu_item has-children">
-					<a href="#">
+					<a href="3acc.php">
 						My Account
 						<i class="fa fa-angle-down"></i>
 					</a>
 					<ul class="menu_selection">
-						<li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-						<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+						<li><a href="4login.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+						<li><a href="4signup.php"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
 					</ul>
 				</li>
 				<li class="menu_item"><a href="1homepage.php">home</a></li>

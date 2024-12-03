@@ -196,42 +196,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="#"><img src="assets/1.png"></a>
+							<a href="1homepage.php"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
                     <ul class="navbar_menu">
-                        <li><a href="#">home</a></li>
+                        <li><a href="1homepage.php">home</a></li>
                         <li><a href="3shop.php">shop</a></li>
                         <li><a href="3new.php">new</a></li>
                         
                     </ul>
                     <ul class="navbar_user">
-					<li class="dropdown">
-        <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-search" aria-hidden="true"></i>
-        </a>
-        <div class="dropdown-menu search-dropdown" id="searchDropdownMenu">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
-			<ul id="nameList" class="name-list">
-                <li class="name-item">
-                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="1" class="name-item-img">
-                    LETS GET HIGH
-                </li>
-                <li class="name-item">
-                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="2" class="name-item-img">
-                    LUCKY BLACK
-                </li>
-                <li class="name-item">
-                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="3" class="name-item-img">
-                    CHASE DREAM BLUE
-                </li>
-                <li class="name-item">
-                    <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="4" class="name-item-img">
-                    COLDEST BLUE
-                </li>
-            </ul>
-        </div>
-    </li>
+                        <li class="dropdown">
+                            <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu search-dropdown" id="searchDropdownMenu">
+                                <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+                                <ul id="nameList" class="name-list">
+                                    <li class="name-item">
+                                        <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="1" class="name-item-img">
+                                        LETS GET HIGH
+                                    </li>
+                                    <li class="name-item">
+                                        <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="2" class="name-item-img">
+                                        LUCKY BLACK
+                                    </li>
+                                    <li class="name-item">
+                                        <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="3" class="name-item-img">
+                                        CHASE DREAM BLUE
+                                    </li>
+                                    <li class="name-item">
+                                        <img src="assets/359801864_251602164294072_4089427261190148458_n.jpg" alt="4" class="name-item-img">
+                                        COLDEST BLUE
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                         
                         <!-- User Dropdown -->
                         <li class="dropdown">
@@ -272,13 +272,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="hamburger_menu_content text-right">
                 <ul class="menu_top_nav">
                     <li class="menu_item has-children">
-                        <a href="#">
+                        <a href="4myacc.php">
                             My Account
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="menu_selection">
-                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                            <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                            <li><a href="4login.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                            <li><a href="4signup.php"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
                         </ul>
                     </li>
                     <li class="menu_item"><a href="1homepage.php">home</a></li>
@@ -407,10 +407,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <br>
                         <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
                         <ul>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
+                            <li class="p-b-10"><a href="1homepage.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
                             <li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
                             <li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
-                            <li class="p-b-10"><a href="3onsale.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-6 col-lg-3 p-b-50">
