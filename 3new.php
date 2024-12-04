@@ -185,7 +185,7 @@
 									<div class="product-item tees" data-id="1001">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="items/images/1001/front.png" alt="">
+                                                <img src="items/images/1001/1front.png" alt="">
                                             </div>
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                             <div class="product_info">
@@ -199,7 +199,7 @@
 									<div class="product-item tees" data-id="1003">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="items/images/1003/front.png" alt="">
+                                                <img src="items/images/1003/3front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
@@ -214,7 +214,7 @@
 									<div class="product-item shorts" data-id="1005">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="items/images/1005/front.png" alt="">
+                                                <img src="items/images/1005/5front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
@@ -229,7 +229,7 @@
 									<div class="product-item shorts" data-id="1007">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="items/images/1007/front.png" alt="">
+                                                <img src="items/images/1007/7front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
@@ -244,7 +244,7 @@
 						<div class="product-item hoodies" data-id="1008">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="items/images/1008/front.png" alt="">
+                                                <img src="items/images/1008/8front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
@@ -258,7 +258,7 @@
 									<div class="product-item hoodies" data-id="1009">
                                         <div class="product discount product_filter">
                                             <div class="product_image">
-                                                <img src="items/images/1009/front.png" alt="">
+                                                <img src="items/images/1009/9front.png" alt="">
                                             </div>
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
