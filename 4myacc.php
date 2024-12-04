@@ -86,7 +86,7 @@ if (isset($_POST['update_password'])) {
             preg_match('/\d/', $newPassword) &&
             preg_match('/[\W_]/', $newPassword)) {
 
-            // Update password in the database
+            // Update password in the database (without hashing)
             $updatePasswordQuery = "UPDATE user SET Password = '$newPassword' WHERE Username = '$user'";
             if (mysqli_query($conn, $updatePasswordQuery)) {
                 echo "Password updated successfully!";
@@ -100,6 +100,7 @@ if (isset($_POST['update_password'])) {
         echo "Current password is incorrect.";
     }
 }
+
 
 mysqli_close($conn);
 ?>
@@ -192,29 +193,7 @@ mysqli_close($conn);
 </div>
             </header>
         <div class="fs_menu_overlay"></div>
-
-        <!-- Hamburger Menu -->
-        <div class="hamburger_menu">
-            <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
-            <div class="hamburger_menu_content text-right">
-                <ul class="menu_top_nav">
-                    <li class="menu_item has-children">
-                        <a href="4myacc.php">
-                            My Account
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="menu_selection">
-                            <li><a href="3login.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                            <li><a href="3signup.php"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
-                        </ul>
-                    </li>
-                    <li class="menu_item"><a href="1homepage.php">home</a></li>
-                    <li class="menu_item"><a href="3shop.php">shop</a></li>
-                    <li class="menu_item"><a href="3new.php">new</a></li>
-                </ul>
-            </div>
-        </div>
-        <br><br><br><br><br><br><br>
+        <br><br><br>
         <div class="title">
         <div class="account-container">
     <h1>My Account</h1>
@@ -243,44 +222,46 @@ mysqli_close($conn);
 
     <!-- Edit Profile Form Section -->
     <div class="edit-profile-form" id="editProfileForm">
-        <form method="post">
-            <!-- Account Information -->
-            <label for="firstname">First Name:</label>
-            <input type="text" name="firstname" id="editFirstname" value="<?php echo htmlspecialchars($firstname); ?>"><br>
+    <form method="post">
+    <!-- Account Information -->
+    <label for="firstname">First Name:</label>
+    <input type="text" name="firstname" id="editFirstname" value="<?php echo htmlspecialchars($firstname); ?>"><br>
 
-            <label for="lastname">Last Name:</label>
-            <input type="text" name="lastname" id="editLastname" value="<?php echo htmlspecialchars($lastname); ?>"><br>
+    <label for="lastname">Last Name:</label>
+    <input type="text" name="lastname" id="editLastname" value="<?php echo htmlspecialchars($lastname); ?>"><br>
 
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="editEmail" value="<?php echo htmlspecialchars($email); ?>"><br>
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="editEmail" value="<?php echo htmlspecialchars($email); ?>"><br>
 
-            <label for="address">Address:</label>
-            <input type="text" name="address" id="editAddress" value="<?php echo htmlspecialchars($address); ?>"><br>
+    <label for="address">Address:</label>
+    <input type="text" name="address" id="editAddress" value="<?php echo htmlspecialchars($address); ?>"><br>
 
-            <label for="city">City:</label>
-            <input type="text" name="city" id="editCity" value="<?php echo htmlspecialchars($city); ?>"><br>
-        </form>
+    <label for="city">City:</label>
+    <input type="text" name="city" id="editCity" value="<?php echo htmlspecialchars($city); ?>"><br>
+
+    <button type="submit" name="update_profile">Save Changes</button>
+</form>
+
 
         <!-- Update Password Section -->
         <button id="updatePasswordButton" onclick="togglePasswordUpdate()">Update Password</button>
         <div id="passwordUpdateSection" style="display: none;">
-            <form method="post">
-                <label for="current_password">Enter Current Password:</label>
-                <input type="password" name="current_password" id="currentPassword" required>
-                <span id="currentPasswordCheck"></span><br>
+    <form method="post">
+        <label for="current_password">Enter Current Password:</label>
+        <input type="password" name="current_password" id="currentPassword" required><br>
 
-                <label for="new_password">Enter New Password:</label>
-                <input type="password" name="new_password" id="newPassword" required>
-                <span id="passwordCriteria"></span><br>
+        <label for="new_password">Enter New Password:</label>
+        <input type="password" name="new_password" id="newPassword" required><br>
 
-                <label for="reenter_password">Re-enter Password:</label>
-                <input type="password" name="reenter_password" id="reenterPassword" required>
-                <span id="passwordMatchCheck"></span><br>
-            </form>
-        </div>
+        <label for="reenter_password">Re-enter Password:</label>
+        <input type="password" name="reenter_password" id="reenterPassword" required><br>
+
+        <button type="submit" name="update_password">Save New Password</button>
+    </form>
+</div>
+
         
-        <button type="submit" name="update_password">Save Changes</button>
-        <button type="button" onclick="togglePasswordUpdate()">Cancel</button>
+        <button type="button" onclick="cancelEdit()">Cancel</button>
     </div>
 </div>
 
@@ -448,6 +429,7 @@ document.querySelectorAll('.action-button').forEach(button => {
 </script>
 
 <script> //UPDATE PASSWORD
+
     function togglePasswordUpdate() {
         const section = document.getElementById("passwordUpdateSection");
         const button = document.getElementById("updatePasswordButton");
@@ -460,20 +442,38 @@ document.querySelectorAll('.action-button').forEach(button => {
     const reenterPassword = document.getElementById("reenterPassword");
     const passwordCriteria = document.getElementById("passwordCriteria");
     const passwordMatchCheck = document.getElementById("passwordMatchCheck");
-
-    newPassword.addEventListener("input", () => {
+    const savePasswordButton = document.querySelector("button[type='submit'][name='update_password']");
+    
+    function validatePassword() {
         const value = newPassword.value;
         let criteriaMet = true;
+        let criteriaMessage = '';
 
-        if (value.length < 8 || !/[A-Z]/.test(value) || !/\d/.test(value) || !/[\W_]/.test(value)) {
-            passwordCriteria.textContent = "Password does not meet criteria.";
-            passwordCriteria.style.color = "red";
+        if (value.length < 8) {
+            criteriaMessage += "Password must be at least 8 characters long. ";
             criteriaMet = false;
-        } else {
-            passwordCriteria.textContent = "Password meets criteria.";
-            passwordCriteria.style.color = "green";
         }
+        if (!/[A-Z]/.test(value)) {
+            criteriaMessage += "Password must contain at least one uppercase letter. ";
+            criteriaMet = false;
+        }
+        if (!/\d/.test(value)) {
+            criteriaMessage += "Password must contain at least one digit. ";
+            criteriaMet = false;
+        }
+        if (!/[\W_]/.test(value)) {
+            criteriaMessage += "Password must contain at least one special character. ";
+            criteriaMet = false;
+        }
+
+        passwordCriteria.textContent = criteriaMessage ? criteriaMessage : "Password meets criteria.";
+        passwordCriteria.style.color = criteriaMet ? "green" : "red";
         return criteriaMet;
+    }
+
+    newPassword.addEventListener("input", () => {
+        const isPasswordValid = validatePassword();
+        reenterPassword.disabled = !isPasswordValid; // Disable re-enter password field if criteria are not met
     });
 
     reenterPassword.addEventListener("input", () => {
@@ -484,7 +484,12 @@ document.querySelectorAll('.action-button').forEach(button => {
             passwordMatchCheck.textContent = "Passwords match.";
             passwordMatchCheck.style.color = "green";
         }
+
+        // Enable the save button if both passwords match and meet the criteria
+        savePasswordButton.disabled = !(newPassword.value === reenterPassword.value && validatePassword());
     });
+
+
 </script>
 
 <script>
