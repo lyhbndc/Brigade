@@ -756,30 +756,29 @@ video {
 	margin: 0;
 }
 table {
-    width: 80%; /* Adjusts the width of the table */
-    margin: 20px auto; /* Centers the table */
-    border-collapse: collapse; /* Combines table borders */
+	width: 80%; /* Adjusts the width of the table */
+	margin: 20px auto; /* Centers the table */
+	border-collapse: collapse; /* Combines table borders */
 }
 
 th, td {
-    padding: 8px 12px; /* Adjusts padding for cells */
-    text-align: left; /* Aligns text to the left */
-    border: 1px solid #ddd; /* Adds border for clarity */
+	padding: 8px 12px; /* Adjusts padding for cells */
+	text-align: center; /* Centers the text in th and td */
+	border: 1px solid #ddd; /* Adds border for clarity */
 }
 
 th {
-    background-color: #f4f4f4; /* Adds a light background to header */
-    font-weight: bold;
+	background-color: #f4f4f4; /* Adds a light background to header */
+	font-weight: bold;
 }
 
 td {
-    font-size: 14px; /* Adjusts text size for readability */
+	font-size: 14px; /* Adjusts text size for readability */
 }
 
 table td, table th {
-    word-wrap: break-word; /* Prevents long words from breaking the layout */
+	word-wrap: break-word; /* Prevents long words from breaking the layout */
 }
-
 
 /* Badge Styling */
 .badge-success {
