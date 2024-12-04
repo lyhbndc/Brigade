@@ -16,8 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['name'])) { // ADD ITEM MODULE
         // Process the form
         $name = "Brigade Clothing - " . trim($_POST['name']); // Concatenate the prefix with the input name
+        $category = trim($_POST['category']); // Category selection
     
-        // Use null coalescing to default to 0 if not set, and check if the value is numeric
+        // Check if a valid category is selected
+        if (!in_array($category, ['Tees', 'Hoodies', 'Shorts'])) {
+            die("Invalid category selected.");
+        }
+        
+        // Other form processing logic (same as your original code)
         $small_stock = isset($_POST['small_stock']) && is_numeric($_POST['small_stock']) ? (int)$_POST['small_stock'] : 0;
         $medium_stock = isset($_POST['medium_stock']) && is_numeric($_POST['medium_stock']) ? (int)$_POST['medium_stock'] : 0;
         $large_stock = isset($_POST['large_stock']) && is_numeric($_POST['large_stock']) ? (int)$_POST['large_stock'] : 0;
@@ -29,28 +35,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Calculate total quantity
         $totalQuantity = $small_stock + $medium_stock + $large_stock + $xl_stock + $xxl_stock + $xxxl_stock;
     
-        // Handle image upload (if any)
+        // Handle image upload or replacement
         $image = null; // Default if no image is uploaded
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $uploadDir = "uploads/"; // Directory to store images
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true); // Create directory if it doesn't exist
             }
-            $image = basename($_FILES['image']['name']);
+
+            $image = basename($_FILES['image']['name']); // Get the original file name
             $uploadFile = $uploadDir . $image;
-    
+
+            // Check if the file already exists, and append (1), (2), etc., if so
+            $counter = 1;
+            $originalImage = $image; // Save the original name
+            while (file_exists($uploadFile)) {
+                // If file exists, append (1), (2), etc.
+                $image = pathinfo($originalImage, PATHINFO_FILENAME) . "($counter)." . pathinfo($originalImage, PATHINFO_EXTENSION);
+                $uploadFile = $uploadDir . $image;
+                $counter++;
+            }
+
+            // Move the uploaded file to the correct directory
             if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
                 die("Error uploading image.");
             }
         }
     
-        // Insert into database
-        $stmt = $conn->prepare("INSERT INTO products (name, quantity, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        // Insert into database (updated query to include 'category')
+        $stmt = $conn->prepare("INSERT INTO products (name, category, quantity, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         if (!$stmt) {
             die("Error preparing statement: " . $conn->error);
         }
     
-        $stmt->bind_param("siiiiiiids", $name, $totalQuantity, $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $image);
+        // Bind parameters (added category)
+        $stmt->bind_param("ssiiiiiiids", $name, $category, $totalQuantity, $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $image);
         if ($stmt->execute()) {
             header("Location: 6inventory.php");
             exit;
@@ -59,7 +78,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }    
 
-    if (isset($_POST['id'])) {//EDIT STOCK MODULE
+    // Handle form submissions for the edit stock module
+    if (isset($_POST['id'])) {        
         // Get form data
         $id = $_POST['id'];
         $small_stock = $_POST['small_stock'];
@@ -69,107 +89,87 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $xxl_stock = $_POST['xxl_stock'];
         $xxxl_stock = $_POST['xxxl_stock'];
         $price = $_POST['price'];
-        
+        $category = $_POST['category']; // Get the selected category
+
         // Fetch current values from the database
-        $query = "SELECT small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, quantity, image FROM products WHERE id = ?";
+        $query = "SELECT small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, quantity, image, category FROM products WHERE id = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
         $current = $result->fetch_assoc();
-        
+
         // Calculate the total difference in quantity
         $currentTotal = $current['quantity'];
-        $currentSizesSum = $current['small_stock'] + $current['medium_stock'] + $current['large_stock'] + 
-                           $current['xl_stock'] + $current['xxl_stock'] + $current['xxxl_stock'];
+        $currentSizesSum = $current['small_stock'] + $current['medium_stock'] + $current['large_stock'] +
+                        $current['xl_stock'] + $current['xxl_stock'] + $current['xxxl_stock'];
         $newSizesSum = $small_stock + $medium_stock + $large_stock + $xl_stock + $xxl_stock + $xxxl_stock;
         $quantityDifference = $newSizesSum - $currentSizesSum;
-        
-        if (isset($_POST['id'])) {//EDIT STOCK MODULE
-            // Get form data
-            $id = $_POST['id'];
-            $small_stock = $_POST['small_stock'];
-            $medium_stock = $_POST['medium_stock'];
-            $large_stock = $_POST['large_stock'];
-            $xl_stock = $_POST['xl_stock'];
-            $xxl_stock = $_POST['xxl_stock'];
-            $xxxl_stock = $_POST['xxxl_stock'];
-            $price = $_POST['price'];
-            
-            // Fetch current values from the database
-            $query = "SELECT small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, quantity, image FROM products WHERE id = ?";
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $current = $result->fetch_assoc();
-            
-            // Calculate the total difference in quantity
-            $currentTotal = $current['quantity'];
-            $currentSizesSum = $current['small_stock'] + $current['medium_stock'] + $current['large_stock'] + 
-                               $current['xl_stock'] + $current['xxl_stock'] + $current['xxxl_stock'];
-            $newSizesSum = $small_stock + $medium_stock + $large_stock + $xl_stock + $xxl_stock + $xxxl_stock;
-            $quantityDifference = $newSizesSum - $currentSizesSum;
-            
-            // Handle image upload
-            if (!empty($_FILES['image']['name'])) {
-                $imageName = $_FILES['image']['name'];
-                $imageTmpName = $_FILES['image']['tmp_name'];
-                $imageSize = $_FILES['image']['size'];
-                $imageError = $_FILES['image']['error'];
+
+        // Handle image upload (check for new image upload)
+        if (!empty($_FILES['image']['name'])) { // If a new image is uploaded
+            // Check if the file exists and handle the renaming logic
+            $imageName = $_FILES['image']['name'];
+            $imageTmpName = $_FILES['image']['tmp_name'];
+            $imageSize = $_FILES['image']['size'];
+            $imageError = $_FILES['image']['error'];
+    
+            // Define allowed file types and max file size
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            $maxSize = 5 * 1024 * 1024; // 5MB
+    
+            // Get the file extension
+            $imageExt = pathinfo($imageName, PATHINFO_EXTENSION);
+            $imageExt = strtolower($imageExt);
+    
+            // Validate file type and size
+            if (in_array($_FILES['image']['type'], $allowedTypes) && $imageSize <= $maxSize) {
+                // Generate a unique name for the image
+                $newImageName = pathinfo($imageName, PATHINFO_FILENAME) . '.' . $imageExt;
+                $uploadDir = 'uploads/';
                 
-                // Define allowed file types and max file size (for example, 5MB)
-                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-                $maxSize = 5 * 1024 * 1024; // 5MB
+                // Check for duplicate image names and rename if necessary
+                $uploadFile = $uploadDir . $newImageName;
+                $counter = 1;
+                while (file_exists($uploadFile)) {
+                    // Append (1), (2), etc., to the filename if it exists
+                    $newImageName = pathinfo($imageName, PATHINFO_FILENAME) . "($counter)." . $imageExt;
+                    $uploadFile = $uploadDir . $newImageName;
+                    $counter++;
+                }
                 
-                // Get the file extension
-                $imageExt = pathinfo($imageName, PATHINFO_EXTENSION);
-                $imageExt = strtolower($imageExt);
-                
-                // Check if the file type is allowed and size is within limit
-                if (in_array($_FILES['image']['type'], $allowedTypes) && $imageSize <= $maxSize) {
-                    // Generate a unique name for the image
-                    $newImageName = uniqid('product_', true) . '.' . $imageExt;
-                    $uploadDir = 'uploads/images/';
-                    
-                    // Ensure the directory exists
-                    if (!is_dir($uploadDir)) {
-                        mkdir($uploadDir, 0777, true);
-                    }
-                    
-                    // Move the file to the upload directory
-                    if (move_uploaded_file($imageTmpName, $uploadDir . $newImageName)) {
-                        // Image uploaded successfully, update the database with the new image path
-                        $imagePath = $uploadDir . $newImageName;
-                    } else {
-                        echo "Error uploading the image.";
-                        exit;
-                    }
+                // Move the uploaded file to the desired directory
+                if (move_uploaded_file($imageTmpName, $uploadFile)) {
+                    $imagePath = $newImageName; // Store only the filename, no path
                 } else {
-                    echo "Invalid file type or size exceeds the limit.";
+                    echo "Error uploading the image.";
                     exit;
                 }
             } else {
-                // If no new image is uploaded, use the current image
-                $imagePath = $current['image'];
-            }
-            
-            // Update the database with the new image, size, price, and quantity
-            $updateQuery = "UPDATE products 
-                            SET small_stock = ?, medium_stock = ?, large_stock = ?, xl_stock = ?, xxl_stock = ?, xxxl_stock = ?, price = ?, quantity = quantity + ?, image = ? 
-                            WHERE id = ?";
-            $stmt = $conn->prepare($updateQuery);
-            $stmt->bind_param("iiiiiiidsi", $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $quantityDifference, $imagePath, $id);
-            
-            if ($stmt->execute()) {
-                header("Location: 6inventory.php");
+                echo "Invalid file type or size exceeds the limit.";
                 exit;
-            } else {
-                echo "Error updating record: " . $stmt->error;
             }
+        } else {
+            // If no new image is uploaded, keep the current image
+            $imagePath = $current['image'];
         }
-    }        
-
+    
+        // Update the database with the new values
+        $updateQuery = "UPDATE products 
+                        SET small_stock = ?, medium_stock = ?, large_stock = ?, xl_stock = ?, xxl_stock = ?, xxxl_stock = ?, price = ?, quantity = quantity + ?, image = ?, category = ? 
+                        WHERE id = ?";
+    
+        $stmt = $conn->prepare($updateQuery);
+        $stmt->bind_param("iiiiiidissi", $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $quantityDifference, $imagePath, $category, $id);
+    
+        if ($stmt->execute()) {
+            header("Location: 6inventory.php");
+            exit;
+        } else {
+            echo "Error updating record: " . $stmt->error;
+        }
+    }
+    
     if (isset($_POST['deleteitemID'])) {//DELETE STOCK MODULE
         // Delete item
         $idToDelete = $_POST['deleteitemID'];
@@ -270,6 +270,15 @@ $conn->close();
                                 <input type="text" id="name" name="name" class="form-control" placeholder="Item Name" required>
                             </div>
                             <div class="mb-3">
+                                <label for="category" class="form-label">Category</label>
+                                <select id="category" name="category" class="form-select" required>
+                                    <option value="">-- Select Category --</option>
+                                    <option value="Tees">Tees</option>
+                                    <option value="Hoodies">Hoodies</option>
+                                    <option value="Shorts">Shorts</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
                                 <label for="quantity" class="form-label">Quantity</label>
                                 <input type="number" id="quantity" name="quantity" class="form-control" placeholder="Quantity" readonly required>
                             </div>
@@ -313,11 +322,12 @@ $conn->close();
         <!-- Inventory Table -->
         <?php if ($result->num_rows > 0): ?>
             <table class="table table-striped">
-                <thead> <!-- Table Headers -->
+                <thead>
                     <tr>
                         <th style="width: 8%;">Item ID</th>
                         <th style="width: 10%;">Image</th>
                         <th style="width: 8%;">Item Name</th>
+                        <th style="width: 8%;">Category</th> 
                         <th style="width: 8%;">Quantity</th>
                         <th style="width: 5%;">S</th>
                         <th style="width: 5%;">M</th>
@@ -340,15 +350,16 @@ $conn->close();
                                     No image
                                 <?php endif; ?>
                             </td>
-                            <td style="width: 8%"><?php echo $row['name']; ?></td>
-                            <td style="width: 8%"><?php echo $row['quantity']; ?></td>
+                            <td style="width: 10%"><?php echo $row['name']; ?></td>
+                            <td style="width: 10%"><?php echo $row['category']; ?></td>
+                            <td style="width: 10%"><?php echo $row['quantity']; ?></td>
                             <td style="width: 5%"><?php echo $row['small_stock']; ?></td>
                             <td style="width: 5%"><?php echo $row['medium_stock']; ?></td>
                             <td style="width: 5%"><?php echo $row['large_stock']; ?></td>
                             <td style="width: 5%"><?php echo $row['xl_stock']; ?></td>
                             <td style="width: 5%"><?php echo $row['xxl_stock']; ?></td>
                             <td style="width: 5%"><?php echo $row['xxxl_stock']; ?></td>
-                            <td style="width: 10%"><?php echo '$' . number_format($row['price'], 2); ?></td>
+                            <td style="width: 5%"><?php echo '$' . number_format($row['price'], 2); ?></td>
                             <td style="width: 10%">
                                 <button class="btn btn-warning btn-sm custom-btn" data-bs-toggle="modal" data-bs-target="#editStockModal<?php echo $row['id']; ?>">Edit</button>
                                 <button class="btn btn-danger btn-sm custom-btn" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $row['id']; ?>">Delete</button>
@@ -364,9 +375,9 @@ $conn->close();
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="6inventory.php" method="POST">
+                                        <form action="6inventory.php" method="POST" enctype="multipart/form-data">
                                             <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                            
+
                                             <!-- Display sizes and price horizontally -->
                                             <div class="row mb-3">
                                                 <div class="col-md-3">
@@ -400,13 +411,26 @@ $conn->close();
                                                     <input type="number" step="0.01" id="price" name="price" class="form-control" value="<?php echo $row['price']; ?>" required>
                                                 </div>
                                             </div>
-                                            <div class="mb-3"> 
-                                                <label for="imageUpload" class="form-label">Change Image</label>
-                                                <input type="file" id="imageUpload<?php echo $row['id']; ?>" name="image" class="form-control" onchange="trackChanges(<?php echo $row['id']; ?>)">
+
+                                            <!-- Category Dropdown (new) -->
+                                            <div class="mb-3">
+                                                <label for="category" class="form-label">Category</label>
+                                                <select name="category" id="category" class="form-control" required>
+                                                    <option value="Tees" <?php echo ($row['category'] == 'Tees') ? 'selected' : ''; ?>>Tees</option>
+                                                    <option value="Hoodies" <?php echo ($row['category'] == 'Hoodies') ? 'selected' : ''; ?>>Hoodies</option>
+                                                    <option value="Shorts" <?php echo ($row['category'] == 'Shorts') ? 'selected' : ''; ?>>Shorts</option>
+                                                </select>
                                             </div>
-                                            <div class="d-flex justify-content-between">
+
+                                            <!-- Image upload remains unchanged -->
+                                            <div class="mb-3"> 
+                                                <label for="imageUpload" class="form-label">Change Image (Optional)</label>
+                                                <input type="file" class="form-control" id="imageUpload" name="image" accept="image/*">
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                 <button type="submit" class="btn btn-primary">Save Changes</button>
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                             </div>
                                         </form>
                                     </div>
@@ -501,6 +525,16 @@ $conn->close();
             const totalQuantity = small_stock + medium_stock + large_stock + xl_stock + xxl_stock + xxxl_stock;
             document.getElementById('quantity').value = totalQuantity;  // Update the quantity field
         }
+    </script>
+
+    <script>
+        document.getElementById('addItemForm').addEventListener('submit', function(event) {
+            var category = document.getElementById('category').value;
+            if (!category) {
+                alert('Please select a category before submitting the form.');
+                event.preventDefault(); // Prevent form submission
+            }
+        });
     </script>
 
     <!-- Add Bootstrap JS and its dependencies (Popper.js) -->
