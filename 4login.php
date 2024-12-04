@@ -238,7 +238,7 @@ mysqli_close($conn);
                             </div>
                             <label for="captcha">Enter the text from the image:</label>
     <br>
-    <img src="captcha.php" alt="CAPTCHA Image">
+    <img src= "captcha.php" alt="CAPTCHA Image">
     <br><br>
     <input type="text" id="captcha" name="captcha" required>
                             <input type="submit" name="login" value="Login">
