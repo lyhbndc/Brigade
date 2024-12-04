@@ -81,15 +81,20 @@ if (isset($_POST['change_password'])) {
         if ($current_password === $stored_password) {
             // Check if new password matches confirm password
             if ($new_password === $confirm_password) {
-                // Update the password in the database (no hashing)
-                $updatePasswordQuery = "UPDATE user SET Password = '$new_password' WHERE Username = '$user'";
+                // Password validation check (minimum 8 characters, at least 1 uppercase, 1 number, 1 special character)
+                if (preg_match('/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', $new_password)) {
+                    // Update the password in the database (no hashing)
+                    $updatePasswordQuery = "UPDATE user SET Password = '$new_password' WHERE Username = '$user'";
 
-                if (mysqli_query($conn, $updatePasswordQuery)) {
-                    echo "Password updated successfully!";
-                    header("Location: 4myacc.php"); // Redirect to the account page after success
-                    exit();
+                    if (mysqli_query($conn, $updatePasswordQuery)) {
+                        echo "Password updated successfully!";
+                        header("Location: 4myacc.php"); // Redirect to the account page after success
+                        exit();
+                    } else {
+                        echo "Error updating password: " . mysqli_error($conn);
+                    }
                 } else {
-                    echo "Error updating password: " . mysqli_error($conn);
+                    echo "New password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character.";
                 }
             } else {
                 echo "New password and confirm password do not match.";
@@ -115,7 +120,7 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="styles/acc.css">
+    <link rel="stylesheet" type="text/css" href="styles/acc.css?v=1.0">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
 </head>
 
@@ -492,7 +497,7 @@ document.querySelectorAll('.action-button').forEach(button => {
  { img: "items/images/1007/i1.png", alt: "7", name: "Sting", href: "items/1007.php" },
  { img: "items/images/1008/i1.png", alt: "8", name: "Daily", href: "items/1008.php" },
  { img: "items/images/1009/i1.png", alt: "9", name: "Warm Up", href: "items/1009.php" },
- { img: "items/images/10010/i1.png", alt: "10", name: "Earth", href: "items/10010.php" },
+ { img: "items/images/1010/i1.png", alt: "10", name: "Earth", href: "items/1010.php" },
 ];
 
 const nameList = document.getElementById('nameList');

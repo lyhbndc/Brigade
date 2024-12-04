@@ -805,7 +805,7 @@ video {
 .recent-order-btn {
 	background-color: black;
     color: white;
-    font-size: 16px; /* Control font size */
+    font-size: 14.7px; /* Control font size */
     font-weight: bold;
     padding: 15px 30px; /* Adjust padding for consistent button sizing */
     margin: 40px 0; /* Space between buttons */
