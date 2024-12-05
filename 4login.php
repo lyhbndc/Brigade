@@ -23,21 +23,22 @@ if (isset($_POST['login'])) {
             $stmt->execute();
             $result = $stmt->get_result();
 
-            if ($result->num_rows === 1) {
-                $row = $result->fetch_assoc();
-                $id = $row['ID'];
-                $_SESSION['user'] = $user; // Save user data to session
-                $_SESSION['id'] = $id;
-                header("Location: /Brigade/1homepage.php");
-                exit;
-            } else {
-                $error_message = "Invalid username or password. Please try again.";
-            }
+        if ($result->num_rows === 1) {
+            $row = $result->fetch_assoc();
+            $id = $row['ID'];
+            $_SESSION['user'] = $user; // Save user data to session
+            $_SESSION['id'] = $id;
+            header("Location: /Brigade/captcha.php");
+            exit;
         } else {
-            $error_message = "Both fields are required.";
+            $error_message = "Invalid username or password. Please try again.";
         }
+    } else {
+        $error_message = "Both fields are required.";
     }
 }
+?>
+
 
 mysqli_close($conn);
 ?>
@@ -205,13 +206,13 @@ mysqli_close($conn);
             <div class="hamburger_menu_content text-right">
                 <ul class="menu_top_nav">
                     <li class="menu_item has-children">
-                        <a href="4myacc.php">
+                        <a href="#">
                             My Account
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="menu_selection">
-                            <li><a href="4login.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                            <li><a href="4signup.php"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                            <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
                         </ul>
                     </li>
                     <li class="menu_item"><a href="1homepage.php">home</a></li>

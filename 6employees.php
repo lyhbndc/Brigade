@@ -276,26 +276,26 @@ $result = $conn->query($sql);
                                             <div class="mb-3">
                                                     <button type="button" class="btn btn-primary" id="togglePasswordForm<?php echo $row['id']; ?>" onclick="togglePasswordForm(<?php echo $row['id']; ?>)">Update Password</button>
                                                     <button type="button" class="btn btn-secondary d-none" id="cancelPasswordUpdate<?php echo $row['id']; ?>" onclick="togglePasswordForm(<?php echo $row['id']; ?>)">Cancel Update</button>
+                                            </div>
+                                            <div id="passwordForm<?php echo $row['id']; ?>" style="display:none;">
+                                                <div class="mb-3">
+                                                    <label for="newPassword" class="form-label">Enter New Password</label>
+                                                    <input type="password" id="newPassword<?php echo $row['id']; ?>" name="newPassword" class="form-control" oninput="validatePassword(<?php echo $row['id']; ?>)">
                                                 </div>
-                                                <div id="passwordForm<?php echo $row['id']; ?>" style="display:none;">
-                                                    <div class="mb-3">
-                                                        <label for="newPassword" class="form-label">Enter New Password</label>
-                                                        <input type="password" id="newPassword<?php echo $row['id']; ?>" name="newPassword" class="form-control" oninput="validatePassword(<?php echo $row['id']; ?>)">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="reenterNewPassword" class="form-label">Re-enter New Password</label>
-                                                        <input type="password" id="reenterNewPassword<?php echo $row['id']; ?>" name="reenterNewPassword" class="form-control" oninput="validatePassword(<?php echo $row['id']; ?>)">
-                                                    </div>
-                                                    <div id="passwordConditions<?php echo $row['id']; ?>" class="mb-3">
-                                                        <ul>
-                                                            <li id="lengthCondition<?php echo $row['id']; ?>" style="color: red;">At least 8 characters long</li>
-                                                            <li id="uppercaseCondition<?php echo $row['id']; ?>" style="color: red;">Contains at least 1 uppercase character</li>
-                                                            <li id="numberCondition<?php echo $row['id']; ?>" style="color: red;">Contains at least 1 number</li>
-                                                            <li id="specialCharCondition<?php echo $row['id']; ?>" style="color: red;">Contains at least 1 special character</li>
-                                                            <li id="matchCondition<?php echo $row['id']; ?>" style="color: red;">Passwords match</li>
-                                                        </ul>
-                                                    </div>
+                                                <div class="mb-3">
+                                                    <label for="reenterNewPassword" class="form-label">Re-enter New Password</label>
+                                                    <input type="password" id="reenterNewPassword<?php echo $row['id']; ?>" name="reenterNewPassword" class="form-control" oninput="validatePassword(<?php echo $row['id']; ?>)">
                                                 </div>
+                                                <div id="passwordConditions<?php echo $row['id']; ?>" class="mb-3">
+                                                    <ul>
+                                                        <li id="lengthCondition<?php echo $row['id']; ?>" style="color: red;">At least 8 characters long</li>
+                                                        <li id="uppercaseCondition<?php echo $row['id']; ?>" style="color: red;">Contains at least 1 uppercase character</li>
+                                                        <li id="numberCondition<?php echo $row['id']; ?>" style="color: red;">Contains at least 1 number</li>
+                                                        <li id="specialCharCondition<?php echo $row['id']; ?>" style="color: red;">Contains at least 1 special character</li>
+                                                        <li id="matchCondition<?php echo $row['id']; ?>" style="color: red;">Passwords match</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
 
                                             <!-- Save Changes -->
                                             <button type="submit" name="updateEmployee" id="saveChanges<?php echo $row['id']; ?>" class="btn btn-primary">Save Changes</button>

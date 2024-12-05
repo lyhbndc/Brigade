@@ -34,9 +34,6 @@ if ($result && mysqli_num_rows($result) > 0) {
     }
 }
 
-// Include database connection (adjust the connection as per your setup)
-include 'db_connection.php';
-
 // Handle profile update
 if (isset($_POST['update_profile'])) {
     $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
@@ -45,59 +42,75 @@ if (isset($_POST['update_profile'])) {
     $address = mysqli_real_escape_string($conn, $_POST['address']);
     $city = mysqli_real_escape_string($conn, $_POST['city']);
 
-    // Only update non-empty fields
-    $updateQuery = "UPDATE user SET";
-    $fieldsToUpdate = [];
-
-    if (!empty($firstname)) $fieldsToUpdate[] = " FirstName = '$firstname'";
-    if (!empty($lastname)) $fieldsToUpdate[] = " LastName = '$lastname'";
-    if (!empty($email)) $fieldsToUpdate[] = " Email = '$email'";
-    if (!empty($address)) $fieldsToUpdate[] = " Address = '$address'";
-    if (!empty($city)) $fieldsToUpdate[] = " City = '$city'";
-
-    if (!empty($fieldsToUpdate)) {
-        $updateQuery .= implode(", ", $fieldsToUpdate) . " WHERE Username = '$user'";
-
-        if (mysqli_query($conn, $updateQuery)) {
-            echo "Profile updated successfully!";
-            header("Refresh:0"); // Refresh the page to show updated info
-        } else {
-            echo "Error updating profile: " . mysqli_error($conn);
-        }
+    $updateQuery = "
+        UPDATE user 
+        SET FirstName = '$firstname', LastName = '$lastname', Email = '$email', Address = '$address', City = '$city' 
+        WHERE Username = '$user'
+    ";
+    if (mysqli_query($conn, $updateQuery)) {
+        echo "Profile updated successfully!";
+        header("Refresh:0"); // Refresh the page to show updated info
+    } else {
+        echo "Error updating profile: " . mysqli_error($conn);
     }
 }
 
-// Handle password update
-if (isset($_POST['update_password'])) {
-    $currentPassword = mysqli_real_escape_string($conn, $_POST['current_password']);
-    $newPassword = mysqli_real_escape_string($conn, $_POST['new_password']);
-    $reenterPassword = mysqli_real_escape_string($conn, $_POST['reenter_password']);
 
-    // Check current password
-    $userCheckQuery = "SELECT Password FROM user WHERE Username = '$user'";
-    $result = mysqli_query($conn, $userCheckQuery);
-    $row = mysqli_fetch_assoc($result);
+if (isset($_POST['change_password'])) {
+    // Get user input from form
+    $current_password = mysqli_real_escape_string($conn, $_POST['current_password']);
+    $new_password = mysqli_real_escape_string($conn, $_POST['new_password']);
+    $confirm_password = mysqli_real_escape_string($conn, $_POST['confirm_password']);
 
-    if ($row['Password'] === $currentPassword) {
-        // Validate password criteria
-        if ($newPassword === $reenterPassword &&
-            strlen($newPassword) >= 8 &&
-            preg_match('/[A-Z]/', $newPassword) &&
-            preg_match('/\d/', $newPassword) &&
-            preg_match('/[\W_]/', $newPassword)) {
+    // Ensure the session has a valid user
+    if (!isset($_SESSION['user'])) {
+        echo "User not logged in.";
+        exit();
+    }
+    $user = $_SESSION['user']; // Assuming username is stored in session
 
+<<<<<<< HEAD
+    // Retrieve current password from database
+    $query = "SELECT Password FROM user WHERE Username = '$user'";
+    $result = mysqli_query($conn, $query);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $stored_password = $row['Password'];
+
+        // Verify if current password matches the stored one
+        if ($current_password === $stored_password) {
+            // Check if new password matches confirm password
+            if ($new_password === $confirm_password) {
+                // Password validation check (minimum 8 characters, at least 1 uppercase, 1 number, 1 special character)
+                if (preg_match('/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', $new_password)) {
+                    // Update the password in the database (no hashing)
+                    $updatePasswordQuery = "UPDATE user SET Password = '$new_password' WHERE Username = '$user'";
+
+                    if (mysqli_query($conn, $updatePasswordQuery)) {
+                        echo "Password updated successfully!";
+                        header("Location: 4myacc.php"); // Redirect to the account page after success
+                        exit();
+                    } else {
+                        echo "Error updating password: " . mysqli_error($conn);
+                    }
+                } else {
+                    echo "New password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character.";
+                }
+=======
             // Update password in the database (without hashing)
             $updatePasswordQuery = "UPDATE user SET Password = '$newPassword' WHERE Username = '$user'";
             if (mysqli_query($conn, $updatePasswordQuery)) {
                 echo "Password updated successfully!";
+>>>>>>> origin/main
             } else {
-                echo "Error updating password: " . mysqli_error($conn);
+                echo "New password and confirm password do not match.";
             }
         } else {
-            echo "Invalid password. Ensure it matches criteria.";
+            echo "Current password is incorrect.";
         }
     } else {
-        echo "Current password is incorrect.";
+        echo "Error retrieving user data.";
     }
 }
 
@@ -115,7 +128,7 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="styles/acc.css">
+    <link rel="stylesheet" type="text/css" href="styles/acc.css?v=1.0">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
 </head>
 
@@ -155,16 +168,16 @@ mysqli_close($conn);
                         
                     </ul>
                     <ul class="navbar_user">
-                        <li class="dropdown">
-                            <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-search" aria-hidden="true"></i>
-                            </a>
-                            <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
-                                <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
-                                <ul id="nameList" class="name-list"></ul>
-                            </div>
-                        </li>
-                                            
+					<li class="dropdown">
+    <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </a>
+    <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+        <ul id="nameList" class="name-list"></ul>
+    </div>
+</li>
+                        
                         <!-- User Dropdown -->
                         <li class="dropdown">
                             <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -193,7 +206,33 @@ mysqli_close($conn);
 </div>
             </header>
         <div class="fs_menu_overlay"></div>
+<<<<<<< HEAD
+
+        <!-- Hamburger Menu -->
+        <div class="hamburger_menu">
+            <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
+            <div class="hamburger_menu_content text-right">
+                <ul class="menu_top_nav">
+                    <li class="menu_item has-children">
+                        <a href="#">
+                            My Account
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="menu_selection">
+                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                            <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu_item"><a href="1homepage.php">home</a></li>
+                    <li class="menu_item"><a href="3shop.php">shop</a></li>
+                    <li class="menu_item"><a href="3new.php">new</a></li>
+                </ul>
+            </div>
+        </div>
+        <br><br><br><br><br><br><br>
+=======
         <br><br><br>
+>>>>>>> origin/main
         <div class="title">
         <div class="account-container">
     <h1>My Account</h1>
@@ -217,10 +256,60 @@ mysqli_close($conn);
         </div>
         <button class="recent-order-btn" onclick="editProfile()">Edit Profile</button>
         <button class="recent-order-btn" onclick="window.location.href='4recentorders.php';">Recent Orders</button>
+        <button class="recent-order-btn" onclick="changePass()">Change Password</button>
         <button class="recent-order-btn" onclick="window.location.href='logout.php';">Logout</button>
     </div>
 
     <!-- Edit Profile Form Section -->
+<<<<<<< HEAD
+    <div class="edit-profile-form" id="editProfileForm" style="display: none;">
+        <form method="post">
+            <label for="firstname">First Name:</label>
+            <input type="text" name="firstname" id="editFirstname" value="<?php echo htmlspecialchars($firstname); ?>" required><br>
+
+            <label for="lastname">Last Name:</label>
+            <input type="text" name="lastname" id="editLastname" value="<?php echo htmlspecialchars($lastname); ?>" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="editEmail" value="<?php echo htmlspecialchars($email); ?>" required><br>
+
+            <label for="address">Address:</label>
+            <input type="text" name="address" id="editAddress" value="<?php echo htmlspecialchars($address); ?>" required><br>
+
+            <label for="city">City:</label>
+            <input type="text" name="city" id="editCity" value="<?php echo htmlspecialchars($city); ?>" required>
+
+            <button type="submit" name="update_profile">Save Changes</button>
+            <button type="button" onclick="cancelEdit()">Cancel</button>
+        </form>
+    </div>
+    
+    <!-- Change Password Section -->
+    <div class="edit-profile-form" id="changePass" style="display: none;">
+        <form method="post">
+            <label for="current_password">Current Password:</label>
+            <input type="password" name="current_password" id="current_password" required><br>
+
+            <label for="new_password">New Password:</label>
+            <input type="password" name="new_password" id="new_password" required onkeyup="validatePassword()"><br>
+            
+            <div class="password-conditions">
+                <ul>
+                    <li id="lengthCondition" style="color: red;">At least 8 characters long</li>
+                    <li id="uppercaseCondition" style="color: red;">Contains at least 1 uppercase character</li>
+                    <li id="numberCondition" style="color: red;">Contains at least 1 number</li>
+                    <li id="specialCharCondition" style="color: red;">Contains at least 1 special character</li>
+                    <li id="matchCondition" style="color: red;">Passwords match</li>
+                </ul>
+            </div>
+
+            <label for="confirm_password">Confirm New Password:</label>
+            <input type="password" name="confirm_password" id="confirm_password" required onkeyup="validatePassword()"><br>
+
+            <button type="submit" name="change_password">Change Password</button>
+            <button type="button" onclick="cancelEdit()">Cancel</button>
+        </form>
+=======
     <div class="edit-profile-form" id="editProfileForm">
     <form method="post">
     <!-- Account Information -->
@@ -262,6 +351,7 @@ mysqli_close($conn);
 
         
         <button type="button" onclick="cancelEdit()">Cancel</button>
+>>>>>>> origin/main
     </div>
 </div>
 
@@ -326,7 +416,7 @@ mysqli_close($conn);
 	</footer>
     </div>
 
-<script>
+    <script>
     // Define the cart key based on the user session
     const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`;
     let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
@@ -413,21 +503,47 @@ document.querySelectorAll('.action-button').forEach(button => {
 });
 
 </script>
-
-<script>//UPDATE PROFILE
+<script>
     function editProfile() {
         // Hide the account details and show the edit form
         document.getElementById('accountDetails').style.display = 'none';
         document.getElementById('editProfileForm').style.display = 'block';
     }
 
+    function changePass() {
+        document.getElementById("accountDetails").style.display = 'none';  // Hide account details
+        document.getElementById("changePass").style.display = 'block';     // Show change password form
+    }
+
+    function validatePassword() {
+        const new_password = document.getElementById("new_password").value; 
+        const confirm_password = document.getElementById("confirm_password").value; 
+
+        // Conditions for password validation
+        const lengthCondition = new_password.length >= 8;
+        const uppercaseCondition = /[A-Z]/.test(new_password);
+        const numberCondition = /\d/.test(new_password);
+        const specialCharCondition = /[!@#$%^&*(),.?":{}|<>]/.test(new_password);
+        const matchCondition = new_password === confirm_password; 
+
+        // Change colors based on the validation result (green for valid, red for invalid)
+        document.getElementById("lengthCondition").style.color = lengthCondition ? "green" : "red";
+        document.getElementById("uppercaseCondition").style.color = uppercaseCondition ? "green" : "red";
+        document.getElementById("numberCondition").style.color = numberCondition ? "green" : "red";
+        document.getElementById("specialCharCondition").style.color = specialCharCondition ? "green" : "red";
+        document.getElementById("matchCondition").style.color = matchCondition ? "green" : "red";
+    }
+
     function cancelEdit() {
         // Hide the edit form and show the account details again
         document.getElementById('editProfileForm').style.display = 'none';
+        document.getElementById("changePass").style.display = 'none'; 
         document.getElementById('accountDetails').style.display = 'block';
     }
 </script>
 
+<<<<<<< HEAD
+=======
 <script> //UPDATE PASSWORD
 
     function togglePasswordUpdate() {
@@ -492,6 +608,7 @@ document.querySelectorAll('.action-button').forEach(button => {
 
 </script>
 
+>>>>>>> origin/main
 <script>
     const items = [
         { img: "items/images/1001/i1.png", alt: "1", name: "Let's Get High", href: "items/1001.php" },
@@ -503,7 +620,7 @@ document.querySelectorAll('.action-button').forEach(button => {
  { img: "items/images/1007/i1.png", alt: "7", name: "Sting", href: "items/1007.php" },
  { img: "items/images/1008/i1.png", alt: "8", name: "Daily", href: "items/1008.php" },
  { img: "items/images/1009/i1.png", alt: "9", name: "Warm Up", href: "items/1009.php" },
- { img: "items/images/10010/i1.png", alt: "10", name: "Earth", href: "items/10010.php" },
+ { img: "items/images/1010/i1.png", alt: "10", name: "Earth", href: "items/1010.php" },
 ];
 
 const nameList = document.getElementById('nameList');
@@ -565,5 +682,7 @@ function closeSearchDropdown() {
      }
  }
  </script>
+
+ 
 </body>
 </html>
