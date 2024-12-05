@@ -1,3 +1,14 @@
+<?php
+session_start(); 
+$user = $_SESSION['user'];
+$conn = mysqli_connect("localhost", "root", "", "brigade");
+
+$sql = "SELECT id, name, tag, image, price, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock 
+        FROM products 
+        WHERE category = 'shorts'"; 
+$result = $conn->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,16 +62,21 @@
 						</li>
                         
                         <!-- User Dropdown -->
-                        <li class="dropdown">
-                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-								<a class="dropdown-item" href="4myacc.php">Account</a>
-								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
-								<a class="dropdown-item" href="logout.php">Logout</a>
-                            </div>
-                        </li>
+						<li class="dropdown">
+							<a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fa fa-user" aria-hidden="true"></i>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+								<?php if ($user): ?>
+									<a class="dropdown-item" href="4myacc.php">Account</a>
+									<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+									<a class="dropdown-item" href="logout.php">Logout</a>
+								<?php else: ?>
+									<a class="dropdown-item" href="4login.php">Sign In</a>
+									<a class="dropdown-item" href="7adminlogin.php">Admin</a>
+								<?php endif; ?>
+							</div>
+						</li>
                         
                         <li class="checkout">
                             <a href="3cart.php">
@@ -175,58 +191,57 @@
 								</div>
 
 								<!-- Product Grid -->
-
 								<div class="product-grid">
+									<?php 
+									if ($result->num_rows > 0) {
+										while ($row = $result->fetch_assoc()) {
+											$productId = str_pad($row['id'], 7, '0', STR_PAD_LEFT);
 
-									<!-- Product 1 -->
-
-									<div class="product-item shorts" data-id="1005">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="items/images/1005/front.png" alt="">
-                                            </div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="items/1005.php">Brigade Clothing - Nectar</a></h6>
-                                                <div class="product_price">₱380.00</div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-
-									<!-- Product 2 -->
-
-									<div class="product-item shorts" data-id="1006">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="items/images/1006/front.png" alt="">
-                                            </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="items/1006.php">Brigade Clothing - Bay Area</a></h6>
-                                                <div class="product_price">₱400.00<span>₱500.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-
-									<div class="product-item shorts" data-id="1007">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="items/images/1007/front.png" alt="">
-                                            </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Sting</a></h6>
-                                                <div class="product_price">₱300.00<span>₱500.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-                                    </div>
-
-									
-									
+											// Check if all sizes are out of stock
+											$isOutOfStock = (
+												$row['small_stock'] == 0 && 
+												$row['medium_stock'] == 0 && 
+												$row['large_stock'] == 0 && 
+												$row['xl_stock'] == 0 && 
+												$row['xxl_stock'] == 0 &&
+												$row['xxxl_stock'] == 0 
+											);
+											?>
+											<div class="product-item" data-id="<?php echo $productId; ?>">
+												<div class="product discount product_filter">
+													<div class="product_image">
+														<img src="/Brigade/uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="">
+													</div>
+													<div class="favorite favorite_left"></div>
+													<?php if ($isOutOfStock) { ?>
+														<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+															<span>Sold</span>
+														</div>
+													<?php } ?>
+													<div class="product_info">
+														<h6 class="product_name">
+															<a href="<?php echo htmlspecialchars('items/' . $row['id'] . '.php'); ?>">
+																<?php echo htmlspecialchars($row['name']); ?>
+															</a>
+														</h6>
+														<div class="product_price">₱<?php echo number_format($row['price'], 2); ?></div>
+													</div>
+												</div>
+												<div class="red_button add_to_cart_button">
+													<?php if (!$isOutOfStock) { ?>
+														<a href="#" class="add-to-cart" data-id="<?php echo $productId; ?>">Add to Cart</a>
+													<?php } else { ?>
+														<span style="color: gray;">Out of Stock</span>
+													<?php } ?>
+												</div>
+											</div>
+										<?php 
+										}
+									} else {
+										echo "<p>No new products found.</p>";
+									}
+									?>
 								</div>
-						
 							</div>
 						</div>
 					</div>
@@ -344,41 +359,64 @@
 <script src="plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 <script src="js/categories_custom.js"></script>
 <script>
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    // Define the cart key based on the user session
+    const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`;
+    let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
 
-    function updateCart() {
-        const cartCountElement = document.getElementById('checkout_items');
-        cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }
+	function updateCart() {
+    // Select the cart count element
+    const cartCountElement = document.getElementById('checkout_items');
+    
+    // Display the count of unique items in the cart
+    cartCountElement.textContent = cartItems.length;
+}
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default anchor click behavior
-            const productItem = button.closest('.product-item');
-            const productId = productItem.getAttribute('data-id');
-            const productName = productItem.querySelector('.product_name a').textContent;
-            const productImage = productItem.querySelector('.product_image img').src;
-            const productPrice = productItem.querySelector('.product_price').textContent;
+document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
 
-            // Check if item already exists in the cart
-            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
-            if (existingItemIndex > -1) {
-                // Increase quantity if it already exists
-                cartItems[existingItemIndex].quantity += 1;
-            } else {
-                // Add new item to cart with a default quantity of 1
-                cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
-            }
+        const productItem = button.closest('.product-item');
+        const productId = productItem.getAttribute('data-id');
+        const productName = productItem.querySelector('.product_name a').textContent;
+        const productImage = productItem.querySelector('.product_image img').src;
+        const productPrice = productItem.querySelector('.product_price').textContent;
 
-            updateCart(); // Update the cart display
-            alert(`${productName} has been added to your cart!`);
-        });
+        // Get the selected size from the sidebar
+        const selectedSize = document.querySelector('.checkboxes .active span').textContent;
+
+        if (!selectedSize) {
+            alert("Please select a size from the sidebar.");
+            return;
+        }
+
+        // Check if the item is already in the cart with the selected size
+        const existingItemIndex = cartItems.findIndex(item => item.id === productId && item.size === selectedSize);
+        if (existingItemIndex > -1) {
+            // Increase quantity if item already exists
+            cartItems[existingItemIndex].quantity += 1;
+        } else {
+            // Add new item with default quantity of 1
+            cartItems.push({
+                id: productId,
+                name: productName,
+                image: productImage,
+                price: productPrice,
+                size: selectedSize,
+                quantity: 1
+            });
+        }
+
+        // Save updated cart to localStorage and update the cart display
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        updateCart();
+        alert(`${productName} (Size: ${selectedSize}) has been added to your cart!`);
     });
+});
 
     // Update cart count on page load
-    updateCart();
+    document.addEventListener('DOMContentLoaded', updateCart);
 </script>
+
 <script>
     // JavaScript to make the navbar opaque when scrolling
     window.addEventListener('scroll', function() {
@@ -403,7 +441,7 @@
  { img: "items/images/1007/i1.png", alt: "7", name: "Sting", href: "items/1007.php" },
  { img: "items/images/1008/i1.png", alt: "8", name: "Daily", href: "items/1008.php" },
  { img: "items/images/1009/i1.png", alt: "9", name: "Warm Up", href: "items/1009.php" },
- { img: "items/images/10010/i1.png", alt: "10", name: "Earth", href: "items/10010.php" },
+ { img: "items/images/1010/i1.png", alt: "10", name: "Earth", href: "items/1010.php" },
 ];
 
 const nameList = document.getElementById('nameList');

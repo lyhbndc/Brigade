@@ -3,7 +3,10 @@ session_start();
 $user = $_SESSION['user'];
 $conn = mysqli_connect("localhost", "root", "", "brigade");
 
-$sql = "SELECT id, name, image, price, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock FROM new_products";
+// Modify the SQL query to fetch only products with tag 'new'
+$sql = "SELECT id, name, tag, image, price, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock 
+        FROM products 
+        WHERE tag = 'new'"; // Filter for "new" tag
 $result = $conn->query($sql);
 ?>
 
@@ -64,9 +67,14 @@ $result = $conn->query($sql);
 										<i class="fa fa-user" aria-hidden="true"></i>
 									</a>
 									<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-										<a class="dropdown-item" href="4myacc.php">Account</a>
-										<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
-										<a class="dropdown-item" href="logout.php">Logout</a>
+										<?php if ($user): ?>
+											<a class="dropdown-item" href="4myacc.php">Account</a>
+											<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+											<a class="dropdown-item" href="logout.php">Logout</a>
+										<?php else: ?>
+											<a class="dropdown-item" href="4login.php">Sign In</a>
+											<a class="dropdown-item" href="7adminlogin.php">Admin</a>
+										<?php endif; ?>
 									</div>
 								</li>
 								
@@ -184,7 +192,6 @@ $result = $conn->query($sql);
 								</div>
 
 								<!-- Product Grid -->
-
 								<div class="product-grid">
 									<?php 
 									if ($result->num_rows > 0) {
@@ -207,11 +214,11 @@ $result = $conn->query($sql);
 														<img src="/Brigade/uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="">
 													</div>
 													<div class="favorite favorite_left"></div>
-														<?php if ($isOutOfStock) { ?>
-															<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
-																<span>Sold</span>
-															</div>
-														<?php } ?>
+													<?php if ($isOutOfStock) { ?>
+														<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+															<span>Sold</span>
+														</div>
+													<?php } ?>
 													<div class="product_info">
 														<h6 class="product_name">
 															<a href="<?php echo htmlspecialchars('items/' . $row['id'] . '.php'); ?>">
@@ -230,12 +237,11 @@ $result = $conn->query($sql);
 												</div>
 											</div>
 										<?php 
-											}
-										} else {
-											echo "<p>No products found.</p>";
 										}
-										?>
-									</div>
+									} else {
+										echo "<p>No new products found.</p>";
+									}
+									?>
 								</div>
 							</div>
 						</div>

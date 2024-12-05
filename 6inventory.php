@@ -17,6 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Process the form
         $name = "Brigade Clothing - " . trim($_POST['name']); // Concatenate the prefix with the input name
         
+        // Get the category and tag values
+        $category = isset($_POST['category']) ? $_POST['category'] : '';
+        $tag = isset($_POST['tag']) ? $_POST['tag'] : ''; // Get the tag value
+        
         // Use null coalescing to default to 0 if not set, and check if the value is numeric
         $small_stock = isset($_POST['small_stock']) && is_numeric($_POST['small_stock']) ? (int)$_POST['small_stock'] : 0;
         $medium_stock = isset($_POST['medium_stock']) && is_numeric($_POST['medium_stock']) ? (int)$_POST['medium_stock'] : 0;
@@ -25,10 +29,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $xxl_stock = isset($_POST['xxl_stock']) && is_numeric($_POST['xxl_stock']) ? (int)$_POST['xxl_stock'] : 0;
         $xxxl_stock = isset($_POST['xxxl_stock']) && is_numeric($_POST['xxxl_stock']) ? (int)$_POST['xxxl_stock'] : 0;
         $price = isset($_POST['price']) && is_numeric($_POST['price']) ? (float)$_POST['price'] : 0;
-    
+        
         // Calculate total quantity
         $totalQuantity = $small_stock + $medium_stock + $large_stock + $xl_stock + $xxl_stock + $xxxl_stock;
-
+        
         // Handle image upload (if any)
         $image = null; // Default if no image is uploaded
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -38,34 +42,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             $image = basename($_FILES['image']['name']);
             $uploadFile = $uploadDir . $image;
-    
+        
             if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
                 die("Error uploading image.");
             }
         }
-    
+        
         // Insert into the products table first
-        $stmt_prod = $conn->prepare("INSERT INTO products (name, quantity, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt_prod = $conn->prepare("INSERT INTO products (name, category, tag, quantity, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         if (!$stmt_prod) {
             die("Error preparing statement for products: " . $conn->error);
         }
-    
-        // Bind parameters for products table
-        $stmt_prod->bind_param("siiiiiiids", $name, $totalQuantity, $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $image);
         
-        // Execute products insert
+        // Bind parameters for products table
+        $stmt_prod->bind_param("sssiiiiiiids", $name, $category, $tag, $totalQuantity, $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $image);
+        
+        /*// Execute products insert
         if ($stmt_prod->execute()) {
             // Get the last inserted ID from the products table
             $product_id = $conn->insert_id;
-    
+        
             // Now insert into the new_products table using the same ID
-            $stmt_new = $conn->prepare("INSERT INTO new_products (id, name, quantity, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt_new = $conn->prepare("INSERT INTO new_products (id, name, category, quantity, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             if (!$stmt_new) {
                 die("Error preparing statement for new_products: " . $conn->error);
             }
-    
-            // Bind parameters for new_products table (corrected)
-            $stmt_new->bind_param("isiiiiiiiss", $product_id, $name, $totalQuantity, $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $image);
+        
+            // Bind parameters for new_products table
+            $stmt_new->bind_param("issiiiiiiids", $product_id, $name, $category, $totalQuantity, $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $image);
             
             // Execute new_products insert
             if ($stmt_new->execute()) {
@@ -77,23 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         } else {
             echo "Error inserting into products: " . $stmt_prod->error;
-    }
-
-    
-        // Insert into database (updated query to include 'category')
-        $stmt = $conn->prepare("INSERT INTO products (name, category, quantity, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        if (!$stmt) {
-            die("Error preparing statement: " . $conn->error);
-        }
-    
-        // Bind parameters (added category)
-        $stmt->bind_param("ssiiiiiiids", $name, $category, $totalQuantity, $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $image);
-        if ($stmt->execute()) {
-            header("Location: 6inventory.php");
-            exit;
-        } else {
-            echo "Error: " . $stmt->error;
-        }
+        }*/
     }    
 
     // Handle form submissions for the edit stock module
@@ -107,10 +95,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $xxl_stock = $_POST['xxl_stock'];
         $xxxl_stock = $_POST['xxxl_stock'];
         $price = $_POST['price'];
-        $category = $_POST['category']; // Get the selected category
+        $category = $_POST['category']; 
+        $tag = $_POST['tag'];
 
         // Fetch current values from the database
-        $query = "SELECT small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, quantity, image, category FROM products WHERE id = ?";
+        $query = "SELECT small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, quantity, image, category, tag FROM products WHERE id = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -174,11 +163,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
         // Update the database with the new values
         $updateQuery = "UPDATE products 
-                        SET small_stock = ?, medium_stock = ?, large_stock = ?, xl_stock = ?, xxl_stock = ?, xxxl_stock = ?, price = ?, quantity = quantity + ?, image = ?, category = ? 
+                        SET small_stock = ?, medium_stock = ?, large_stock = ?, xl_stock = ?, xxl_stock = ?, xxxl_stock = ?, price = ?, quantity = quantity + ?, image = ?, category = ?, tag = ? 
                         WHERE id = ?";
     
         $stmt = $conn->prepare($updateQuery);
-        $stmt->bind_param("iiiiiidissi", $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $quantityDifference, $imagePath, $category, $id);
+        $stmt->bind_param("iiiiiidisssi", $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $quantityDifference, $imagePath, $category, $tag, $id);
     
         if ($stmt->execute()) {
             header("Location: 6inventory.php");
@@ -287,14 +276,25 @@ $conn->close();
                                 <label for="name" class="form-label">Item Name</label>
                                 <input type="text" id="name" name="name" class="form-control" placeholder="Item Name" required>
                             </div>
-                            <div class="mb-3">
-                                <label for="category" class="form-label">Category</label>
-                                <select id="category" name="category" class="form-select" required>
-                                    <option value="">-- Select Category --</option>
-                                    <option value="Tees">Tees</option>
-                                    <option value="Hoodies">Hoodies</option>
-                                    <option value="Shorts">Shorts</option>
-                                </select>
+                            <div class="mb-3 row">
+                                <div class="col">
+                                    <label for="category" class="form-label">Category</label>
+                                    <select id="category" name="category" class="form-select" required>
+                                        <option value="">-- Select Category --</option>
+                                        <option value="Tees">Tees</option>
+                                        <option value="Hoodies">Hoodies</option>
+                                        <option value="Shorts">Shorts</option>
+                                    </select>
+                                </div>
+
+                                <div class="col">
+                                    <label for="tag" class="form-label">Tag</label>
+                                    <select id="tag" name="tag" class="form-select" required>
+                                        <option value="">-- Select Tag --</option>
+                                        <option value="New">New</option>
+                                        <option value="Regular">Regular</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="quantity" class="form-label">Quantity</label>
@@ -337,7 +337,7 @@ $conn->close();
             </div>
         </div>
 
-        <!-- Inventory Table -->
+       <!-- Inventory Table -->
         <?php if ($result->num_rows > 0): ?>
             <table class="table table-striped">
                 <thead>
@@ -346,6 +346,7 @@ $conn->close();
                         <th style="width: 10%;">Image</th>
                         <th style="width: 8%;">Item Name</th>
                         <th style="width: 8%;">Category</th> 
+                        <th style="width: 8%;">Tag</th> 
                         <th style="width: 8%;">Quantity</th>
                         <th style="width: 5%;">S</th>
                         <th style="width: 5%;">M</th>
@@ -353,7 +354,7 @@ $conn->close();
                         <th style="width: 5%;">XL</th>
                         <th style="width: 5%;">2XL</th>
                         <th style="width: 5%;">3XL</th>
-                        <th style="width: 10%;">Price</th>
+                        <th style="width: 8%;">Price</th>
                         <th style="width: 10%;">Actions</th>
                     </tr>
                 </thead>
@@ -367,18 +368,19 @@ $conn->close();
                                 <?php else: ?>
                                     No image
                                 <?php endif; ?>
-                            </td>
-                            <td style="width: 10%"><?php echo $row['name']; ?></td>
-                            <td style="width: 10%"><?php echo $row['category']; ?></td>
-                            <td style="width: 10%"><?php echo $row['quantity']; ?></td>
-                            <td style="width: 5%"><?php echo $row['small_stock']; ?></td>
-                            <td style="width: 5%"><?php echo $row['medium_stock']; ?></td>
-                            <td style="width: 5%"><?php echo $row['large_stock']; ?></td>
-                            <td style="width: 5%"><?php echo $row['xl_stock']; ?></td>
-                            <td style="width: 5%"><?php echo $row['xxl_stock']; ?></td>
-                            <td style="width: 5%"><?php echo $row['xxxl_stock']; ?></td>
-                            <td style="width: 5%"><?php echo '$' . number_format($row['price'], 2); ?></td>
-                            <td style="width: 10%">
+                                </td>
+                                <td style="width: 10%"><?php echo $row['name']; ?></td>
+                                <td style="width: 8%"><?php echo $row['category']; ?></td>
+                                <td style="width: 8%"><?php echo $row['tag']; ?></td> <!-- Display the Tag value -->
+                                <td style="width: 8%"><?php echo $row['quantity']; ?></td>
+                                <td style="width: 5%"><?php echo $row['small_stock']; ?></td>
+                                <td style="width: 5%"><?php echo $row['medium_stock']; ?></td>
+                                <td style="width: 5%"><?php echo $row['large_stock']; ?></td>
+                                <td style="width: 5%"><?php echo $row['xl_stock']; ?></td>
+                                <td style="width: 5%"><?php echo $row['xxl_stock']; ?></td>
+                                <td style="width: 5%"><?php echo $row['xxxl_stock']; ?></td>
+                                <td style="width: 8%"><?php echo '$' . number_format($row['price'], 2); ?></td>
+                                <td style="width: 10%">
                                 <button class="btn btn-warning btn-sm custom-btn" data-bs-toggle="modal" data-bs-target="#editStockModal<?php echo $row['id']; ?>">Edit</button>
                                 <button class="btn btn-danger btn-sm custom-btn" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $row['id']; ?>">Delete</button>
                             </td>
@@ -431,13 +433,23 @@ $conn->close();
                                             </div>
 
                                             <!-- Category Dropdown (new) -->
-                                            <div class="mb-3">
-                                                <label for="category" class="form-label">Category</label>
-                                                <select name="category" id="category" class="form-control" required>
-                                                    <option value="Tees" <?php echo ($row['category'] == 'Tees') ? 'selected' : ''; ?>>Tees</option>
-                                                    <option value="Hoodies" <?php echo ($row['category'] == 'Hoodies') ? 'selected' : ''; ?>>Hoodies</option>
-                                                    <option value="Shorts" <?php echo ($row['category'] == 'Shorts') ? 'selected' : ''; ?>>Shorts</option>
-                                                </select>
+                                            <div class="mb-3 row">
+                                                <div class="col">
+                                                    <label for="category" class="form-label">Category</label>
+                                                    <select name="category" id="category" class="form-control" required>
+                                                        <option value="Tees" <?php echo ($row['category'] == 'Tees') ? 'selected' : ''; ?>>Tees</option>
+                                                        <option value="Hoodies" <?php echo ($row['category'] == 'Hoodies') ? 'selected' : ''; ?>>Hoodies</option>
+                                                        <option value="Shorts" <?php echo ($row['category'] == 'Shorts') ? 'selected' : ''; ?>>Shorts</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col">
+                                                    <label for="tag" class="form-label">Tag</label>
+                                                    <select name="tag" id="tag" class="form-control" required>
+                                                        <option value="New" <?php echo ($row['tag'] == 'New') ? 'selected' : ''; ?>>New</option>
+                                                        <option value="Regular" <?php echo ($row['tag'] == 'Regular') ? 'selected' : ''; ?>>Regular</option>
+                                                    </select>
+                                                </div>
                                             </div>
 
                                             <!-- Image upload remains unchanged -->

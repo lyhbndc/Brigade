@@ -18,11 +18,11 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brigade Clothing</title>
     <link rel="stylesheet" href="styles/bootstrap4/bootstrap.min.css">
-    <link rel="stylesheet" href="styles/orders.css">
+    <link rel="stylesheet" href="styles/orders.css?v=1.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
 </head>
 <body>
-    <div class="sidebar" id="sidebar">
+    <div class="sidebar">
         <a><img src="assets/Untitled design.png" class="footer-logo"></a>
         <a href="6dashboard.php">Dashboard</a>
         <a href="6inventory.php">Stocks</a>
@@ -35,6 +35,7 @@ $conn->close();
             <a href="6employees.php">Employees</a>
         <?php endif; ?>
 
+        <a href="logout.php" class="logout-button">Logout</a>
     </div>
 
     <table class="table table-striped table-bordered">

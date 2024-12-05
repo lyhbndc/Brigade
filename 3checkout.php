@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $totalAmount = 0;
 
     foreach ($cartData as $item) {
-        $product = mysqli_real_escape_string($conn, $item['name']);
+        $product = mysqli_real_escape_string($conn, trim($item['name']));
         $quantity = (int)$item['quantity'];
         $size = mysqli_real_escape_string($conn, $item['size']);
         $price = floatval(preg_replace('/[^\d.-]/', '', $item['price']));
@@ -233,18 +233,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </li>
                         
                         <!-- User Dropdown -->
-                        <li class="dropdown">
-                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="4login.php">Sign In</a>
-								<a class="dropdown-item" href="4myacc.php">Account</a>
-								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
-								<a class="dropdown-item" href="7adminlogin.php">Admin</a>
-								<a class="dropdown-item" href="logout.php">Logout</a>
-                            </div>
-                        </li>
+						<li class="dropdown">
+							<a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fa fa-user" aria-hidden="true"></i>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+								<?php if ($user): ?>
+									<a class="dropdown-item" href="4myacc.php">Account</a>
+									<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+									<a class="dropdown-item" href="logout.php">Logout</a>
+								<?php else: ?>
+									<a class="dropdown-item" href="4login.php">Sign In</a>
+									<a class="dropdown-item" href="7adminlogin.php">Admin</a>
+								<?php endif; ?>
+							</div>
+						</li>
                         
                         <li class="checkout">
                             <a href="3cart.php">
