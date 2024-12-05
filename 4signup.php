@@ -228,7 +228,7 @@ mysqli_close($conn);
                     <div class="row">
                         <div class="col-lg-12 text-right">
                             <div class="logo_container">
-                                <a href="1index2.php"><img src="assets/1.png"></a>
+                                <a href="1homepage.php"><img src="assets/1.png"></a>
                             </div>
                             <nav class="navbar">
                                 
