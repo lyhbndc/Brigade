@@ -491,33 +491,6 @@ $user = $_SESSION['user'];
 </footer>
 
 <script>
-      
-	window.addEventListener('load', function() {
-		const loadingPage = document.getElementById('loadingPage');
-		const content = document.getElementById('content');
-		const logo = document.getElementById('logo');
-		
-	   
-		setTimeout(() => {
-			logo.classList.add('zoom-fade'); 
-		}, 2000); 
-
-	  
-		setTimeout(() => {
-			loadingPage.style.display = 'none'; 
-			content.style.display = 'block';   
-		}, 3000); 
-	});
-</script>
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="styles/bootstrap4/popper.js"></script>
-<script src="styles/bootstrap4/bootstrap.min.js"></script>
-<script src="plugins/Isotope/isotope.pkgd.min.js"></script>
-<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
-<script src="plugins/easing/easing.js"></script>
-<script src="js/custom.js"></script>
-
-<script>
     // Define the cart key based on the user session
     const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`;
     let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
@@ -530,38 +503,51 @@ $user = $_SESSION['user'];
     cartCountElement.textContent = cartItems.length;
 }
 
+document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault();
+        const productItem = button.closest('.product-item');
+        const productId = productItem.getAttribute('data-id');
+        const productName = productItem.querySelector('.product_name a').textContent;
+        const productImage = productItem.querySelector('.product_image img').src;
+        const productPrice = productItem.querySelector('.product_price').textContent;
 
-            const productItem = button.closest('.product-item');
-            const productId = productItem.getAttribute('data-id');
-            const productName = productItem.querySelector('.product_name a').textContent;
-            const productImage = productItem.querySelector('.product_image img').src;
-            const productPrice = productItem.querySelector('.product_price').textContent;
+        // Get the selected size from the sidebar
+        const selectedSize = document.querySelector('.checkboxes .active span').textContent;
 
-            // Check if the item is already in the cart
-            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
-            if (existingItemIndex > -1) {
-                // Increase quantity if item already exists
-                cartItems[existingItemIndex].quantity += 1;
-            } else {
-                // Add new item with default quantity of 1
-                cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
-            }
+        if (!selectedSize) {
+            alert("Please select a size from the sidebar.");
+            return;
+        }
 
-            // Save updated cart to localStorage and update the cart display
-            localStorage.setItem(cartKey, JSON.stringify(cartItems));
-            updateCart();
-            alert(`${productName} has been added to your cart!`);
-        });
+        // Check if the item is already in the cart with the selected size
+        const existingItemIndex = cartItems.findIndex(item => item.id === productId && item.size === selectedSize);
+        if (existingItemIndex > -1) {
+            // Increase quantity if item already exists
+            cartItems[existingItemIndex].quantity += 1;
+        } else {
+            // Add new item with default quantity of 1
+            cartItems.push({
+                id: productId,
+                name: productName,
+                image: productImage,
+                price: productPrice,
+                size: selectedSize,
+                quantity: 1
+            });
+        }
+
+        // Save updated cart to localStorage and update the cart display
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        updateCart();
+        alert(`${productName} (Size: ${selectedSize}) has been added to your cart!`);
     });
+});
 
     // Update cart count on page load
     document.addEventListener('DOMContentLoaded', updateCart);
 </script>
-
 
 <script>
     // JavaScript to make the navbar opaque when scrolling
@@ -575,9 +561,10 @@ $user = $_SESSION['user'];
         }
     });
 </script>
+
 <script>
     const items = [
- { img: "items/images/1001/i1.png", alt: "1", name: "Let's Get High", href: "items/1001.php" },
+		{ img: "items/images/1001/i1.png", alt: "1", name: "Let's Get High", href: "items/1001.php" },
  { img: "items/images/1002/i1.png", alt: "2", name: "On The Grind", href: "items/1002.php"},
  { img: "items/images/1003/i1.png", alt: "3", name: "Allergic", href: "items/1003.php" },
  { img: "items/images/1004/i1.png", alt: "4", name: "Summer Heist", href: "items/1004.php" },
