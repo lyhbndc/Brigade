@@ -1,6 +1,12 @@
 <?php
-	session_start(); 
-	$user = $_SESSION['user'];
+session_start(); 
+$user = $_SESSION['user'];
+$conn = mysqli_connect("localhost", "root", "", "brigade");
+
+$sql = "SELECT id, name, tag, image, price, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock 
+        FROM products 
+        WHERE category = 'hoodies'"; 
+$result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -206,56 +212,57 @@
 								</div>
 
 								<!-- Product Grid -->
-
 								<div class="product-grid">
+									<?php 
+									if ($result->num_rows > 0) {
+										while ($row = $result->fetch_assoc()) {
+											$productId = str_pad($row['id'], 7, '0', STR_PAD_LEFT);
 
-									<!-- Product 1 -->
-
-									<div class="product-item hoodies" data-id="1008">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="items/images/1008/front.png" alt="">
-                                            </div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="items/1008.php">Brigade Clothing - Daily (Longsleeve)</a></h6>
-                                                <div class="product_price">₱850.00</div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="3" class="add-to-cart">add to cart</a></div>
-                                    </div>
-
-									<!-- Product 2 -->
-
-									<div class="product-item hoodies" data-id="1009">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="items/images/1009/front.png" alt="">
-                                            </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="items/1009.php">Brigade Clothing - Warm Up</a></h6>
-                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="3cart.php" class="add-to-cart">add to cart</a></div>
-                                    </div>
-
-									<div class="product-item hoodies" data-id="10010">
-                                        <div class="product discount product_filter">
-                                            <div class="product_image">
-                                                <img src="items/images/10010/front.png" alt="">
-                                            </div>
-                                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>SALE</span></div>
-                                            <div class="product_info">
-                                                <h6 class="product_name"><a href="items/10010.php">Brigade Clothing - Earth</a></h6>
-                                                <div class="product_price">₱1350.00<span>₱1700.00</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="red_button add_to_cart_button"><a href="3cart.php" class="add-to-cart">add to cart</a></div>
-                                    </div>
-									
+											// Check if all sizes are out of stock
+											$isOutOfStock = (
+												$row['small_stock'] == 0 && 
+												$row['medium_stock'] == 0 && 
+												$row['large_stock'] == 0 && 
+												$row['xl_stock'] == 0 && 
+												$row['xxl_stock'] == 0 &&
+												$row['xxxl_stock'] == 0 
+											);
+											?>
+											<div class="product-item" data-id="<?php echo $productId; ?>">
+												<div class="product discount product_filter">
+													<div class="product_image">
+														<img src="/Brigade/uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="">
+													</div>
+													<div class="favorite favorite_left"></div>
+													<?php if ($isOutOfStock) { ?>
+														<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+															<span>Sold</span>
+														</div>
+													<?php } ?>
+													<div class="product_info">
+														<h6 class="product_name">
+															<a href="<?php echo htmlspecialchars('items/' . $row['id'] . '.php'); ?>">
+																<?php echo htmlspecialchars($row['name']); ?>
+															</a>
+														</h6>
+														<div class="product_price">₱<?php echo number_format($row['price'], 2); ?></div>
+													</div>
+												</div>
+												<div class="red_button add_to_cart_button">
+													<?php if (!$isOutOfStock) { ?>
+														<a href="#" class="add-to-cart" data-id="<?php echo $productId; ?>">Add to Cart</a>
+													<?php } else { ?>
+														<span style="color: gray;">Out of Stock</span>
+													<?php } ?>
+												</div>
+											</div>
+										<?php 
+										}
+									} else {
+										echo "<p>No new products found.</p>";
+									}
+									?>
 								</div>
-						
 							</div>
 						</div>
 					</div>
