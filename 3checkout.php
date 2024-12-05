@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $totalAmount = 0;
 
     foreach ($cartData as $item) {
-        $product = mysqli_real_escape_string($conn, $item['name']);
+        $product = mysqli_real_escape_string($conn, trim($item['name']));
         $quantity = (int)$item['quantity'];
         $size = mysqli_real_escape_string($conn, $item['size']);
         $price = floatval(preg_replace('/[^\d.-]/', '', $item['price']));
