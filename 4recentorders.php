@@ -21,6 +21,9 @@ $result = mysqli_query($conn, $query);
 
 if ($result && mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
+        $city = $row["City"];
+        $email = $row["Email"];
+        $address = $row["Address"];
         $fullname = $row["FirstName"] . ' ' . $row["LastName"];
     }
 }
@@ -239,54 +242,98 @@ mysqli_close($conn);
                 <div class="account-content">
                     <div class="order-history">
                         <h2>Order History</h2>
-                        <div class="row">
-                            <?php if ($orderResult && mysqli_num_rows($orderResult) > 0): ?>
-                                <?php
-                                // Group orders by OrderID for displaying quantities and total sums
-                                $orders = [];
-                                while ($orderRow = mysqli_fetch_assoc($orderResult)) {
-                                    $orders[$orderRow['OrderID']][] = $orderRow;
-                                }
+                        <!-- Recent Orders Table -->
+                        <table class="table table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Size</th>
+                                    <th>Status</th>
+                                    <th>Total</th>
+                                    <th>Date</th>
+                                    <th>Address</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
 
-                                foreach ($orders as $orderId => $orderItems):
-                                    $firstItem = $orderItems[0]; // First item to display image
-                                    $totalAmount = 0;
-                                    $totalQuantity = 0;
-                                    foreach ($orderItems as $item) {
-                                        $totalAmount += $item['Total'];
-                                        $totalQuantity += $item['Quantity'];
-                                    }
-
-                                    // Fetch product image for the first item
-                                    $productQuery = "SELECT image FROM products WHERE name = '{$firstItem['Product']}'";
-                                    $productResult = mysqli_query($conn, $productQuery);
-                                    $product = mysqli_fetch_assoc($productResult);
-                                    $image = $product ? $product['image'] : 'default.jpg'; // Fallback to default image if not found
-                                ?>
-                                    <div class="col-md-4 mb-4">
-                                        <div class="card" style="width: 18rem;">
-                                            <div class="card-body text-center">
-                                                <!-- Display image -->
-                                                <div class="position-relative">
-                                                    <img src="images/<?php echo $image; ?>" class="card-img-top" alt="<?php echo $firstItem['Product']; ?>">
-                                                    <?php if (count($orderItems) > 1): ?>
-                                                        <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; color: white;">
-                                                            <span>+<?php echo count($orderItems) - 1; ?> more</span>
-                                                        </div>
-                                                    <?php endif; ?>
-                                                </div>
-                                                <h5 class="card-title">Order #<?php echo $orderId; ?></h5>
-                                                <p>Qty: <?php echo $totalQuantity; ?></p>
-                                                <p>Total: PHP <?php echo number_format($totalAmount, 2); ?></p>
-                                                <p>Date: <?php echo date('F j, Y', strtotime($firstItem['Date'])); ?></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <p>No orders found.</p>
-                            <?php endif; ?>
+                            <tbody>
+    <?php if ($orderResult && mysqli_num_rows($orderResult) > 0): ?>
+        <?php while ($orderRow = mysqli_fetch_assoc($orderResult)): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($orderRow['OrderID']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['Product']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['Quantity']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['Size']); ?></td>
+                <td>
+                    <?php if ($orderRow['Status'] == "Shipped"): ?>
+                        <span class="badge badge-success"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
+                    <?php elseif ($orderRow['Status'] == "Order Completed"): ?>
+                        <span class="badge badge-secondary"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
+                    <?php else: ?>
+                        <span class="badge badge-warning"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
+                    <?php endif; ?>
+                </td>
+                <td><?php echo htmlspecialchars($orderRow['Total']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['Date']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['Address']); ?></td>
+                <td>
+                    <div class="button-container">
+                        <div>
+                            <button 
+                                class="btn btn-success btn-sm action-button" 
+                                data-order-id="<?php echo $orderRow['OrderID']; ?>" 
+                                data-product="<?php echo $orderRow['Product']; ?>" 
+                                data-action="Received" 
+                                name="Received"
+                                <?php echo ($orderRow['Status'] == "Order Completed") ? 'disabled title="Order already completed"' : ''; ?>
+                                <?php echo ($orderRow['Status'] == "Refunded") ? 'disabled title="Order Refund"' : ''; ?>
+                                <?php echo ($orderRow['Status'] == "Cancelled") ? 'disabled title="Order already Cancelled"' : ''; ?>
+                                
+                                
+                            >
+                                Received
+                            </button>
                         </div>
+                        <div>
+                            <button 
+                                class="btn btn-warning btn-sm action-button" 
+                                data-order-id="<?php echo $orderRow['OrderID']; ?>" 
+                                data-product="<?php echo $orderRow['Product']; ?>" 
+                                data-action="Refund"
+                                <?php echo ($orderRow['Status'] == "Order Completed") ? 'disabled title="Order already completed"' : ''; ?>
+                                <?php echo ($orderRow['Status'] == "Refunded") ? 'disabled title="Order Refund"' : ''; ?>
+                                <?php echo ($orderRow['Status'] == "Cancelled") ? 'disabled title="Order already Cancelled"' : ''; ?>
+                                >
+                                Refund
+                            </button>
+                        </div>
+                        <div>
+                            <button 
+                                class="btn btn-danger btn-sm action-button" 
+                                data-order-id="<?php echo $orderRow['OrderID']; ?>" 
+                                data-product="<?php echo $orderRow['Product']; ?>" 
+                                data-action="Cancel"
+                                <?php echo ($orderRow['Status'] == "Order Completed") ? 'disabled title="Order already completed"' : ''; ?>
+                                <?php echo ($orderRow['Status'] == "Refunded") ? 'disabled title="Order Refund"' : ''; ?>
+                                <?php echo ($orderRow['Status'] == "Cancelled") ? 'disabled title="Order already Cancelled"' : ''; ?>
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="9" class="text-center">No orders found</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
+
+                        </table>            
                     </div>
                 </div>
             </div>

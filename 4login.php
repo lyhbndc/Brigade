@@ -9,19 +9,15 @@ if (!$conn) {
 $error_message = ""; // Initialize an error message variable
 
 if (isset($_POST['login'])) {
-    // Check if CAPTCHA is correct
-    if ($_POST['captcha'] != $_SESSION['captcha_code']) {
-        $error_message = "Incorrect CAPTCHA code. Please try again.";
-    } else {
-        if (isset($_POST['username'], $_POST['password']) && !empty($_POST['username']) && !empty($_POST['password'])) {
-            $user = $_POST['username'];
-            $pass = $_POST['password'];
+    if (isset($_POST['username'], $_POST['password']) && !empty($_POST['username']) && !empty($_POST['password'])) {
+        $user = $_POST['username'];
+        $pass = $_POST['password'];
 
-            // Use prepared statements to prevent SQL injection
-            $stmt = $conn->prepare("SELECT * FROM user WHERE Username=? AND Password=?");
-            $stmt->bind_param("ss", $user, $pass);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        // Use prepared statements to prevent SQL injection
+        $stmt = $conn->prepare("SELECT * FROM user WHERE Username=? AND Password=?");
+        $stmt->bind_param("ss", $user, $pass);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows === 1) {
             $row = $result->fetch_assoc();
@@ -42,7 +38,6 @@ if (isset($_POST['login'])) {
 
 mysqli_close($conn);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -237,11 +232,7 @@ mysqli_close($conn);
                                 <input type="password" id="password" name="password" required>
                                 <i id="toggle-password-icon" class="fa fa-eye toggle-password" onclick="togglePassword()"></i>
                             </div>
-                            <label for="captcha">Enter the text from the image:</label>
-    <br>
-    <img src= "captcha.php" alt="CAPTCHA Image">
-    <br><br>
-    <input type="text" id="captcha" name="captcha" required>
+                            
                             <input type="submit" name="login" value="Login">
                             <div class="forgot-password">
                                 <a href="7forgotpass.php">Forgot Password?</a>

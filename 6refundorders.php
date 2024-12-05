@@ -34,7 +34,7 @@ $conn->close();
         <?php if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
             <a href="6employees.php">Employees</a>
         <?php endif; ?>
-        <a href="logout.php" class="logout-button">Logout</a>
+
     </div>
 
     <table class="table table-striped table-bordered">
