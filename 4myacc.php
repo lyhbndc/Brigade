@@ -69,6 +69,7 @@ if (isset($_POST['change_password'])) {
     }
     $user = $_SESSION['user']; // Assuming username is stored in session
 
+<<<<<<< HEAD
     // Retrieve current password from database
     $query = "SELECT Password FROM user WHERE Username = '$user'";
     $result = mysqli_query($conn, $query);
@@ -96,6 +97,12 @@ if (isset($_POST['change_password'])) {
                 } else {
                     echo "New password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character.";
                 }
+=======
+            // Update password in the database (without hashing)
+            $updatePasswordQuery = "UPDATE user SET Password = '$newPassword' WHERE Username = '$user'";
+            if (mysqli_query($conn, $updatePasswordQuery)) {
+                echo "Password updated successfully!";
+>>>>>>> origin/main
             } else {
                 echo "New password and confirm password do not match.";
             }
@@ -106,6 +113,7 @@ if (isset($_POST['change_password'])) {
         echo "Error retrieving user data.";
     }
 }
+
 
 mysqli_close($conn);
 ?>
@@ -198,6 +206,7 @@ mysqli_close($conn);
 </div>
             </header>
         <div class="fs_menu_overlay"></div>
+<<<<<<< HEAD
 
         <!-- Hamburger Menu -->
         <div class="hamburger_menu">
@@ -221,6 +230,9 @@ mysqli_close($conn);
             </div>
         </div>
         <br><br><br><br><br><br><br>
+=======
+        <br><br><br>
+>>>>>>> origin/main
         <div class="title">
         <div class="account-container">
     <h1>My Account</h1>
@@ -249,6 +261,7 @@ mysqli_close($conn);
     </div>
 
     <!-- Edit Profile Form Section -->
+<<<<<<< HEAD
     <div class="edit-profile-form" id="editProfileForm" style="display: none;">
         <form method="post">
             <label for="firstname">First Name:</label>
@@ -296,6 +309,49 @@ mysqli_close($conn);
             <button type="submit" name="change_password">Change Password</button>
             <button type="button" onclick="cancelEdit()">Cancel</button>
         </form>
+=======
+    <div class="edit-profile-form" id="editProfileForm">
+    <form method="post">
+    <!-- Account Information -->
+    <label for="firstname">First Name:</label>
+    <input type="text" name="firstname" id="editFirstname" value="<?php echo htmlspecialchars($firstname); ?>"><br>
+
+    <label for="lastname">Last Name:</label>
+    <input type="text" name="lastname" id="editLastname" value="<?php echo htmlspecialchars($lastname); ?>"><br>
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="editEmail" value="<?php echo htmlspecialchars($email); ?>"><br>
+
+    <label for="address">Address:</label>
+    <input type="text" name="address" id="editAddress" value="<?php echo htmlspecialchars($address); ?>"><br>
+
+    <label for="city">City:</label>
+    <input type="text" name="city" id="editCity" value="<?php echo htmlspecialchars($city); ?>"><br>
+
+    <button type="submit" name="update_profile">Save Changes</button>
+</form>
+
+
+        <!-- Update Password Section -->
+        <button id="updatePasswordButton" onclick="togglePasswordUpdate()">Update Password</button>
+        <div id="passwordUpdateSection" style="display: none;">
+    <form method="post">
+        <label for="current_password">Enter Current Password:</label>
+        <input type="password" name="current_password" id="currentPassword" required><br>
+
+        <label for="new_password">Enter New Password:</label>
+        <input type="password" name="new_password" id="newPassword" required><br>
+
+        <label for="reenter_password">Re-enter Password:</label>
+        <input type="password" name="reenter_password" id="reenterPassword" required><br>
+
+        <button type="submit" name="update_password">Save New Password</button>
+    </form>
+</div>
+
+        
+        <button type="button" onclick="cancelEdit()">Cancel</button>
+>>>>>>> origin/main
     </div>
 </div>
 
@@ -486,6 +542,73 @@ document.querySelectorAll('.action-button').forEach(button => {
     }
 </script>
 
+<<<<<<< HEAD
+=======
+<script> //UPDATE PASSWORD
+
+    function togglePasswordUpdate() {
+        const section = document.getElementById("passwordUpdateSection");
+        const button = document.getElementById("updatePasswordButton");
+        section.style.display = section.style.display === "none" ? "block" : "none";
+        button.textContent = section.style.display === "none" ? "Update Password" : "Cancel Update";
+    }
+
+    // Real-time password validation
+    const newPassword = document.getElementById("newPassword");
+    const reenterPassword = document.getElementById("reenterPassword");
+    const passwordCriteria = document.getElementById("passwordCriteria");
+    const passwordMatchCheck = document.getElementById("passwordMatchCheck");
+    const savePasswordButton = document.querySelector("button[type='submit'][name='update_password']");
+    
+    function validatePassword() {
+        const value = newPassword.value;
+        let criteriaMet = true;
+        let criteriaMessage = '';
+
+        if (value.length < 8) {
+            criteriaMessage += "Password must be at least 8 characters long. ";
+            criteriaMet = false;
+        }
+        if (!/[A-Z]/.test(value)) {
+            criteriaMessage += "Password must contain at least one uppercase letter. ";
+            criteriaMet = false;
+        }
+        if (!/\d/.test(value)) {
+            criteriaMessage += "Password must contain at least one digit. ";
+            criteriaMet = false;
+        }
+        if (!/[\W_]/.test(value)) {
+            criteriaMessage += "Password must contain at least one special character. ";
+            criteriaMet = false;
+        }
+
+        passwordCriteria.textContent = criteriaMessage ? criteriaMessage : "Password meets criteria.";
+        passwordCriteria.style.color = criteriaMet ? "green" : "red";
+        return criteriaMet;
+    }
+
+    newPassword.addEventListener("input", () => {
+        const isPasswordValid = validatePassword();
+        reenterPassword.disabled = !isPasswordValid; // Disable re-enter password field if criteria are not met
+    });
+
+    reenterPassword.addEventListener("input", () => {
+        if (newPassword.value !== reenterPassword.value) {
+            passwordMatchCheck.textContent = "Passwords do not match.";
+            passwordMatchCheck.style.color = "red";
+        } else {
+            passwordMatchCheck.textContent = "Passwords match.";
+            passwordMatchCheck.style.color = "green";
+        }
+
+        // Enable the save button if both passwords match and meet the criteria
+        savePasswordButton.disabled = !(newPassword.value === reenterPassword.value && validatePassword());
+    });
+
+
+</script>
+
+>>>>>>> origin/main
 <script>
     const items = [
         { img: "items/images/1001/i1.png", alt: "1", name: "Let's Get High", href: "items/1001.php" },

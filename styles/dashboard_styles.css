@@ -144,6 +144,17 @@ section
     width: 100%;
     margin-bottom: 20px;
 }
+.footer-logo {
+    cursor: default; /* Keeps the cursor in default state */
+}
+
+.footer-logo:hover {
+    /* Disable any hover effect */
+    color: inherit; /* Prevents color change on hover */
+    text-decoration: none; /* Disables underline or other text decoration */
+    transform: none; /* If there's any transform effect, remove it */
+}
+
 
 .sidebar h2 {
     color: #fff;
@@ -153,14 +164,14 @@ section
     position: absolute;
     bottom: 20px; /* Align with the bottom of the sidebar */
     left: 40px;   /* Nudges it 20px further right from the sidebar padding */
-    color: #fff;  /* White text */
-    background-color: #555; /* Grey background */
+    background-color: black;
+    color: white;
     padding: 10px 15px;
     border-radius: 5px;
     text-decoration: none;
     font-weight: bold;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    z-index: 11; /* Ensure it stays above sidebar content */
+    z-index: 11; /* s above sidebar content */
 }
 
 .logout-button:hover {

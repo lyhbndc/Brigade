@@ -22,6 +22,9 @@ $user = $_SESSION['user'];
 </head>
 
 <body>
+<div class="loading-page" id="loadingPage">
+        <img src="assets/1.png" alt="Logo" class="logo" id="logo">
+    </div>
 <div class="super_container">
 	<header class="header trans_300">
 		<div class="top_nav">
@@ -180,89 +183,88 @@ $user = $_SESSION['user'];
 			<div class="row">
 				<div class="col">
 					<div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
-						<div class="product-item tees" data-id="1001">
-							<div class="product discount product_filter">
-								<div class="product_image">
-									<img src="items/images/1001/1front.png" alt="">
-								</div>
-								<div class="favorite favorite_left"></div>
-								<div class="product_info">
-									<h6 class="product_name"><a href="items/1001.php">Brigade Clothing - Let's Get High</a></h6>
-									<div class="product_price">$520.00<span>$590.00</span></div>
-								</div>
-							</div>
-							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-						</div>
+					<div class="product-item tees" data-id="1001">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="items/images/1001/1front.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="items/1001.php">Brigade Clothing - Let's Get High</a></h6>
+                                                <div class="product_price">₱700.00<span>₱750.00</span></div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
 
-						<div class="product-item tees" data-id="1003">
-							<div class="product discount product_filter">
-								<div class="product_image">
-									<img src="items/images/1003/3front.png" alt="">
-								</div>
-								<div class="favorite favorite_left"></div>
-								<div class="product_info">
-									<h6 class="product_name"><a href="items/1003.php">Brigade Clothing - Allergic (White)</a></h6>
-									<div class="product_price">$520.00<span>$590.00</span></div>
-								</div>
-							</div>
-							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-						</div>
+                                    <div class="product-item tees" data-id="1003">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="items/images/1003/3front.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="items/1003.php">Brigade Clothing - Allergic (White)</a></h6>
+                                                <div class="product_price">₱400.00<span>₱750.00</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-						<div class="product-item shorts" data-id="1005">
-							<div class="product discount product_filter">
-								<div class="product_image">
-									<img src="items/images/1005/5front.png" alt="">
-								</div>
-								<div class="favorite favorite_left"></div>
-								<div class="product_info">
-									<h6 class="product_name"><a href="items/1005.php">Brigade Clothing - Nectar</a></h6>
-									<div class="product_price">$520.00<span>$590.00</span></div>
-								</div>
-							</div>
-							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-						</div>
+                                    <div class="product-item shorts" data-id="1005">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="items/images/1005/5front.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="items/1005.php">Brigade Clothing - Nectar</a></h6>
+                                                <div class="product_price">₱380.00<span>₱500.00</span></div>
+                                            </div>
+                                        </div>
+                        
+                                    </div>
 
-						<div class="product-item shorts" data-id="1007">
-							<div class="product discount product_filter">
-								<div class="product_image">
-									<img src="items/images/1007/7front.png" alt="">
-								</div>
-								<div class="favorite favorite_left"></div>
-								<div class="product_info">
-									<h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Sting</a></h6>
-									<div class="product_price">$520.00<span>$590.00</span></div>
-								</div>
-							</div>
-							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-						</div>
+                                    <div class="product-item shorts" data-id="1007">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="items/images/1007/7front.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Sting</a></h6>
+                                                <div class="product_price">₱300.00<span>₱500.00</span></div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
 
-						<div class="product-item hoodies" data-id="1008">
-							<div class="product discount product_filter">
-								<div class="product_image">
-									<img src="items/images/1008/8front.png" alt="">
-								</div>
-								<div class="favorite favorite_left"></div>
-								<div class="product_info">
-									<h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Daily (Longsleeve)</a></h6>
-									<div class="product_price">$520.00<span>$590.00</span></div>
-								</div>
-							</div>
-							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-						</div>
+                        <div class="product-item hoodies" data-id="1008">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="items/images/1008/8front.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Daily (Longsleeve)</a></h6>
+                                                <div class="product_price">₱850.00<span>₱900.00</span></div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="product-item hoodies" data-id="1009">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="items/images/1009/9front.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="items/1009.php">Brigade Clothing - Warm Up</a></h6>
+                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
 
-						<div class="product-item hoodies" data-id="1009">
-							<div class="product discount product_filter">
-								<div class="product_image">
-									<img src="items/images/1009/9front.png" alt="">
-								</div>
-								<div class="favorite favorite_left"></div>
-								<div class="product_info">
-									<h6 class="product_name"><a href="items/1009.php">Brigade Clothing - Warm Up</a></h6>
-									<div class="product_price">$520.00<span>$590.00</span></div>
-								</div>
-							</div>
-							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-						</div>
 					</div>
 				</div>
 			</div>
