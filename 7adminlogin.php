@@ -28,7 +28,7 @@ if (isset($_POST['login'])) {
             $_SESSION['id'] = $id;     // Save user ID to session
             $_SESSION['role'] = $role; // Save user role to session
         
-            header("Location: /Brigade/6dashboard.php");
+            header("Location: /Brigade/admincaptcha.php");
             exit;   
         } else {
             $error_message = "Invalid username or password. Please try again.";

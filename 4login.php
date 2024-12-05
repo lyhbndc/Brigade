@@ -24,7 +24,7 @@ if (isset($_POST['login'])) {
             $id = $row['ID'];
             $_SESSION['user'] = $user; // Save user data to session
             $_SESSION['id'] = $id;
-            header("Location: /Brigade/1homepage.php");
+            header("Location: /Brigade/captcha.php");
             exit;
         } else {
             $error_message = "Invalid username or password. Please try again.";
@@ -182,7 +182,7 @@ mysqli_close($conn);
                     <div class="row">
                         <div class="col-lg-12 text-right">
                             <div class="logo_container">
-                                <a href="1homepage.php"><img src="assets/1.png"></a>
+                                <a href="1index.php"><img src="assets/1.png"></a>
                             </div>
                             <nav class="navbar">
                                 
@@ -201,13 +201,13 @@ mysqli_close($conn);
             <div class="hamburger_menu_content text-right">
                 <ul class="menu_top_nav">
                     <li class="menu_item has-children">
-                        <a href="4myacc.php">
+                        <a href="#">
                             My Account
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="menu_selection">
-                            <li><a href="4login.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                            <li><a href="4signup.php"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                            <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
                         </ul>
                     </li>
                     <li class="menu_item"><a href="1homepage.php">home</a></li>

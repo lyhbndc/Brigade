@@ -176,7 +176,7 @@ const submitBtnClick = () => {
     message.innerText = "Entered captcha is correct";
     message.style.color = "#826afb";
     // Redirect to the homepage if captcha is correct
-    window.location.href = '1homepage.php'; // Redirection to homepage
+    window.location.href = '6dashboard.php'; // Redirection to homepage
   } else {
     message.innerText = "Entered captcha is not correct";
     message.style.color = "#FF2525";
@@ -192,3 +192,4 @@ submitButton.addEventListener("click", submitBtnClick);
 generateCaptcha();</script>
   </body>
 </html>
+

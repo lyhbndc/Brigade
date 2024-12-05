@@ -16,14 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['name'])) { // ADD ITEM MODULE
         // Process the form
         $name = "Brigade Clothing - " . trim($_POST['name']); // Concatenate the prefix with the input name
-        $category = trim($_POST['category']); // Category selection
-    
-        // Check if a valid category is selected
-        if (!in_array($category, ['Tees', 'Hoodies', 'Shorts'])) {
-            die("Invalid category selected.");
-        }
         
-        // Other form processing logic (same as your original code)
+        // Use null coalescing to default to 0 if not set, and check if the value is numeric
         $small_stock = isset($_POST['small_stock']) && is_numeric($_POST['small_stock']) ? (int)$_POST['small_stock'] : 0;
         $medium_stock = isset($_POST['medium_stock']) && is_numeric($_POST['medium_stock']) ? (int)$_POST['medium_stock'] : 0;
         $large_stock = isset($_POST['large_stock']) && is_numeric($_POST['large_stock']) ? (int)$_POST['large_stock'] : 0;
@@ -34,33 +28,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
         // Calculate total quantity
         $totalQuantity = $small_stock + $medium_stock + $large_stock + $xl_stock + $xxl_stock + $xxxl_stock;
-    
-        // Handle image upload or replacement
+
+        // Handle image upload (if any)
         $image = null; // Default if no image is uploaded
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $uploadDir = "uploads/"; // Directory to store images
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true); // Create directory if it doesn't exist
             }
-
-            $image = basename($_FILES['image']['name']); // Get the original file name
+            $image = basename($_FILES['image']['name']);
             $uploadFile = $uploadDir . $image;
-
-            // Check if the file already exists, and append (1), (2), etc., if so
-            $counter = 1;
-            $originalImage = $image; // Save the original name
-            while (file_exists($uploadFile)) {
-                // If file exists, append (1), (2), etc.
-                $image = pathinfo($originalImage, PATHINFO_FILENAME) . "($counter)." . pathinfo($originalImage, PATHINFO_EXTENSION);
-                $uploadFile = $uploadDir . $image;
-                $counter++;
-            }
-
-            // Move the uploaded file to the correct directory
+    
             if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
                 die("Error uploading image.");
             }
         }
+    
+        // Insert into the products table first
+        $stmt_prod = $conn->prepare("INSERT INTO products (name, quantity, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        if (!$stmt_prod) {
+            die("Error preparing statement for products: " . $conn->error);
+        }
+    
+        // Bind parameters for products table
+        $stmt_prod->bind_param("siiiiiiids", $name, $totalQuantity, $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $image);
+        
+        // Execute products insert
+        if ($stmt_prod->execute()) {
+            // Get the last inserted ID from the products table
+            $product_id = $conn->insert_id;
+    
+            // Now insert into the new_products table using the same ID
+            $stmt_new = $conn->prepare("INSERT INTO new_products (id, name, quantity, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            if (!$stmt_new) {
+                die("Error preparing statement for new_products: " . $conn->error);
+            }
+    
+            // Bind parameters for new_products table (corrected)
+            $stmt_new->bind_param("isiiiiiiiss", $product_id, $name, $totalQuantity, $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $image);
+            
+            // Execute new_products insert
+            if ($stmt_new->execute()) {
+                // Redirect to inventory page after successful insert into both tables
+                header("Location: 6inventory.php");
+                exit;
+            } else {
+                echo "Error inserting into new_products: " . $stmt_new->error;
+            }
+        } else {
+            echo "Error inserting into products: " . $stmt_prod->error;
+    }
+
     
         // Insert into database (updated query to include 'category')
         $stmt = $conn->prepare("INSERT INTO products (name, category, quantity, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -99,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = $stmt->get_result();
         $current = $result->fetch_assoc();
 
-        // Calculate the total difference in quantity
+        // Calculate the total difference in quantity 
         $currentTotal = $current['quantity'];
         $currentSizesSum = $current['small_stock'] + $current['medium_stock'] + $current['large_stock'] +
                         $current['xl_stock'] + $current['xxl_stock'] + $current['xxxl_stock'];

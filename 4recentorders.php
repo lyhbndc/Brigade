@@ -155,7 +155,7 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="styles/recent.css?v=1.0">
+    <link rel="stylesheet" type="text/css" href="styles/recent.css">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
 </head>
 
@@ -185,11 +185,11 @@ mysqli_close($conn);
                     <div class="row">
                         <div class="col-lg-12 text-right">
                             <div class="logo_container">
-                                <a href="1homepage.php"><img src="assets/1.png"></a>
+                                <a href="1index.php"><img src="assets/1.png"></a>
                             </div>
                             <nav class="navbar">
                                 <ul class="navbar_menu">
-                                    <li><a href="1homepage.php">home</a></li>
+                                    <li><a href="1index.php">home</a></li>
                                     <li><a href="3shop.php">shop</a></li>
                                     <li><a href="3new.php">new</a></li>
                                     
@@ -246,7 +246,7 @@ mysqli_close($conn);
                         <table class="table table-striped">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>Order</th>
+                                    <th>Order ID</th>
                                     <th>Product</th>
                                     <th>Quantity</th>
                                     <th>Size</th>
@@ -259,71 +259,80 @@ mysqli_close($conn);
                             </thead>
 
                             <tbody>
-                                <?php if ($orderResult && mysqli_num_rows($orderResult) > 0): ?>
-                                    <?php while ($orderRow = mysqli_fetch_assoc($orderResult)): ?>
-                                        <tr>
-                                            <td><?php echo htmlspecialchars($orderRow['OrderID']); ?></td>
-                                            <td><?php echo htmlspecialchars($orderRow['Product']); ?></td>
-                                            <td><?php echo htmlspecialchars($orderRow['Quantity']); ?></td>
-                                            <td><?php echo htmlspecialchars($orderRow['Size']); ?></td>
-                                            <td>
-                                                <?php if ($orderRow['Status'] == "Shipped"): ?>
-                                                    <span class="badge badge-success"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
-                                                <?php elseif ($orderRow['Status'] == "Order Completed"): ?>
-                                                    <span class="badge badge-secondary"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
-                                                <?php else: ?>
-                                                    <span class="badge badge-warning"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td><?php echo htmlspecialchars($orderRow['Total']); ?></td>
-                                            <td><?php echo htmlspecialchars($orderRow['Date']); ?></td>
-                                            <td><?php echo htmlspecialchars($orderRow['Address']); ?></td>
-                                            <td>
-                                                <div class="button-container">
-                                                    <div>
-                                                        <button 
-                                                            class="btn btn-success btn-sm action-button" 
-                                                            data-order-id="<?php echo $orderRow['OrderID']; ?>" 
-                                                            data-product="<?php echo $orderRow['Product']; ?>" 
-                                                            data-action="Received" 
-                                                            name="Received"
-                                                            <?php echo ($orderRow['Status'] == "Order Completed") ? 'disabled title="Order already completed"' : ''; ?>
-                                                        >
-                                                            Received
-                                                        </button>
-                                                    </div>
-                                                    <div>
-                                                        <button 
-                                                            class="btn btn-warning btn-sm action-button" 
-                                                            data-order-id="<?php echo $orderRow['OrderID']; ?>" 
-                                                            data-product="<?php echo $orderRow['Product']; ?>" 
-                                                            data-action="Refund"
-                                                            <?php echo ($orderRow['Status'] == "Order Completed") ? 'disabled title="Order already completed"' : ''; ?>
-                                                        >
-                                                            Refund
-                                                        </button>
-                                                    </div>
-                                                    <div>
-                                                        <button 
-                                                            class="btn btn-danger btn-sm action-button" 
-                                                            data-order-id="<?php echo $orderRow['OrderID']; ?>" 
-                                                            data-product="<?php echo $orderRow['Product']; ?>" 
-                                                            data-action="Cancel"
-                                                            <?php echo ($orderRow['Status'] == "Order Completed") ? 'disabled title="Order already completed"' : ''; ?>
-                                                        >
-                                                            Cancel
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    <?php endwhile; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="9" class="text-center">No orders found</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
+    <?php if ($orderResult && mysqli_num_rows($orderResult) > 0): ?>
+        <?php while ($orderRow = mysqli_fetch_assoc($orderResult)): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($orderRow['OrderID']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['Product']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['Quantity']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['Size']); ?></td>
+                <td>
+                    <?php if ($orderRow['Status'] == "Shipped"): ?>
+                        <span class="badge badge-success"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
+                    <?php elseif ($orderRow['Status'] == "Order Completed"): ?>
+                        <span class="badge badge-secondary"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
+                    <?php else: ?>
+                        <span class="badge badge-warning"><?php echo htmlspecialchars($orderRow['Status']); ?></span>
+                    <?php endif; ?>
+                </td>
+                <td><?php echo htmlspecialchars($orderRow['Total']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['Date']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['Address']); ?></td>
+                <td>
+                    <div class="button-container">
+                        <div>
+                            <button 
+                                class="btn btn-success btn-sm action-button" 
+                                data-order-id="<?php echo $orderRow['OrderID']; ?>" 
+                                data-product="<?php echo $orderRow['Product']; ?>" 
+                                data-action="Received" 
+                                name="Received"
+                                <?php echo ($orderRow['Status'] == "Order Completed") ? 'disabled title="Order already completed"' : ''; ?>
+                                <?php echo ($orderRow['Status'] == "Refunded") ? 'disabled title="Order Refund"' : ''; ?>
+                                <?php echo ($orderRow['Status'] == "Cancelled") ? 'disabled title="Order already Cancelled"' : ''; ?>
+                                
+                                
+                            >
+                                Received
+                            </button>
+                        </div>
+                        <div>
+                            <button 
+                                class="btn btn-warning btn-sm action-button" 
+                                data-order-id="<?php echo $orderRow['OrderID']; ?>" 
+                                data-product="<?php echo $orderRow['Product']; ?>" 
+                                data-action="Refund"
+                                <?php echo ($orderRow['Status'] == "Order Completed") ? 'disabled title="Order already completed"' : ''; ?>
+                                <?php echo ($orderRow['Status'] == "Refunded") ? 'disabled title="Order Refund"' : ''; ?>
+                                <?php echo ($orderRow['Status'] == "Cancelled") ? 'disabled title="Order already Cancelled"' : ''; ?>
+                                >
+                                Refund
+                            </button>
+                        </div>
+                        <div>
+                            <button 
+                                class="btn btn-danger btn-sm action-button" 
+                                data-order-id="<?php echo $orderRow['OrderID']; ?>" 
+                                data-product="<?php echo $orderRow['Product']; ?>" 
+                                data-action="Cancel"
+                                <?php echo ($orderRow['Status'] == "Order Completed") ? 'disabled title="Order already completed"' : ''; ?>
+                                <?php echo ($orderRow['Status'] == "Refunded") ? 'disabled title="Order Refund"' : ''; ?>
+                                <?php echo ($orderRow['Status'] == "Cancelled") ? 'disabled title="Order already Cancelled"' : ''; ?>
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="9" class="text-center">No orders found</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
+
                         </table>            
                     </div>
                 </div>
@@ -337,7 +346,7 @@ mysqli_close($conn);
                     <div class="col-sm-6 col-lg-3 p-b-50">
                         <br>
                         <h4 class="stext-301 cl0 p-b-30">
-                            <a href="1homepage.php"><img src="assets/Untitled design.png" class="footer-logo"></a>
+                            <a href="1index.php"><img src="assets/Untitled design.png" class="footer-logo"></a>
                         </h4>
                         <p class="stext-107 cl7 size-201">
                             Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
@@ -356,7 +365,7 @@ mysqli_close($conn);
                         <br>
                         <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
                         <ul>
-                            <li class="p-b-10"><a href="1homepage.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
+                            <li class="p-b-10"><a href="1index.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
                             <li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
                             <li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
                         </ul>
