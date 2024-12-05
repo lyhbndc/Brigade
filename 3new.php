@@ -38,7 +38,7 @@ $result = $conn->query($sql);
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="1index.php"><img src="assets/1.png"></a>
+							<a href="1homepage.php"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
 							<ul class="navbar_menu">
@@ -121,7 +121,7 @@ $result = $conn->query($sql);
 
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
-						<li><a href="1index.php">Home</a></li>
+						<li><a href="1homepage.php">Home</a></li>
 						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Shop</a></li>
 					</ul>
 				</div>
