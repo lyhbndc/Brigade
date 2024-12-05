@@ -1,11 +1,3 @@
-<?php
-session_start(); 
-$user = $_SESSION['user'];
-$conn = mysqli_connect("localhost", "root", "", "brigade");
-
-$sql = "SELECT id, name, image, price, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock FROM products";
-$result = $conn->query($sql);
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,20 +66,15 @@ $result = $conn->query($sql);
                         
                         <!-- User Dropdown -->
                         <li class="dropdown">
-									<a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<i class="fa fa-user" aria-hidden="true"></i>
-									</a>
-									<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-										<?php if ($user): ?>
-											<a class="dropdown-item" href="../4myacc.php">Account</a>
-											<a class="dropdown-item" href="../4recentorders.php">Recent Orders</a>
-											<a class="dropdown-item" href="../logout.php">Logout</a>
-										<?php else: ?>
-											<a class="dropdown-item" href="../4login.php">Sign In</a>
-											<a class="dropdown-item" href="../7adminlogin.php">Admin</a>
-										<?php endif; ?>
-									</div>
-								</li>
+                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+								<a class="dropdown-item" href="../4myacc.php">Account</a>
+								<a class="dropdown-item" href="../4recentorders.php">Recent Orders</a>
+								<a class="dropdown-item" href="../logout.php">Logout</a>
+                            </div>
+                        </li>
                         
                         <li class="checkout">
                             <a href="../3cart.php">
@@ -180,11 +167,11 @@ $result = $conn->query($sql);
 						<br>
 						<span>Select Size:</span>
 						<div class="size-options">
-							<div class="size-option" data-size="S">Small</div>
-							<div class="size-option" data-size="M">Medium</div>
-							<div class="size-option" data-size="L">Large</div>
-							<div class="size-option" data-size="XL">XL</div>
-							<div class="size-option" data-size="2XL">2XL</div>
+							<div class="size-option" data-size="s">Small</div>
+							<div class="size-option" data-size="m">Medium</div>
+							<div class="size-option" data-size="l">Large</div>
+							<div class="size-option" data-size="xl">XL</div>
+							<div class="size-option" data-size="2xl">2XL</div>
 						</div>
 					</div>
 					<div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
@@ -197,13 +184,7 @@ $result = $conn->query($sql);
 						<div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
 					</div>
 				</div><br>
-				<div class="red_button add_to_cart_button">
-													<?php if (!$isOutOfStock) { ?>
-														<a href="#" class="add-to-cart" data-id="<?php echo $productId; ?>">Add to Cart</a>
-													<?php } else { ?>
-														<span style="color: gray;">Out of Stock</span>
-													<?php } ?>
-												</div>
+				<div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
 			</div>
 		</div>
 		</div>
@@ -391,82 +372,45 @@ $result = $conn->query($sql);
 <script src="ins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 <script src="ins/single_custom.js"></script>
 <script>
-    // Add to Cart Logic
-const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`;
-let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
+    // Initialize the cart items from localStorage
+    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
-function updateCart() {
-    const cartCountElement = document.getElementById('checkout_items');
-    if (cartCountElement) {
-        cartCountElement.textContent = cartItems.length;
-    }
-}
-
-document.querySelector('.add-to-cart').addEventListener('click', function(event) {
-    event.preventDefault();
-
-    const productDetails = document.querySelector('.product_details');
-    const productId = event.target.getAttribute('data-id');
-    const productName = productDetails.querySelector('h2').textContent;
-    const productPrice = productDetails.querySelector('.product_price').textContent;
-    const productImage = "images/1001/1front.png"; // Update this with the actual product image path
-    const selectedSize = document.querySelector('.size-option.active');
-
-    if (!selectedSize) {
-        alert("Please select a size.");
-        return;
+    // Function to update the cart count in the header
+    function updateCartCount() {
+        const cartCountElement = document.getElementById('checkout_items');
+        cartCountElement.textContent = cartItems.reduce((total, item) => total + item.quantity, 0);
     }
 
-    const size = selectedSize.getAttribute('data-size');
-    const existingItemIndex = cartItems.findIndex(item => item.id === productId && item.size === size);
+    // Add event listener to "Add to Cart" button
+    document.querySelector('.add_to_cart_button a').addEventListener('click', function(event) {
+        event.preventDefault();
 
-    if (existingItemIndex > -1) {
-        cartItems[existingItemIndex].quantity += 1;
-    } else {
-        cartItems.push({
-            id: productId,
-            name: productName,
-            image: productImage,
-            price: productPrice,
-            size: size,
-            quantity: parseInt(document.getElementById('quantity_value').textContent)
-        });
-    }
+        // Product details
+        const productId = "1";  // This could be dynamically set based on your product data
+        const productName = document.querySelector('.product_details_title h2').textContent;
+        const productPrice = document.querySelector('.product_price').textContent.trim();
+        const productImage = document.querySelector('.single_product_image_background').style.backgroundImage.replace(/url\(["']?(.+?)["']?\)/, '$1');
+        const quantity = parseInt(document.getElementById('quantity_value').textContent);
 
-    localStorage.setItem(cartKey, JSON.stringify(cartItems));
-    updateCart();
-    alert(`${productName} (Size: ${size}) has been added to your cart!`);
-});
+        // Check if the item is already in the cart
+        const existingItemIndex = cartItems.findIndex(item => item.id === productId);
+        if (existingItemIndex > -1) {
+            // Increase quantity if item exists
+            cartItems[existingItemIndex].quantity += quantity;
+        } else {
+            // Add new item
+            cartItems.push({ id: productId, name: productName, price: productPrice, image: productImage, quantity });
+        }
 
-// Update Quantity
-document.querySelector('.plus').addEventListener('click', () => {
-    const quantityValue = document.getElementById('quantity_value');
-    let quantity = parseInt(quantityValue.textContent);
-    quantity += 1;
-    quantityValue.textContent = quantity;
-});
-
-document.querySelector('.minus').addEventListener('click', () => {
-    const quantityValue = document.getElementById('quantity_value');
-    let quantity = parseInt(quantityValue.textContent);
-    if (quantity > 1) {
-        quantity -= 1;
-        quantityValue.textContent = quantity;
-    }
-});
-
-// Size Selection
-document.querySelectorAll('.size-option').forEach(sizeOption => {
-    sizeOption.addEventListener('click', function() {
-        document.querySelectorAll('.size-option').forEach(option => option.classList.remove('active'));
-        sizeOption.classList.add('active');
+        // Update localStorage and cart count
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        updateCartCount();
+        alert(`${productName} has been added to your cart!`);
     });
-});
 
-// Initial Update
-document.addEventListener('DOMContentLoaded', updateCart);
+    // Update cart count on page load
+    document.addEventListener('DOMContentLoaded', updateCartCount);
 </script>
-
 <script>
     // JavaScript to make the navbar opaque when scrolling
     window.addEventListener('scroll', function() {

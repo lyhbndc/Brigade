@@ -25,13 +25,19 @@ if (isset($_POST['next'])) {
         $email = $_POST['email'];
         $user = $_POST['username'];
         $pass = $_POST['password'];
- // Check if the email already exists
- $check_email_query = "SELECT * FROM user WHERE email = '$email'";
- $email_result = mysqli_query($conn, $check_email_query);
-
- if (mysqli_num_rows($email_result) > 0) {
-     echo "The email address is already registered. Please use a different email.";
- } else {
+        
+        // Check if the email already exists
+        $check_email_query = "SELECT * FROM user WHERE email = '$email'";
+        $email_result = mysqli_query($conn, $check_email_query);
+        if (mysqli_num_rows($email_result) > 0) {
+            echo "<script>
+            if (confirm('Email already exists. Would you like to log in instead?')) {
+                window.location.href = '4login.php';
+            } else {
+                document.getElementById('email').value = '';
+            }
+          </script>";
+        } else {
         // Generate a random 6-digit verification code
         $verification_code = mt_rand(100000, 999999);
 
@@ -43,6 +49,7 @@ if (isset($_POST['next'])) {
             // Send the verification email using PHPMailer
             $mail = new PHPMailer(true);
             try {
+                
                 $mail->isSMTP();
                 $mail->Host = 'smtp.mailersend.net'; // Update this with your SMTP server
                 $mail->SMTPAuth = true;
@@ -51,10 +58,14 @@ if (isset($_POST['next'])) {
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
+                $mail->SMTPDebug = 2; // Debug levels: 0 = off, 1 = client messages, 2 = client and server messages
+                $mail->Debugoutput = 'html'; // Output debug information in HTML format
+                
                 // Recipients
                 $mail->setFrom('MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net', 'Brigade');
                 $mail->addAddress($email);
 
+                
                 // Content
                 $mail->isHTML(true);
                 $mail->Subject = 'Your Verification Code';
@@ -92,7 +103,7 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="styles/single_styles.css">
+    <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
     <link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
     <style>
         body {
@@ -105,7 +116,7 @@ mysqli_close($conn);
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             width: 600px;
-            margin: 30px auto; /* Center the form */
+            margin: 150px auto; /* Center the form */
             text-align: center;
         }
         h2 {
@@ -175,6 +186,17 @@ mysqli_close($conn);
         .footer-logo{
            cursor: default; 
         }
+        .form-control{
+            width: 100%;
+            padding: 7px;
+            margin: 15px 0;
+            border: 1px solid #444;
+            border-radius: 20px;
+            background-color: white;
+            color: gray;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
     </style>
 </head>
 
@@ -183,7 +205,7 @@ mysqli_close($conn);
     <div class="super_container">
         <header class="header trans_300">
             <!-- Top Navigation -->
-            <div class="top_nav">
+
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
@@ -199,14 +221,14 @@ mysqli_close($conn);
                         </div>
                     </div>
                 </div>
-            </div>
+
             <!-- Main Navigation -->
             <div class="main_nav_container">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12 text-right">
                             <div class="logo_container">
-                                <a href="1homepage.php"><img src="assets/1.png"></a>
+                                <a href="1index2.php"><img src="assets/1.png"></a>
                             </div>
                             <nav class="navbar">
                                 
@@ -225,19 +247,18 @@ mysqli_close($conn);
             <div class="hamburger_menu_content text-right">
                 <ul class="menu_top_nav">
                     <li class="menu_item has-children">
-                        <a href="#">
+                        <a href="4myacc.php">
                             My Account
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="menu_selection">
-                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                            <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                            <li><a href="3login.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                            <li><a href="3signup.php"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
                         </ul>
                     </li>
-                    <li class="menu_item"><a href="#">home</a></li>
-                    <li class="menu_item"><a href="#">shop</a></li>
-                    <li class="menu_item"><a href="#">new</a></li>
-                    <li class="menu_item"><a href="#">on sale</a></li>
+                    <li class="menu_item"><a href="1homepage.php">home</a></li>
+                    <li class="menu_item"><a href="3shop.php">shop</a></li>
+                    <li class="menu_item"><a href="3new.php">new</a></li>
                 </ul>
             </div>
         </div>
@@ -265,10 +286,27 @@ mysqli_close($conn);
                                 <input type="text" id="address" name="address" class="form-control" required>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="city">City:</label>
-                                    <input type="text" id="city" name="city" class="form-control" required>
-                                </div>
+            <div class="form-group col-md-6">
+                <label for="city">City:</label>
+                <select id="city" name="city" class="form-control" required>
+                    <option value="" disabled selected>Select your city</option>
+                    <option value="Manila">Manila</option>
+                    <option value="Quezon City">Quezon City</option>
+                    <option value="Taguig">Taguig</option>
+                    <option value="Caloocan">Caloocan</option>
+                    <option value="Makati">Makati</option>
+                    <option value="Pasig">Pasig</option>
+                    <option value="Pasay">Pasay</option>
+                    <option value="Valenzuela">Valenzuela</option>
+                    <option value="Navotas">Navotas</option>
+                    <option value="Malabon">Malabon</option>
+                    <option value="Paranaque">Paranaque</option>
+                    <option value="Muntinlupa">Muntinlupa</option>
+                    <option value="Las Pinas">Las Pinas</option>
+                    <option value="Mandaluyong">Mandaluyong</option>
+                    <option value="Pateros">Pateros</option>
+                </select>
+            </div>
                                 <div class="form-group col-md-6">
                                     <label for="zip">Zip Code:</label>
                                     <input type="text" id="zip" name="zip_code" class="form-control" required>
@@ -320,7 +358,59 @@ mysqli_close($conn);
             </div>
         </div>
 
-       
+        <!-- Footer -->
+
+        <footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-lg-3 p-b-50">
+                        <br>
+                        <h4 class="stext-301 cl0 p-b-30">
+                            <a href="1homepage.php"><img src="assets/Untitled design.png" class="footer-logo"></a>
+                        </h4>
+                        <p class="stext-107 cl7 size-201">
+                            Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
+                        </p>
+                    </div>
+                    <div class="col-sm-6 col-lg-3 p-b-50">
+                        <br>
+                        <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Company</h7>
+            
+                        <ul>
+                            <li class="p-b-10"><a href="5about.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
+                            <li class="p-b-10"><a href="5features.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6 col-lg-3 p-b-50">
+                        <br>
+                        <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
+                        <ul>
+                            <li class="p-b-10"><a href="1homepage.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
+                            <li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
+                            <li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6 col-lg-3 p-b-50">
+                        <br>
+                        <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
+                        <ul>
+                            <li class="p-b-10"><a href="https://shopee.ph/brigadeclothing?originalCategoryId=11044828#product_list" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
+                            <li class="p-b-10"><a href="https://www.lazada.com.ph/shop/brigade-clothing?path=index.htm&lang=en&pageTypeId=1" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
+                            <li class="p-b-10">
+                                <a href="https://www.facebook.com/BrigadeWorld"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
+                                <a href="https://www.instagram.com/brigadeclothing_official/"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <br><br><br>
+                <div class="footer-bottom text-center">
+                    <p>© 2024 Brigade Clothing. All rights reserved.</p>
+                </div>
+            </div>
+            <br><br>
+        </footer>
+    </div>
     <script>
         function togglePasswordVisibility(fieldId, iconId) {
     const passwordField = document.getElementById(fieldId);
@@ -337,6 +427,18 @@ mysqli_close($conn);
 }
 
     </script>
+     <script>
+    // JavaScript to make the navbar opaque when scrolling
+    window.addEventListener('scroll', function() {
+        const mainNav = document.querySelector('.main_nav_container');
+        
+        if (window.scrollY > 50) { // Adjust the scroll threshold as needed
+            mainNav.classList.add('opaque');
+        } else {
+            mainNav.classList.remove('opaque');
+        }
+    });
+</script>
 
 <script>
         function checkPasswordStrength() {
@@ -372,7 +474,6 @@ mysqli_close($conn);
                 matchStatus.style.color = 'red';
             }
         }
-    </script>
-    
+    </script>   
 </body>
 </html>
