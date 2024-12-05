@@ -1,3 +1,8 @@
+<?php
+	session_start(); 
+	$user = $_SESSION['user'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,16 +56,21 @@
 						</li>
                         
                         <!-- User Dropdown -->
-                        <li class="dropdown">
-                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-								<a class="dropdown-item" href="4myacc.php">Account</a>
-								<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
-								<a class="dropdown-item" href="logout.php">Logout</a>
-                            </div>
-                        </li>
+						<li class="dropdown">
+							<a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fa fa-user" aria-hidden="true"></i>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+								<?php if ($user): ?>
+									<a class="dropdown-item" href="4myacc.php">Account</a>
+									<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+									<a class="dropdown-item" href="logout.php">Logout</a>
+								<?php else: ?>
+									<a class="dropdown-item" href="4login.php">Sign In</a>
+									<a class="dropdown-item" href="7adminlogin.php">Admin</a>
+								<?php endif; ?>
+							</div>
+						</li>
                         
                         <li class="checkout">
                             <a href="3cart.php">
@@ -344,41 +354,64 @@
 <script src="plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 <script src="js/categories_custom.js"></script>
 <script>
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    // Define the cart key based on the user session
+    const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`;
+    let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
 
-    function updateCart() {
-        const cartCountElement = document.getElementById('checkout_items');
-        cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }
+	function updateCart() {
+    // Select the cart count element
+    const cartCountElement = document.getElementById('checkout_items');
+    
+    // Display the count of unique items in the cart
+    cartCountElement.textContent = cartItems.length;
+}
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default anchor click behavior
-            const productItem = button.closest('.product-item');
-            const productId = productItem.getAttribute('data-id');
-            const productName = productItem.querySelector('.product_name a').textContent;
-            const productImage = productItem.querySelector('.product_image img').src;
-            const productPrice = productItem.querySelector('.product_price').textContent;
+document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
 
-            // Check if item already exists in the cart
-            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
-            if (existingItemIndex > -1) {
-                // Increase quantity if it already exists
-                cartItems[existingItemIndex].quantity += 1;
-            } else {
-                // Add new item to cart with a default quantity of 1
-                cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
-            }
+        const productItem = button.closest('.product-item');
+        const productId = productItem.getAttribute('data-id');
+        const productName = productItem.querySelector('.product_name a').textContent;
+        const productImage = productItem.querySelector('.product_image img').src;
+        const productPrice = productItem.querySelector('.product_price').textContent;
 
-            updateCart(); // Update the cart display
-            alert(`${productName} has been added to your cart!`);
-        });
+        // Get the selected size from the sidebar
+        const selectedSize = document.querySelector('.checkboxes .active span').textContent;
+
+        if (!selectedSize) {
+            alert("Please select a size from the sidebar.");
+            return;
+        }
+
+        // Check if the item is already in the cart with the selected size
+        const existingItemIndex = cartItems.findIndex(item => item.id === productId && item.size === selectedSize);
+        if (existingItemIndex > -1) {
+            // Increase quantity if item already exists
+            cartItems[existingItemIndex].quantity += 1;
+        } else {
+            // Add new item with default quantity of 1
+            cartItems.push({
+                id: productId,
+                name: productName,
+                image: productImage,
+                price: productPrice,
+                size: selectedSize,
+                quantity: 1
+            });
+        }
+
+        // Save updated cart to localStorage and update the cart display
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        updateCart();
+        alert(`${productName} (Size: ${selectedSize}) has been added to your cart!`);
     });
+});
 
     // Update cart count on page load
-    updateCart();
+    document.addEventListener('DOMContentLoaded', updateCart);
 </script>
+
 <script>
     // JavaScript to make the navbar opaque when scrolling
     window.addEventListener('scroll', function() {
@@ -403,7 +436,7 @@
  { img: "items/images/1007/i1.png", alt: "7", name: "Sting", href: "items/1007.php" },
  { img: "items/images/1008/i1.png", alt: "8", name: "Daily", href: "items/1008.php" },
  { img: "items/images/1009/i1.png", alt: "9", name: "Warm Up", href: "items/1009.php" },
- { img: "items/images/10010/i1.png", alt: "10", name: "Earth", href: "items/10010.php" },
+ { img: "items/images/1010/i1.png", alt: "10", name: "Earth", href: "items/1010.php" },
 ];
 
 const nameList = document.getElementById('nameList');
