@@ -150,7 +150,7 @@ mysqli_close($conn);
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="1index.php"><img src="assets/1.png"></a>
+							<a href="1homepage.php"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
                     <ul class="navbar_menu">
@@ -314,7 +314,7 @@ mysqli_close($conn);
 			<div class="col-sm-6 col-lg-3 p-b-50">
 				<br>
 				<h4 class="stext-301 cl0 p-b-30">
-					<a href="1index.php"><img src="assets/Untitled design.png" class="footer-logo"></a>
+					<a href="1homepage.php"><img src="assets/Untitled design.png" class="footer-logo"></a>
 				</h4>
 				<p class="stext-107 cl7 size-201">
 					Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
