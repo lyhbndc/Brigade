@@ -491,6 +491,32 @@ $user = $_SESSION['user'];
 </footer>
 
 <script>
+	window.addEventListener('load', function() {
+		const loadingPage = document.getElementById('loadingPage');
+		const content = document.getElementById('content');
+		const logo = document.getElementById('logo');
+		
+	   
+		setTimeout(() => {
+			logo.classList.add('zoom-fade'); 
+		}, 2000); 
+
+	  
+		setTimeout(() => {
+			loadingPage.style.display = 'none'; 
+			content.style.display = 'block';   
+		}, 3000); 
+	});
+</script>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="styles/bootstrap4/popper.js"></script>
+<script src="styles/bootstrap4/bootstrap.min.js"></script>
+<script src="plugins/Isotope/isotope.pkgd.min.js"></script>
+<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+<script src="plugins/easing/easing.js"></script>
+<script src="js/custom.js"></script>
+
+<script>
     // Define the cart key based on the user session
     const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`;
     let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];

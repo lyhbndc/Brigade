@@ -57,31 +57,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Bind parameters for products table
         $stmt_prod->bind_param("sssiiiiiiids", $name, $category, $tag, $totalQuantity, $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $image);
         
-        /*// Execute products insert
         if ($stmt_prod->execute()) {
-            // Get the last inserted ID from the products table
-            $product_id = $conn->insert_id;
-        
-            // Now insert into the new_products table using the same ID
-            $stmt_new = $conn->prepare("INSERT INTO new_products (id, name, category, quantity, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            if (!$stmt_new) {
-                die("Error preparing statement for new_products: " . $conn->error);
-            }
-        
-            // Bind parameters for new_products table
-            $stmt_new->bind_param("issiiiiiiids", $product_id, $name, $category, $totalQuantity, $small_stock, $medium_stock, $large_stock, $xl_stock, $xxl_stock, $xxxl_stock, $price, $image);
-            
-            // Execute new_products insert
-            if ($stmt_new->execute()) {
-                // Redirect to inventory page after successful insert into both tables
-                header("Location: 6inventory.php");
-                exit;
-            } else {
-                echo "Error inserting into new_products: " . $stmt_new->error;
-            }
+            header("Location: 6inventory.php");
+            exit;
         } else {
-            echo "Error inserting into products: " . $stmt_prod->error;
-        }*/
+            echo "Error adding new record: " . $stmt->error;
+        }
     }    
 
     // Handle form submissions for the edit stock module
