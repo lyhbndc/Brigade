@@ -27,7 +27,6 @@ $result = $conn->query($sql);
 </head>
 
 <body>
-
 <div class="super_container">
 
 	<!-- Header -->
@@ -44,56 +43,55 @@ $result = $conn->query($sql);
 							<a href="1homepage.php"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
-                    <ul class="navbar_menu">
-                        <li><a href="1homepage.php">home</a></li>
-                        <li><a href="3shop.php">shop</a></li>
-                        <li><a href="3new.php">new</a></li>
-                        
-                    </ul>
-                    <ul class="navbar_user">
-						<li class="dropdown">
-							<a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
-								<i class="fa fa-search" aria-hidden="true"></i>
-							</a>
-							<div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
-								<input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
-								<ul id="nameList" class="name-list"></ul>
+							<ul class="navbar_menu">
+								<li><a href="1homepage.php">home</a></li>
+								<li><a href="3shop.php">shop</a></li>
+								<li><a href="3new.php">new</a></li>
+								
+							</ul>
+							<ul class="navbar_user">
+								<li class="dropdown">
+									<a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-search" aria-hidden="true"></i>
+									</a>
+									<div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+										<input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+										<ul id="nameList" class="name-list"></ul>
+									</div>
+								</li>
+								
+								<!-- User Dropdown -->
+								<li class="dropdown">
+									<a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-user" aria-hidden="true"></i>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+										<?php if ($user): ?>
+											<a class="dropdown-item" href="4myacc.php">Account</a>
+											<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+											<a class="dropdown-item" href="logout.php">Logout</a>
+										<?php else: ?>
+											<a class="dropdown-item" href="4login.php">Sign In</a>
+											<a class="dropdown-item" href="7adminlogin.php">Admin</a>
+										<?php endif; ?>
+									</div>
+								</li>
+								
+								<li class="checkout">
+									<a href="3cart.php">
+										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+										<span id="checkout_items" class="checkout_items">0</span>
+									</a>
+								</li>
+							</ul>
+							<div class="hamburger_container">
+								<i class="fa fa-bars" aria-hidden="true"></i>
 							</div>
-						</li>
-                        
-                        <!-- User Dropdown -->
-						<li class="dropdown">
-							<a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<i class="fa fa-user" aria-hidden="true"></i>
-							</a>
-							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-								<?php if ($user): ?>
-									<a class="dropdown-item" href="4myacc.php">Account</a>
-									<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
-									<a class="dropdown-item" href="logout.php">Logout</a>
-								<?php else: ?>
-									<a class="dropdown-item" href="4login.php">Sign In</a>
-									<a class="dropdown-item" href="7adminlogin.php">Admin</a>
-								<?php endif; ?>
-							</div>
-						</li>
-						
-                        <li class="checkout">
-                            <a href="3cart.php">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                <span id="checkout_items" class="checkout_items">0</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="hamburger_container">
-                        <i class="fa fa-bars" aria-hidden="true"></i>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
-
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
 	</header>
 
 	<div class="fs_menu_overlay"></div>
@@ -130,7 +128,7 @@ $result = $conn->query($sql);
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
 						<li><a href="1homepage.php">Home</a></li>
-						<li class="active"><a href="1homepage.php"><i class="fa fa-angle-right" aria-hidden="true"></i>Tees</a></li>
+						<li class="active"><a href="2hoodies.php"><i class="fa fa-angle-right" aria-hidden="true"></i>Hoodies</a></li>
 					</ul>
 				</div>
 
@@ -161,8 +159,6 @@ $result = $conn->query($sql);
 							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XXL</span></li>
 						</ul>
 					</div>
-
-
 				</div>
 
 				<!-- Main Content -->
@@ -192,6 +188,7 @@ $result = $conn->query($sql);
 								</div>
 
 								<!-- Product Grid -->
+
 								<div class="product-grid">
 									<?php 
 									if ($result->num_rows > 0) {
@@ -214,11 +211,11 @@ $result = $conn->query($sql);
 														<img src="/Brigade/uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="">
 													</div>
 													<div class="favorite favorite_left"></div>
-													<?php if ($isOutOfStock) { ?>
-														<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
-															<span>Sold</span>
-														</div>
-													<?php } ?>
+														<?php if ($isOutOfStock) { ?>
+															<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+																<span>Sold</span>
+															</div>
+														<?php } ?>
 													<div class="product_info">
 														<h6 class="product_name">
 															<a href="<?php echo htmlspecialchars('items/' . $row['id'] . '.php'); ?>">
@@ -237,11 +234,12 @@ $result = $conn->query($sql);
 												</div>
 											</div>
 										<?php 
+											}
+										} else {
+											echo "<p>No products found.</p>";
 										}
-									} else {
-										echo "<p>No new products found.</p>";
-									}
-									?>
+										?>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -296,7 +294,7 @@ $result = $conn->query($sql);
 		</div>
 	</div>
 
-<!-- Footer -->
+	<!-- Footer -->
 
 	<br><br><br><br>
 	<footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
@@ -348,8 +346,7 @@ $result = $conn->query($sql);
 		</div>
 	</div>
 	<br><br>
-	</footer>
-
+</footer>
 
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="styles/bootstrap4/popper.js"></script>
@@ -360,41 +357,64 @@ $result = $conn->query($sql);
 <script src="plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 <script src="js/categories_custom.js"></script>
 <script>
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    // Define the cart key based on the user session
+    const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`;
+    let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
 
-    function updateCart() {
-        const cartCountElement = document.getElementById('checkout_items');
-        cartCountElement.textContent = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }
+	function updateCart() {
+    // Select the cart count element
+    const cartCountElement = document.getElementById('checkout_items');
+    
+    // Display the count of unique items in the cart
+    cartCountElement.textContent = cartItems.length;
+}
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default anchor click behavior
-            const productItem = button.closest('.product-item');
-            const productId = productItem.getAttribute('data-id');
-            const productName = productItem.querySelector('.product_name a').textContent;
-            const productImage = productItem.querySelector('.product_image img').src;
-            const productPrice = productItem.querySelector('.product_price').textContent;
+document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
 
-            // Check if item already exists in the cart
-            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
-            if (existingItemIndex > -1) {
-                // Increase quantity if it already exists
-                cartItems[existingItemIndex].quantity += 1;
-            } else {
-                // Add new item to cart with a default quantity of 1
-                cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
-            }
+        const productItem = button.closest('.product-item');
+        const productId = productItem.getAttribute('data-id');
+        const productName = productItem.querySelector('.product_name a').textContent;
+        const productImage = productItem.querySelector('.product_image img').src;
+        const productPrice = productItem.querySelector('.product_price').textContent;
 
-            updateCart(); // Update the cart display
-            alert(`${productName} has been added to your cart!`);
-        });
+        // Get the selected size from the sidebar
+        const selectedSize = document.querySelector('.checkboxes .active span').textContent;
+
+        if (!selectedSize) {
+            alert("Please select a size from the sidebar.");
+            return;
+        }
+
+        // Check if the item is already in the cart with the selected size
+        const existingItemIndex = cartItems.findIndex(item => item.id === productId && item.size === selectedSize);
+        if (existingItemIndex > -1) {
+            // Increase quantity if item already exists
+            cartItems[existingItemIndex].quantity += 1;
+        } else {
+            // Add new item with default quantity of 1
+            cartItems.push({
+                id: productId,
+                name: productName,
+                image: productImage,
+                price: productPrice,
+                size: selectedSize,
+                quantity: 1
+            });
+        }
+
+        // Save updated cart to localStorage and update the cart display
+        localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        updateCart();
+        alert(`${productName} (Size: ${selectedSize}) has been added to your cart!`);
     });
+});
 
     // Update cart count on page load
-    updateCart();
+    document.addEventListener('DOMContentLoaded', updateCart);
 </script>
+
 <script>
     // JavaScript to make the navbar opaque when scrolling
     window.addEventListener('scroll', function() {
@@ -410,7 +430,7 @@ $result = $conn->query($sql);
 
 <script>
     const items = [
-        { img: "items/images/1001/i1.png", alt: "1", name: "Let's Get High", href: "items/1001.php" },
+		{ img: "items/images/1001/i1.png", alt: "1", name: "Let's Get High", href: "items/1001.php" },
  { img: "items/images/1002/i1.png", alt: "2", name: "On The Grind", href: "items/1002.php"},
  { img: "items/images/1003/i1.png", alt: "3", name: "Allergic", href: "items/1003.php" },
  { img: "items/images/1004/i1.png", alt: "4", name: "Summer Heist", href: "items/1004.php" },
@@ -419,7 +439,7 @@ $result = $conn->query($sql);
  { img: "items/images/1007/i1.png", alt: "7", name: "Sting", href: "items/1007.php" },
  { img: "items/images/1008/i1.png", alt: "8", name: "Daily", href: "items/1008.php" },
  { img: "items/images/1009/i1.png", alt: "9", name: "Warm Up", href: "items/1009.php" },
- { img: "items/images/10010/i1.png", alt: "10", name: "Earth", href: "items/10010.php" },
+ { img: "items/images/1010/i1.png", alt: "10", name: "Earth", href: "items/1010.php" },
 ];
 
 const nameList = document.getElementById('nameList');
@@ -444,43 +464,43 @@ function renderList(filteredItems) {
 renderList(items);
 
 function filterNames() {
- const searchValue = searchInput.value.toLowerCase();
- const filteredItems = items
-     .filter(item => item.name.toLowerCase().includes(searchValue)) // Filter items
-     .sort((a, b) => a.name.localeCompare(b.name)); // Sort filtered items alphabetically
- renderList(filteredItems); // Render the filtered and sorted list
+	const searchValue = searchInput.value.toLowerCase();
+	const filteredItems = items
+		.filter(item => item.name.toLowerCase().includes(searchValue)) // Filter items
+		.sort((a, b) => a.name.localeCompare(b.name)); // Sort filtered items alphabetically
+	renderList(filteredItems); // Render the filtered and sorted list
 }
 searchInput.addEventListener('keyup', filterNames);
 
 // Initialize the dropdown toggle behavior
 function toggleDropdown(event) {
- const dropdownMenu = document.getElementById('searchDropdownMenu');
- const isExpanded = dropdownMenu.style.display === 'block';
- dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+	const dropdownMenu = document.getElementById('searchDropdownMenu');
+	const isExpanded = dropdownMenu.style.display === 'block';
+	dropdownMenu.style.display = isExpanded ? 'none' : 'block';
 }
 function closeSearchDropdown() {
-     const searchDropdownMenu = document.getElementById('searchDropdownMenu');
-     searchDropdownMenu.style.display = 'none';
- }
+	const searchDropdownMenu = document.getElementById('searchDropdownMenu');
+	searchDropdownMenu.style.display = 'none';
+}
 
- // Attach event listener to the user dropdown
- document.getElementById('userDropdown').addEventListener('click', function() {
-     closeSearchDropdown(); // Close the search dropdown when the user dropdown is clicked
- });
+// Attach event listener to the user dropdown
+document.getElementById('userDropdown').addEventListener('click', function() {
+	closeSearchDropdown(); // Close the search dropdown when the user dropdown is clicked
+});
 
- // Function to toggle the search dropdown
- function toggleSearchDropdown(event) {
-     const dropdownMenu = document.getElementById('searchDropdownMenu');
-     const isExpanded = dropdownMenu.style.display === 'block';
-     dropdownMenu.style.display = isExpanded ? 'none' : 'block';
-     
-     // Close the user dropdown if it is open
-     const userDropdownMenu = document.querySelector('.dropdown-menu-right');
-     if (userDropdownMenu.style.display === 'block') {
-         userDropdownMenu.style.display = 'none';
-     }
- }
- </script>
+// Function to toggle the search dropdown
+function toggleSearchDropdown(event) {
+	const dropdownMenu = document.getElementById('searchDropdownMenu');
+	const isExpanded = dropdownMenu.style.display === 'block';
+	dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+	
+	// Close the user dropdown if it is open
+	const userDropdownMenu = document.querySelector('.dropdown-menu-right');
+	if (userDropdownMenu.style.display === 'block') {
+		userDropdownMenu.style.display = 'none';
+	}
+}
+</script>
+
 </body>
-
 </html>

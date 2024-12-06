@@ -104,19 +104,18 @@ $result = $conn->query($sql);
 		<div class="hamburger_menu_content text-right">
 			<ul class="menu_top_nav">
 				<li class="menu_item has-children">
-					<a href="#">
+					<a href="4myacc.php">
 						My Account
 						<i class="fa fa-angle-down"></i>
 					</a>
 					<ul class="menu_selection">
-						<li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-						<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+						<li><a href="4login.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+						<li><a href="4signup.php"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
 					</ul>
 				</li>
 				<li class="menu_item"><a href="1homepage.php">home</a></li>
 				<li class="menu_item"><a href="3shop.php">shop</a></li>
 				<li class="menu_item"><a href="3new.php">new</a></li>
-				<li class="menu_item"><a href="#">on sale</a></li>
 			</ul>
 		</div>
 	</div>
@@ -130,7 +129,7 @@ $result = $conn->query($sql);
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
 						<li><a href="1homepage.php">Home</a></li>
-						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Shop</a></li>
+						<li class="active"><a href="3shop.php"><i class="fa fa-angle-right" aria-hidden="true"></i>Shop</a></li>
 					</ul>
 				</div>
 
@@ -161,8 +160,6 @@ $result = $conn->query($sql);
 							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XXL</span></li>
 						</ul>
 					</div>
-
-
 				</div>
 
 				<!-- Main Content -->
@@ -192,6 +189,7 @@ $result = $conn->query($sql);
 								</div>
 
 								<!-- Product Grid -->
+
 								<div class="product-grid">
 									<?php 
 									if ($result->num_rows > 0) {
@@ -214,11 +212,11 @@ $result = $conn->query($sql);
 														<img src="/Brigade/uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="">
 													</div>
 													<div class="favorite favorite_left"></div>
-													<?php if ($isOutOfStock) { ?>
-														<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
-															<span>Sold</span>
-														</div>
-													<?php } ?>
+														<?php if ($isOutOfStock) { ?>
+															<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+																<span>Sold</span>
+															</div>
+														<?php } ?>
 													<div class="product_info">
 														<h6 class="product_name">
 															<a href="<?php echo htmlspecialchars('items/' . $row['id'] . '.php'); ?>">
@@ -237,11 +235,12 @@ $result = $conn->query($sql);
 												</div>
 											</div>
 										<?php 
+											}
+										} else {
+											echo "<p>No products found.</p>";
 										}
-									} else {
-										echo "<p>No new products found.</p>";
-									}
-									?>
+										?>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -324,10 +323,9 @@ $result = $conn->query($sql);
 					<br>
 					<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
 					<ul>
-						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
-						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
-						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
-						<li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
+						<li class="p-b-10"><a href="1homepage.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
+						<li class="p-b-10"><a href="3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
+						<li class="p-b-10"><a href="3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
 					</ul>
 				</div>
 				<div class="col-sm-6 col-lg-3 p-b-50">

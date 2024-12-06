@@ -12,22 +12,21 @@ $result = $conn->query($sql);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Brigade Clothing</title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css"åç href="styles/bootstrap4/bootstrap.min.css">
-<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
-<link rel="stylesheet" type="text/css" href="plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
-<link rel="stylesheet" type="text/css" href="styles/categories_styles.css">
-<link rel="stylesheet" type="text/css" href="styles/categories_responsive.css">
+	<title>Brigade Clothing</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css"åç href="styles/bootstrap4/bootstrap.min.css">
+	<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
+	<link rel="stylesheet" type="text/css" href="plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="styles/categories_styles.css">
+	<link rel="stylesheet" type="text/css" href="styles/categories_responsive.css">
 </head>
 
 <body>
-
 <div class="super_container">
 
 	<!-- Header -->
@@ -44,55 +43,55 @@ $result = $conn->query($sql);
 							<a href="1homepage.php"><img src="assets/1.png"></a>
 						</div>
 						<nav class="navbar">
-                    <ul class="navbar_menu">
-                        <li><a href="1homepage.php">home</a></li>
-                        <li><a href="3shop.php">shop</a></li>
-                        <li><a href="3new.php">new</a></li>
-                        
-                    </ul>
-                    <ul class="navbar_user">
-						<li class="dropdown">
-							<a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
-								<i class="fa fa-search" aria-hidden="true"></i>
-							</a>
-							<div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
-								<input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
-								<ul id="nameList" class="name-list"></ul>
+							<ul class="navbar_menu">
+								<li><a href="1homepage.php">home</a></li>
+								<li><a href="3shop.php">shop</a></li>
+								<li><a href="3new.php">new</a></li>
+								
+							</ul>
+							<ul class="navbar_user">
+								<li class="dropdown">
+									<a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-search" aria-hidden="true"></i>
+									</a>
+									<div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+										<input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+										<ul id="nameList" class="name-list"></ul>
+									</div>
+								</li>
+								
+								<!-- User Dropdown -->
+								<li class="dropdown">
+									<a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-user" aria-hidden="true"></i>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+										<?php if ($user): ?>
+											<a class="dropdown-item" href="4myacc.php">Account</a>
+											<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
+											<a class="dropdown-item" href="logout.php">Logout</a>
+										<?php else: ?>
+											<a class="dropdown-item" href="4login.php">Sign In</a>
+											<a class="dropdown-item" href="7adminlogin.php">Admin</a>
+										<?php endif; ?>
+									</div>
+								</li>
+								
+								<li class="checkout">
+									<a href="3cart.php">
+										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+										<span id="checkout_items" class="checkout_items">0</span>
+									</a>
+								</li>
+							</ul>
+							<div class="hamburger_container">
+								<i class="fa fa-bars" aria-hidden="true"></i>
 							</div>
-						</li>
-                        
-                        <!-- User Dropdown -->
-						<li class="dropdown">
-							<a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<i class="fa fa-user" aria-hidden="true"></i>
-							</a>
-							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-								<?php if ($user): ?>
-									<a class="dropdown-item" href="4myacc.php">Account</a>
-									<a class="dropdown-item" href="4recentorders.php">Recent Orders</a>
-									<a class="dropdown-item" href="logout.php">Logout</a>
-								<?php else: ?>
-									<a class="dropdown-item" href="4login.php">Sign In</a>
-									<a class="dropdown-item" href="7adminlogin.php">Admin</a>
-								<?php endif; ?>
-							</div>
-						</li>
-                        
-                        <li class="checkout">
-                            <a href="3cart.php">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                <span id="checkout_items" class="checkout_items">0</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="hamburger_container">
-                        <i class="fa fa-bars" aria-hidden="true"></i>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
 	</header>
 
 	<div class="fs_menu_overlay"></div>
@@ -104,7 +103,7 @@ $result = $conn->query($sql);
 		<div class="hamburger_menu_content text-right">
 			<ul class="menu_top_nav">
 				<li class="menu_item has-children">
-					<a href="3acc.php">
+					<a href="4myacc.php">
 						My Account
 						<i class="fa fa-angle-down"></i>
 					</a>
@@ -152,37 +151,14 @@ $result = $conn->query($sql);
 						<div class="sidebar_title">
 							<h5>Sizes</h5>
 						</div>
-						<div class="sidebar_section">
-    <div class="sidebar_title">
-        <h5>Sizes</h5>
-    </div>
-    <ul class="radio-buttons">
-        <li>
-            <input type="radio" id="sizeS" name="size" value="S">
-            <label for="sizeS">S</label>
-        </li>
-        <li>
-            <input type="radio" id="sizeM" name="size" value="M">
-            <label for="sizeM">M</label>
-        </li>
-        <li>
-            <input type="radio" id="sizeL" name="size" value="L">
-            <label for="sizeL">L</label>
-        </li>
-        <li>
-            <input type="radio" id="sizeXL" name="size" value="XL">
-            <label for="sizeXL">XL</label>
-        </li>
-        <li>
-            <input type="radio" id="sizeXXL" name="size" value="XXL">
-            <label for="sizeXXL">XXL</label>
-        </li>
-    </ul>
-</div>
-
+						<ul class="checkboxes">
+							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>S</span></li>
+							<li class="active"><i class="fa fa-square" aria-hidden="true"></i><span>M</span></li>
+							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>L</span></li>
+							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XL</span></li>
+							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XXL</span></li>
+						</ul>
 					</div>
-
-
 				</div>
 
 				<!-- Main Content -->
@@ -212,6 +188,7 @@ $result = $conn->query($sql);
 								</div>
 
 								<!-- Product Grid -->
+
 								<div class="product-grid">
 									<?php 
 									if ($result->num_rows > 0) {
@@ -234,11 +211,11 @@ $result = $conn->query($sql);
 														<img src="/Brigade/uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="">
 													</div>
 													<div class="favorite favorite_left"></div>
-													<?php if ($isOutOfStock) { ?>
-														<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
-															<span>Sold</span>
-														</div>
-													<?php } ?>
+														<?php if ($isOutOfStock) { ?>
+															<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+																<span>Sold</span>
+															</div>
+														<?php } ?>
 													<div class="product_info">
 														<h6 class="product_name">
 															<a href="<?php echo htmlspecialchars('items/' . $row['id'] . '.php'); ?>">
@@ -257,11 +234,12 @@ $result = $conn->query($sql);
 												</div>
 											</div>
 										<?php 
+											}
+										} else {
+											echo "<p>No products found.</p>";
 										}
-									} else {
-										echo "<p>No new products found.</p>";
-									}
-									?>
+										?>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -316,7 +294,7 @@ $result = $conn->query($sql);
 		</div>
 	</div>
 
-<!-- Footer -->
+	<!-- Footer -->
 
 	<br><br><br><br>
 	<footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
@@ -368,8 +346,7 @@ $result = $conn->query($sql);
 		</div>
 	</div>
 	<br><br>
-	</footer>
-
+</footer>
 
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="styles/bootstrap4/popper.js"></script>
@@ -487,43 +464,43 @@ function renderList(filteredItems) {
 renderList(items);
 
 function filterNames() {
- const searchValue = searchInput.value.toLowerCase();
- const filteredItems = items
-     .filter(item => item.name.toLowerCase().includes(searchValue)) // Filter items
-     .sort((a, b) => a.name.localeCompare(b.name)); // Sort filtered items alphabetically
- renderList(filteredItems); // Render the filtered and sorted list
+	const searchValue = searchInput.value.toLowerCase();
+	const filteredItems = items
+		.filter(item => item.name.toLowerCase().includes(searchValue)) // Filter items
+		.sort((a, b) => a.name.localeCompare(b.name)); // Sort filtered items alphabetically
+	renderList(filteredItems); // Render the filtered and sorted list
 }
 searchInput.addEventListener('keyup', filterNames);
 
 // Initialize the dropdown toggle behavior
 function toggleDropdown(event) {
- const dropdownMenu = document.getElementById('searchDropdownMenu');
- const isExpanded = dropdownMenu.style.display === 'block';
- dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+	const dropdownMenu = document.getElementById('searchDropdownMenu');
+	const isExpanded = dropdownMenu.style.display === 'block';
+	dropdownMenu.style.display = isExpanded ? 'none' : 'block';
 }
 function closeSearchDropdown() {
-     const searchDropdownMenu = document.getElementById('searchDropdownMenu');
-     searchDropdownMenu.style.display = 'none';
- }
+	const searchDropdownMenu = document.getElementById('searchDropdownMenu');
+	searchDropdownMenu.style.display = 'none';
+}
 
- // Attach event listener to the user dropdown
- document.getElementById('userDropdown').addEventListener('click', function() {
-     closeSearchDropdown(); // Close the search dropdown when the user dropdown is clicked
- });
+// Attach event listener to the user dropdown
+document.getElementById('userDropdown').addEventListener('click', function() {
+	closeSearchDropdown(); // Close the search dropdown when the user dropdown is clicked
+});
 
- // Function to toggle the search dropdown
- function toggleSearchDropdown(event) {
-     const dropdownMenu = document.getElementById('searchDropdownMenu');
-     const isExpanded = dropdownMenu.style.display === 'block';
-     dropdownMenu.style.display = isExpanded ? 'none' : 'block';
-     
-     // Close the user dropdown if it is open
-     const userDropdownMenu = document.querySelector('.dropdown-menu-right');
-     if (userDropdownMenu.style.display === 'block') {
-         userDropdownMenu.style.display = 'none';
-     }
- }
- </script>
+// Function to toggle the search dropdown
+function toggleSearchDropdown(event) {
+	const dropdownMenu = document.getElementById('searchDropdownMenu');
+	const isExpanded = dropdownMenu.style.display === 'block';
+	dropdownMenu.style.display = isExpanded ? 'none' : 'block';
+	
+	// Close the user dropdown if it is open
+	const userDropdownMenu = document.querySelector('.dropdown-menu-right');
+	if (userDropdownMenu.style.display === 'block') {
+		userDropdownMenu.style.display = 'none';
+	}
+}
+</script>
+
 </body>
-
 </html>
