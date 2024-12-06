@@ -136,21 +136,21 @@ $user = $_SESSION['user'];
 				<div class="col-md-4">
 					<div class="banner_item align-items-center" style="background-image:url(assets/h.png)">
 						<div class="banner_category">
-							<a href="#" class="disabled-link" style="pointer-events: none;">HOODIES</a>
+							<a href="2hoodies.php">HOODIES</a>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="banner_item align-items-center" style="background-image:url(assets/t.png)">
 						<div class="banner_category">
-							<a href="#" class="disabled-link" style="pointer-events: none;">TEES</a>
+							<a href="2tees.php">TEES</a>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="banner_item align-items-center" style="background-image:url(assets/s.png)">
 						<div class="banner_category">
-							<a href="#" class="disabled-link" style="pointer-events: none;">SHORTS</a>
+							<a href="2shorts.php">SHORTS</a>
 						</div>
 					</div>
 				</div>
@@ -183,7 +183,7 @@ $user = $_SESSION['user'];
 			<div class="row">
 				<div class="col">
 					<div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
-					<div class="product-item tees" data-id="1001">
+						<div class="product-item tees" data-id="1001">
 							<div class="product discount product_filter">
 								<div class="product_image">
 									<img src="items/images/1001/1front.png" alt="">
