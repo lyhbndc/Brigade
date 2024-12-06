@@ -37,6 +37,8 @@ if (isset($_POST['login'])) {
         $error_message = "Both fields are required.";
     }
 }
+
+mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
@@ -182,7 +184,7 @@ if (isset($_POST['login'])) {
                     <div class="row">
                         <div class="col-lg-12 text-right">
                             <div class="logo_container">
-                                <a href="#"><img src="assets/1.png"></a>
+                                <a href="1homepage.php"><img src="assets/1.png"></a>
                             </div>
                             <nav class="navbar">
                                 
@@ -236,72 +238,19 @@ if (isset($_POST['login'])) {
                             
                             <input type="submit" name="login" value="Login">
                             <div class="forgot-password">
-                                <a href="#">Forgot Password?</a>
+                                <a href="7forgotpass.php">Forgot Password?</a>
                             </div>
                             <br>
-                            <div class="sign-up-link">
-                               <a>Don't have an account? </a> <a href="4signup.php">Sign up</a>
-                            </div>
-                        </form>
-                        <?php if (!empty($error_message)): ?>
-                        <div id="toast" class="toast"><?php echo $error_message; ?></div>
+                            <?php if (!empty($error_message)): ?>
+                            <div id="toast" class="toast"><?php echo $error_message; ?></div>
+                        <?php endif; ?>
+                    </form>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Footer -->
-        <footer style="background-color: black; color: white;" class="bg3 p-t-75 p-b-32">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6 col-lg-3 p-b-50">
-                        <br>
-                        <h4 class="stext-301 cl0 p-b-30">
-                            <a href="#"><img src="assets/Untitled design.png" class="footer-logo"></a>
-                        </h4>
-                        <p class="stext-107 cl7 size-201">
-                            Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
-                        </p>
-                    </div>
-                    <div class="col-sm-6 col-lg-3 p-b-50">
-                        <br>
-                        <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Company</h7>
-                        <ul>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">About Brigade</a></li>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Features</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-6 col-lg-3 p-b-50">
-                        <br>
-                        <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
-                        <ul>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">On Sale</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-6 col-lg-3 p-b-50">
-                        <br>
-                        <h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Socials</h7>
-                        <ul>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shopee</a></li>
-                            <li class="p-b-10"><a href="#" class="stext-107 cl7 footer-link hov-cl1 trans-04">Lazada</a></li>
-                            <li class="p-b-10">
-                                <a href="#"><i class="fa fa-facebook footer-icon" aria-hidden="true"></i></a>
-                                <a href="#"><i class="fa fa-instagram footer-icon" aria-hidden="true"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <br><br><br>
-                <div class="footer-bottom text-center">
-                    <p>© 2024 Brigade Clothing. All rights reserved.</p>
-                </div>
-            </div>
-            <br><br>
-        </footer>
-    </div>
+        
     <script>
         function togglePassword() {
             const passwordField = document.getElementById('password');
@@ -316,6 +265,7 @@ if (isset($_POST['login'])) {
                 toggleIcon.classList.add('fa-eye');
             }
         }
+
     </script>
     <script>
     // JavaScript to make the navbar opaque when scrolling
@@ -329,13 +279,14 @@ if (isset($_POST['login'])) {
         }
     });
 </script>
+<?php if (!empty($error_message)): ?>
 <script>
-            const toast = document.getElementById("toast");
-            toast.classList.add("show");
-            setTimeout(() => {
-                toast.classList.remove("show");
-            }, 3000); // Toast is visible for 3 seconds
-        </script>
-    <?php endif; ?>
+    const toast = document.getElementById("toast");
+    toast.classList.add("show");
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000); // Toast is visible for 3 seconds
+</script>
+<?php endif; ?>
 </body>
 </html>
