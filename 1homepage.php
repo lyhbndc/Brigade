@@ -8,6 +8,7 @@ $user = $_SESSION['user'];
 <html lang="en">
 <head>
 	<title>Brigade Clothing</title>
+	<link rel="icon" type="image/png" href="BRIGADE_Icon.png">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="description" content="Brigade">
