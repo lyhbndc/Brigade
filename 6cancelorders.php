@@ -67,7 +67,7 @@ $conn->close();
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='7'>No completed orders found.</td></tr>";
+                echo "<tr><td colspan='7'>No canceled orders found.</td></tr>";
             }
             ?>
         </tbody>

@@ -156,6 +156,7 @@ $result = $conn->query($sql);
 							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>L</span></li>
 							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XL</span></li>
 							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XXL</span></li>
+							<li><i class="fa fa-square-o" aria-hidden="true"></i><span>XXXL</span></li>
 						</ul>
 					</div>
 				</div>

@@ -117,8 +117,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $availableStock = (int)$stockRow[$stockColumn];
             if ($quantity > $availableStock) {
                 $errorMessage = "Insufficient stock for $product (Size: $size). Available stock: $availableStock.";
-                header("Location: 3shop.php?error=" . urlencode($errorMessage));
-                exit();
+                
+                // Display an alert using JavaScript
+                echo "<script>
+                        alert('" . addslashes($errorMessage) . "');
+                        window.location.href = '3shop.php';
+                      </script>";
+                exit();            
             } else {
                 $newStock = $availableStock - $quantity;
                 $updateStockQuery = "UPDATE products SET $stockColumn = $newStock WHERE name = '$product'";

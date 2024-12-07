@@ -33,8 +33,6 @@ if (isset($_POST['login'])) {
         $error_message = "Both fields are required.";
     }
 }
-?>
-
 
 mysqli_close($conn);
 ?>

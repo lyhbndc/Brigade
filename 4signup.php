@@ -49,22 +49,17 @@ if (isset($_POST['next'])) {
             // Send the verification email using PHPMailer
             $mail = new PHPMailer(true);
             try {
-                
                 $mail->isSMTP();
                 $mail->Host = 'smtp.mailersend.net'; // Update this with your SMTP server
                 $mail->SMTPAuth = true;
-                $mail->Username = 'MS_OdjHf8@trial-ynrw7gyzodj42k8e.mlsender.net'; // SMTP username
-                $mail->Password = 'Mpu7PVUePFM7PSiB'; // SMTP password
+                $mail->Username = 'MS_prz199@trial-z86org809xe4ew13.mlsender.net'; // SMTP username
+                $mail->Password = 'pBJDLIoqkZPGQG1K'; // SMTP password
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
-                $mail->SMTPDebug = 2; // Debug levels: 0 = off, 1 = client messages, 2 = client and server messages
-                $mail->Debugoutput = 'html'; // Output debug information in HTML format
-                
                 // Recipients
-                $mail->setFrom('MS_OdjHf8@trial-ynrw7gyzodj42k8e.mlsender.net', 'Brigade');
-                $mail->addAddress($email);
-
+                $mail->setFrom('MS_prz199@trial-z86org809xe4ew13.mlsender.net', 'Brigade');
+                $mail->addAddress($userEmail);
                 
                 // Content
                 $mail->isHTML(true);
@@ -101,7 +96,7 @@ mysqli_close($conn);
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="About Brigade Clothing">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-widtSh, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
