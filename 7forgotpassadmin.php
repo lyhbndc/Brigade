@@ -1,4 +1,4 @@
-<?php
+s<?php
 session_start();
 
 require 'vendor/phpmailer/phpmailer/src/Exception.php';
@@ -18,15 +18,14 @@ if (isset($_POST['reset'])) {
         $email = $_POST['email'];
 
         // Check if the email exists in the database
-        $checkEmailQuery = "SELECT * FROM user WHERE email = '$email'";
+        $checkEmailQuery = "SELECT * FROM employees WHERE email = '$email'";
         $emailResult = mysqli_query($conn, $checkEmailQuery);
 
         if (mysqli_num_rows($emailResult) > 0) {
             // Email exists, generate a random 7-digit password
             $new_password = mt_rand(1000000, 9999999);
 
-            // Update the user's password in the database
-            $updatePasswordQuery = "UPDATE user SET password = '$new_password' WHERE email = '$email'";
+            $updatePasswordQuery = "UPDATE employees SET password = '$new_password' WHERE email = '$email'";
             $updateResult = mysqli_query($conn, $updatePasswordQuery);
 
             if ($updateResult) {
@@ -53,7 +52,7 @@ if (isset($_POST['reset'])) {
                     $mail->send();
 
                     // Notify the user and redirect to login.php
-                    echo "<script>alert('Your new password has been sent to your email.'); window.location.href='4login.php';</script>";
+                    echo "<script>alert('Your new password has been sent to your email.'); window.location.href='7adminlogin.php';</script>";
                     exit();
                 } catch (Exception $e) {
                     echo "Mailer Error: {$mail->ErrorInfo}";

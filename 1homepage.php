@@ -22,6 +22,9 @@ $user = $_SESSION['user'];
 </head>
 
 <body>
+<div class="loading-page" id="loadingPage">
+        <img src="assets/1.png" alt="Logo" class="logo" id="logo">
+    </div>
 <div class="super_container">
 	<header class="header trans_300">
 		<div class="top_nav">
@@ -133,21 +136,21 @@ $user = $_SESSION['user'];
 				<div class="col-md-4">
 					<div class="banner_item align-items-center" style="background-image:url(assets/h.png)">
 						<div class="banner_category">
-							<a href="2hoodies.php">HOODIES</a>
+							<a href="#" class="disabled-link" style="pointer-events: none;">HOODIES</a>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="banner_item align-items-center" style="background-image:url(assets/t.png)">
 						<div class="banner_category">
-							<a href="2tees.php">TEES</a>
+							<a href="#" class="disabled-link" style="pointer-events: none;">TEES</a>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="banner_item align-items-center" style="background-image:url(assets/s.png)">
 						<div class="banner_category">
-							<a href="2shorts.php">SHORTS</a>
+							<a href="#" class="disabled-link" style="pointer-events: none;">SHORTS</a>
 						</div>
 					</div>
 				</div>
@@ -180,89 +183,88 @@ $user = $_SESSION['user'];
 			<div class="row">
 				<div class="col">
 					<div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
-						<div class="product-item tees" data-id="1001">
-							<div class="product discount product_filter">
-								<div class="product_image">
-									<img src="items/images/1001/1front.png" alt="">
-								</div>
-								<div class="favorite favorite_left"></div>
-								<div class="product_info">
-									<h6 class="product_name"><a href="items/1001.php">Brigade Clothing - Let's Get High</a></h6>
-									<div class="product_price">$520.00<span>$590.00</span></div>
-								</div>
-							</div>
-							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-						</div>
+					<div class="product-item tees" data-id="1001">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="items/images/1001/1front.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="items/1001.php">Brigade Clothing - Let's Get High</a></h6>
+                                                <div class="product_price">₱700.00<span>₱750.00</span></div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
 
-						<div class="product-item tees" data-id="1003">
-							<div class="product discount product_filter">
-								<div class="product_image">
-									<img src="items/images/1003/3front.png" alt="">
-								</div>
-								<div class="favorite favorite_left"></div>
-								<div class="product_info">
-									<h6 class="product_name"><a href="items/1003.php">Brigade Clothing - Allergic (White)</a></h6>
-									<div class="product_price">$520.00<span>$590.00</span></div>
-								</div>
-							</div>
-							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-						</div>
+                                    <div class="product-item tees" data-id="1003">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="items/images/1003/3front.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="items/1003.php">Brigade Clothing - Allergic (White)</a></h6>
+                                                <div class="product_price">₱400.00<span>₱750.00</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-						<div class="product-item shorts" data-id="1005">
-							<div class="product discount product_filter">
-								<div class="product_image">
-									<img src="items/images/1005/5front.png" alt="">
-								</div>
-								<div class="favorite favorite_left"></div>
-								<div class="product_info">
-									<h6 class="product_name"><a href="items/1005.php">Brigade Clothing - Nectar</a></h6>
-									<div class="product_price">$520.00<span>$590.00</span></div>
-								</div>
-							</div>
-							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-						</div>
+                                    <div class="product-item shorts" data-id="1005">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="items/images/1005/5front.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="items/1005.php">Brigade Clothing - Nectar</a></h6>
+                                                <div class="product_price">₱380.00<span>₱500.00</span></div>
+                                            </div>
+                                        </div>
+                        
+                                    </div>
 
-						<div class="product-item shorts" data-id="1007">
-							<div class="product discount product_filter">
-								<div class="product_image">
-									<img src="items/images/1007/7front.png" alt="">
-								</div>
-								<div class="favorite favorite_left"></div>
-								<div class="product_info">
-									<h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Sting</a></h6>
-									<div class="product_price">$520.00<span>$590.00</span></div>
-								</div>
-							</div>
-							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-						</div>
+                                    <div class="product-item shorts" data-id="1007">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="items/images/1007/7front.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Sting</a></h6>
+                                                <div class="product_price">₱300.00<span>₱500.00</span></div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
 
-						<div class="product-item hoodies" data-id="1008">
-							<div class="product discount product_filter">
-								<div class="product_image">
-									<img src="items/images/1008/8front.png" alt="">
-								</div>
-								<div class="favorite favorite_left"></div>
-								<div class="product_info">
-									<h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Daily (Longsleeve)</a></h6>
-									<div class="product_price">$520.00<span>$590.00</span></div>
-								</div>
-							</div>
-							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-						</div>
+                        <div class="product-item hoodies" data-id="1008">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="items/images/1008/8front.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="items/1007.php">Brigade Clothing - Daily (Longsleeve)</a></h6>
+                                                <div class="product_price">₱850.00<span>₱900.00</span></div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="product-item hoodies" data-id="1009">
+                                        <div class="product discount product_filter">
+                                            <div class="product_image">
+                                                <img src="items/images/1009/9front.png" alt="">
+                                            </div>
+                                            <div class="favorite favorite_left"></div>
+                                            <div class="product_info">
+                                                <h6 class="product_name"><a href="items/1009.php">Brigade Clothing - Warm Up</a></h6>
+                                                <div class="product_price">₱1500.00<span>₱1700.00</span></div>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
 
-						<div class="product-item hoodies" data-id="1009">
-							<div class="product discount product_filter">
-								<div class="product_image">
-									<img src="items/images/1009/9front.png" alt="">
-								</div>
-								<div class="favorite favorite_left"></div>
-								<div class="product_info">
-									<h6 class="product_name"><a href="items/1009.php">Brigade Clothing - Warm Up</a></h6>
-									<div class="product_price">$520.00<span>$590.00</span></div>
-								</div>
-							</div>
-							<div class="red_button add_to_cart_button"><a href="#" class="add-to-cart">add to cart</a></div>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -491,6 +493,7 @@ $user = $_SESSION['user'];
 </footer>
 
 <script>
+      
 	window.addEventListener('load', function() {
 		const loadingPage = document.getElementById('loadingPage');
 		const content = document.getElementById('content');
@@ -529,51 +532,38 @@ $user = $_SESSION['user'];
     cartCountElement.textContent = cartItems.length;
 }
 
-document.querySelectorAll('.add-to-cart').forEach(button => {
-    button.addEventListener('click', function(event) {
-        event.preventDefault();
 
-        const productItem = button.closest('.product-item');
-        const productId = productItem.getAttribute('data-id');
-        const productName = productItem.querySelector('.product_name a').textContent;
-        const productImage = productItem.querySelector('.product_image img').src;
-        const productPrice = productItem.querySelector('.product_price').textContent;
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
 
-        // Get the selected size from the sidebar
-        const selectedSize = document.querySelector('.checkboxes .active span').textContent;
+            const productItem = button.closest('.product-item');
+            const productId = productItem.getAttribute('data-id');
+            const productName = productItem.querySelector('.product_name a').textContent;
+            const productImage = productItem.querySelector('.product_image img').src;
+            const productPrice = productItem.querySelector('.product_price').textContent;
 
-        if (!selectedSize) {
-            alert("Please select a size from the sidebar.");
-            return;
-        }
+            // Check if the item is already in the cart
+            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
+            if (existingItemIndex > -1) {
+                // Increase quantity if item already exists
+                cartItems[existingItemIndex].quantity += 1;
+            } else {
+                // Add new item with default quantity of 1
+                cartItems.push({ id: productId, name: productName, image: productImage, price: productPrice, quantity: 1 });
+            }
 
-        // Check if the item is already in the cart with the selected size
-        const existingItemIndex = cartItems.findIndex(item => item.id === productId && item.size === selectedSize);
-        if (existingItemIndex > -1) {
-            // Increase quantity if item already exists
-            cartItems[existingItemIndex].quantity += 1;
-        } else {
-            // Add new item with default quantity of 1
-            cartItems.push({
-                id: productId,
-                name: productName,
-                image: productImage,
-                price: productPrice,
-                size: selectedSize,
-                quantity: 1
-            });
-        }
-
-        // Save updated cart to localStorage and update the cart display
-        localStorage.setItem(cartKey, JSON.stringify(cartItems));
-        updateCart();
-        alert(`${productName} (Size: ${selectedSize}) has been added to your cart!`);
+            // Save updated cart to localStorage and update the cart display
+            localStorage.setItem(cartKey, JSON.stringify(cartItems));
+            updateCart();
+            alert(`${productName} has been added to your cart!`);
+        });
     });
-});
 
     // Update cart count on page load
     document.addEventListener('DOMContentLoaded', updateCart);
 </script>
+
 
 <script>
     // JavaScript to make the navbar opaque when scrolling
@@ -587,10 +577,9 @@ document.querySelectorAll('.add-to-cart').forEach(button => {
         }
     });
 </script>
-
 <script>
     const items = [
-		{ img: "items/images/1001/i1.png", alt: "1", name: "Let's Get High", href: "items/1001.php" },
+ { img: "items/images/1001/i1.png", alt: "1", name: "Let's Get High", href: "items/1001.php" },
  { img: "items/images/1002/i1.png", alt: "2", name: "On The Grind", href: "items/1002.php"},
  { img: "items/images/1003/i1.png", alt: "3", name: "Allergic", href: "items/1003.php" },
  { img: "items/images/1004/i1.png", alt: "4", name: "Summer Heist", href: "items/1004.php" },

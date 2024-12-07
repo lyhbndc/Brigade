@@ -1,7 +1,34 @@
+<?php
+session_start(); 
+$user = $_SESSION['user'];
+$conn = mysqli_connect("localhost", "root", "", "brigade");
+
+$productId = isset($_GET['id']) ? $_GET['id'] : 1002;  // Default to 1001 if no ID is passed
+
+if ($productId > 0) {
+    // Fetch product details based on the product ID
+    $sql = "SELECT id, name, image, category, price, small_stock, medium_stock, large_stock, xl_stock, xxl_stock, xxxl_stock FROM products WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $productId);  // Bind the productId to the query
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $product = $result->fetch_assoc();
+        $isOutOfStock = ($product['small_stock'] == 0 && $product['medium_stock'] == 0 && $product['large_stock'] == 0 && $product['xl_stock'] == 0 && $product['xxl_stock'] == 0 && $product['xxxl_stock'] == 0);
+    } else {
+        die("Product not found.");
+    }
+} else {
+    die("Invalid product ID.");
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Brigade Clothing - On The Grind</title>
+<title><?php echo $product['name']; ?></title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,6 +41,35 @@
 <link rel="stylesheet" type="text/css" href="ins/jquery-ui-1.12.1.custom/jquery-ui.css">
 <link rel="stylesheet" type="text/css" href="ins/items.css">
 <link rel="stylesheet" type="text/css" href="ins/single_responsive.css">
+<style>
+	.add-to-cart {
+    width: 400px; /* Width of the button */
+    margin-left: 19px; /* Left margin */
+    margin-top: auto; /* Top margin for flex alignment */
+    font-size: 12px !important; /* Font size */
+    height: 50px; /* Set height for the button */
+    border-radius: 20px; /* Rounded corners */
+    background-color: black; /* Background color */
+    color: white; /* Text color */
+    border: none; /* Remove default border */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, transform 0.2s ease-in-out; /* Smooth transition for background and scaling */
+    text-align: center; /* Center the text */
+}
+
+/* Hover effect */
+.add-to-cart:hover {
+    background-color: gray; /* Change background color on hover (darker orange) */
+    transform: scale(1.05); /* Slightly enlarge the button */
+}
+
+/* Optional: Add a focus state to improve accessibility */
+.add-to-cart:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.5); /* Add a glow effect when focused */
+}
+
+	</style>
 </head>
 
 <body>
@@ -44,11 +100,11 @@
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="../1index.php"><img src="images/1.png"></a>
+							<a href="../1homepage.php"><img src="images/1.png"></a>
 						</div>
 						<nav class="navbar">
                     <ul class="navbar_menu">
-                        <li><a href="../1index.php">home</a></li>
+                        <li><a href="../1homepage.php">home</a></li>
                         <li><a href="../3shop.php">shop</a></li>
                         <li><a href="../3new.php">new</a></li>
                         
@@ -66,15 +122,20 @@
                         
                         <!-- User Dropdown -->
                         <li class="dropdown">
-                            <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-								<a class="dropdown-item" href="../4myacc.php">Account</a>
-								<a class="dropdown-item" href="../4recentorders.php">Recent Orders</a>
-								<a class="dropdown-item" href="../logout.php">Logout</a>
-                            </div>
-                        </li>
+									<a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-user" aria-hidden="true"></i>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+										<?php if ($user): ?>
+											<a class="dropdown-item" href="../4myacc.php">Account</a>
+											<a class="dropdown-item" href="../4recentorders.php">Recent Orders</a>
+											<a class="dropdown-item" href="../logout.php">Logout</a>
+										<?php else: ?>
+											<a class="dropdown-item" href="../4login.php">Sign In</a>
+											<a class="dropdown-item" href="../7adminlogin.php">Admin</a>
+										<?php endif; ?>
+									</div>
+								</li>
                         
                         <li class="checkout">
                             <a href="../3cart.php">
@@ -126,9 +187,9 @@
 
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
-						<li><a href="../1index.php">Home</a></li>
-						<li><a href="../2tees.php"><i class="fa fa-angle-right" aria-hidden="true"></i>Tees</a></li>
-						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>On The Grind</a></li>
+						<li><a href="../1homepage.php">Home</a></li>
+						<li><a href="../2tees.php"><i class="fa fa-angle-right" aria-hidden="true"></i><?php echo $product['category']; ?></a></li>
+						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><?php echo $product['name']; ?> </a></li>
 					</ul>
 				</div>
 
@@ -158,21 +219,22 @@
 			<div class="col-lg-5">
 				<div class="product_details">
 					<div class="product_details_title">
-						<h2>BRIGADE CLOTHING - On The Grind</h2>
+					<h2><?php echo $product['name']; ?></h2>
 						<p>The Brigade Clothing offers the perfect blend of comfort, style, and bold expression. Designed as a unisex basic T-shirt, this versatile piece is available in sizes ranging from S to XXL, ensuring a fit for everyone. Whether you're lounging or out with friends, this shirt adds an effortlessly cool vibe to your wardrobe.</p>
 					</div>
 					<div class="original_price">₱750.00</div>
-					<div class="product_price">₱650.00</div>
+					<p class="product_price"><?php echo '₱' . $product['price']; ?></p>
 					<div class="product_size">
 						<br>
 						<span>Select Size:</span>
 						<div class="size-options">
-							<div class="size-option" data-size="s">Small</div>
-							<div class="size-option" data-size="m">Medium</div>
-							<div class="size-option" data-size="l">Large</div>
-							<div class="size-option" data-size="xl">XL</div>
-							<div class="size-option" data-size="2xl">2XL</div>
-						</div>
+        <button class="size-option" data-size="small">Small</button>
+        <button class="size-option" data-size="medium">Medium</button>
+        <button class="size-option" data-size="large">Large</button>
+        <button class="size-option" data-size="xl">XL</button>
+        <button class="size-option" data-size="xxl">XXL</button>
+        <button class="size-option" data-size="xxxl">XXXL</button>
+    </div>
 					</div>
 					<div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
 						<span>Quantity:</span>
@@ -184,7 +246,12 @@
 						<div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
 					</div>
 				</div><br>
-				<div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
+				<?php if ($isOutOfStock): ?>
+        <button class="add-to-cart" disabled>Out of Stock</button>
+    <?php else: ?>
+        <button class="add-to-cart" data-id="<?php echo $product['id']; ?>">Add to Cart</button>
+    <?php endif; ?>
+</div>
 			</div>
 		</div>
 		</div>
@@ -318,7 +385,7 @@
 			<div class="col-sm-6 col-lg-3 p-b-50">
 				<br>
 				<h4 class="stext-301 cl0 p-b-30">
-					<a href="../1index.php"><img src="images/Untitled design.png" class="footer-logo"></a>
+					<a href="../1homepage.php"><img src="images/Untitled design.png" class="footer-logo"></a>
 				</h4>
 				<p class="stext-107 cl7 size-201">
 					Any questions? Let us know in store at Brigade Clothing, Brgy. Sta Ana, Taytay, Rizal.
@@ -337,7 +404,7 @@
 				<br>
 				<h7 class="stext-301 cl0 p-b-30" style="font-size: 22px; font-weight: 600;">Main Menu</h7>
 				<ul>
-					<li class="p-b-10"><a href="../1index.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
+					<li class="p-b-10"><a href="../1homepage.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Home</a></li>
 					<li class="p-b-10"><a href="../3shop.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">Shop</a></li>
 					<li class="p-b-10"><a href="../3new.php" class="stext-107 cl7 footer-link hov-cl1 trans-04">New</a></li>
 				</ul>
@@ -372,45 +439,55 @@
 <script src="ins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 <script src="ins/single_custom.js"></script>
 <script>
-    // Initialize the cart items from localStorage
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`;
+    let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
 
-    // Function to update the cart count in the header
-    function updateCartCount() {
+    // Update cart item count
+    function updateCart() {
         const cartCountElement = document.getElementById('checkout_items');
-        cartCountElement.textContent = cartItems.reduce((total, item) => total + item.quantity, 0);
+        if (cartCountElement) {
+            cartCountElement.textContent = cartItems.length;
+        }
     }
 
-    // Add event listener to "Add to Cart" button
-    document.querySelector('.add_to_cart_button a').addEventListener('click', function(event) {
-        event.preventDefault();
+    // Add to Cart Logic
+	document.querySelector('.add-to-cart').addEventListener('click', function(event) {
+    const productId = event.target.getAttribute('data-id');
+    const productName = document.querySelector('h2').textContent; // Product name from the page
+    const productPrice = document.querySelector('.product-price').textContent; // Product price
 
-        // Product details
-        const productId = "1";  // This could be dynamically set based on your product data
-        const productName = document.querySelector('.product_details_title h2').textContent;
-        const productPrice = document.querySelector('.product_price').textContent.trim();
-        const productImage = document.querySelector('.single_product_image_background').style.backgroundImage.replace(/url\(["']?(.+?)["']?\)/, '$1');
-        const quantity = parseInt(document.getElementById('quantity_value').textContent);
+    // Check if the product is already in the cart
+    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
-        // Check if the item is already in the cart
-        const existingItemIndex = cartItems.findIndex(item => item.id === productId);
-        if (existingItemIndex > -1) {
-            // Increase quantity if item exists
-            cartItems[existingItemIndex].quantity += quantity;
-        } else {
-            // Add new item
-            cartItems.push({ id: productId, name: productName, price: productPrice, image: productImage, quantity });
-        }
+    const existingItemIndex = cartItems.findIndex(item => item.id === productId);
 
-        // Update localStorage and cart count
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-        updateCartCount();
-        alert(`${productName} has been added to your cart!`);
+    if (existingItemIndex > -1) {
+        cartItems[existingItemIndex].quantity += 1;
+    } else {
+        cartItems.push({
+            id: productId,
+            name: productName,
+            price: productPrice,
+            quantity: 1
+        });
+    }
+
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    alert(`${productName} has been added to your cart!`);
     });
 
-    // Update cart count on page load
-    document.addEventListener('DOMContentLoaded', updateCartCount);
+    // Update the size selection when clicked
+    document.querySelectorAll('.size-option').forEach(function(button) {
+        button.addEventListener('click', function() {
+            document.querySelectorAll('.size-option').forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+            button.classList.add('active');
+        });
+    });
 </script>
+
+
 <script>
     // JavaScript to make the navbar opaque when scrolling
     window.addEventListener('scroll', function() {
@@ -426,7 +503,7 @@
 
 <script>
     const items = [
-		{ img: "images/1001/i1.png", alt: "1", name: "Let's Get High", href: "1001.php" },
+ { img: "images/1001/i1.png", alt: "1", name: "Let's Get High", href: "1001.php" },
  { img: "images/1002/i1.png", alt: "2", name: "On The Grind", href: "1002.php"},
  { img: "images/1003/i1.png", alt: "3", name: "Allergic", href: "1003.php" },
  { img: "images/1004/i1.png", alt: "4", name: "Summer Heist", href: "1004.php" },

@@ -53,8 +53,8 @@ if (isset($_POST['next'])) {
                 $mail->isSMTP();
                 $mail->Host = 'smtp.mailersend.net'; // Update this with your SMTP server
                 $mail->SMTPAuth = true;
-                $mail->Username = 'MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net'; // SMTP username
-                $mail->Password = 'fAtQJCLJh8TX4VSX'; // SMTP password
+                $mail->Username = 'MS_OdjHf8@trial-ynrw7gyzodj42k8e.mlsender.net'; // SMTP username
+                $mail->Password = 'Mpu7PVUePFM7PSiB'; // SMTP password
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
@@ -62,7 +62,7 @@ if (isset($_POST['next'])) {
                 $mail->Debugoutput = 'html'; // Output debug information in HTML format
                 
                 // Recipients
-                $mail->setFrom('MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net', 'Brigade');
+                $mail->setFrom('MS_OdjHf8@trial-ynrw7gyzodj42k8e.mlsender.net', 'Brigade');
                 $mail->addAddress($email);
 
                 

@@ -10,111 +10,51 @@ $user = $_SESSION['user'];
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
+    <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <title>Captcha Generator</title>
-    <link rel="stylesheet" href="style.css" />
-    <!-- Fontawesome CDN Link -->
+    <link rel="stylesheet" href="styles/captcha.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-    <style>
-        /* Import Google font - Poppins */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-body {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #826afb;
-}
-.container {
-  position: relative;
-  max-width: 300px;
-  width: 100%;
-  border-radius: 12px;
-  padding: 15px 25px 25px;
-  background: #fff;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
-header {
-  color: #333;
-  margin-bottom: 20px;
-  font-size: 18px;
-  font-weight: 600;
-  text-align: center;
-}
-.input_field {
-  position: relative;
-  height: 45px;
-  margin-top: 15px;
-  width: 100%;
-}
-.refresh_button {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  background: #826afb;
-  height: 30px;
-  width: 30px;
-  border: none;
-  border-radius: 4px;
-  color: #fff;
-  cursor: pointer;
-}
-.refresh_button:active {
-  transform: translateY(-50%) scale(0.98);
-}
-.input_field input,
-.button button {
-  height: 100%;
-  width: 100%;
-  outline: none;
-  border: none;
-  border-radius: 8px;
-}
-.input_field input {
-  padding: 0 15px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-.captch_box input {
-  color: #6b6b6b;
-  font-size: 22px;
-  pointer-events: none;
-}
-.captch_input input:focus {
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
-}
-.message {
-  font-size: 14px;
-  margin: 14px 0;
-  color: #826afb;
-  display: none;
-}
-.message.active {
-  display: block;
-}
-.button button {
-  background: #826afb;
-  color: #fff;
-  cursor: pointer;
-  user-select: none;
-}
-.button button:active {
-  transform: scale(0.99);
-}
-.button.disabled {
-  opacity: 0.6;
-  pointer-events: none;
-}
-    </style>
   </head>
 
   <body>
-    <div class="container">
+  <div class="super_container">
+
+<header class="header trans_300">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                <div class="top_nav_left">
+
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <!-- Main Navigation -->
+            <div class="main_nav_container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 text-right">
+                            <div class="logo_container">
+                                <a href="1homepage.php"><img src="assets/1.png"></a>
+                            </div>
+                            <nav class="navbar">
+                                
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="fs_menu_overlay"></div>
+        <div class="container single_product_container">
+            <div class="row">
+                <div class="col">
+    <div class="capcontainer">
       <header>Captcha Generator</header>
       <div class="input_field captch_box">
         <input type="text" value="" disabled />

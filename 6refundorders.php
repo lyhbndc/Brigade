@@ -1,12 +1,68 @@
 <?php
 session_start();
+// Include PHPMailer
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'vendor/autoload.php';  // Adjust path as needed for autoload
 
 $conn = mysqli_connect("localhost", "root", "", "brigade");
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
-$sql = "SELECT OrderID, Product, Quantity, Status, Total, Date FROM refund_order WHERE Status = 'Order Refunded'";
+$sql = "SELECT OrderID, Product, Quantity, Status, Total, Date, Email FROM refund_order WHERE Status IN ('Refunded', 'Order Refunded')";
+
 $result = $conn->query($sql);
+
+if (isset($_POST['refund'])) {
+    $orderId = $_POST['order_id'];
+    $refundAmount = $_POST['refund_amount'];
+    $userEmail = $_POST['user_email'];
+
+    // Process the refund (you would integrate PayMongo API or your logic here)
+    // Refund logic here (use PayMongo API or your refund process)
+
+    // Update the database to mark the order as refunded
+    $updateQuery = "UPDATE refund_order SET Status = 'Order Refunded' WHERE OrderID = '$orderId'";
+    if (mysqli_query($conn, $updateQuery)) {
+        // Send refund email to the user
+        sendRefundEmail($userEmail, $refundAmount);
+        echo "Refund processed successfully and email sent.";
+    } else {
+        echo "Error processing refund: " . mysqli_error($conn);
+    }
+}
+
+function sendRefundEmail($userEmail, $refundAmount) {
+
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.mailersend.net'; // Update this with your SMTP server
+        $mail->SMTPAuth = true;
+        $mail->Username = 'MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net'; // SMTP username
+        $mail->Password = 'fAtQJCLJh8TX4VSX'; // SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        // Disable debug output (set to 0 to suppress all debug information)
+        $mail->SMTPDebug = 0; // Debug levels: 0 = off, 1 = client messages, 2 = client and server messages
+        $mail->Debugoutput = 'html'; // Output debug information in HTML format (if needed)
+
+        // Recipients
+        $mail->setFrom('MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net', 'Brigade');
+        $mail->addAddress($userEmail); // Customer's email address
+
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = "Refund Processed Successfully";
+        $mail->Body    = "Your refund of $refundAmount has been successfully processed.";
+
+        $mail->send();
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
+}
 
 $conn->close();
 ?>
@@ -39,37 +95,61 @@ $conn->close();
     </div>
 
     <table class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Status</th>
-                <th>Total</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . htmlspecialchars($row['OrderID']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['Product']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['Quantity']) . "</td>";
-                    echo "<td><span class='badge badge-success'>" . htmlspecialchars($row['Status']) . "</span></td>";
-                    echo "<td>" . htmlspecialchars($row['Total']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['Date']) . "</td>";
-                    echo "</tr>";
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th>Date</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                // Determine if the button should be disabled
+                $isRefunded = ($row['Status'] === 'Refunded');
+                $isDoneRefunded = ($row['Status'] === 'Order Refunded');
+                
+                // Set the status badge color based on order status
+                if ($isRefunded) {
+                    $statusBadgeClass = 'badge-warning'; // Yellow (similar to refund button)
+                } elseif ($isDoneRefunded) {
+                    $statusBadgeClass = 'badge-success'; // Green (Completed)
+                } else {
+                    $statusBadgeClass = 'badge-primary'; // Default badge color
                 }
-            } else {
-                echo "<tr><td colspan='7'>No Refund orders found.</td></tr>";
+                
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($row['OrderID']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['Product']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['Quantity']) . "</td>";
+                echo "<td><span class='badge $statusBadgeClass'>" . htmlspecialchars($row['Status']) . "</span></td>";
+                echo "<td>" . htmlspecialchars($row['Total']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['Date']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['Email']) . "</td>";
+                echo "<td>
+                        <form method='POST'>
+                            <input type='hidden' name='order_id' value='" . $row['OrderID'] . "' />
+                            <input type='hidden' name='refund_amount' value='" . $row['Total'] . "' />
+                            <input type='hidden' name='user_email' value='" . $row['Email'] . "' />
+                            <button type='submit' name='refund' class='btn btn-warning btn-sm' " . ($isDoneRefunded ? 'disabled' : '') . ">Refund</button>
+                        </form>
+                      </td>";
+                echo "</tr>";
             }
-            ?>
-        </tbody>
-    </table>
-   
-    </div>
+        } else {
+            echo "<tr><td colspan='8'>No Refund orders found.</td></tr>";
+        }
+        ?>
+    </tbody>
+</table>
+
+</div>
 
 
 <!-- JavaScript for Sidebar Toggle -->
