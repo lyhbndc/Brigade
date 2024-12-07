@@ -123,11 +123,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $quantity = mysqli_real_escape_string($conn, $orderDetails['Quantity']);
             $total = mysqli_real_escape_string($conn, $orderDetails['Total']);
             $date = mysqli_real_escape_string($conn, $orderDetails['Date']);
+            $email = mysqli_real_escape_string($conn, $orderDetails['Email']);
 
             // Insert refunded order into the `refund_order` table
             $insertQuery = "
-                INSERT INTO `refund_order` (OrderID, Customer, Product, Quantity, Status, Total, Date)
-                VALUES ('$orderId', '$fullname', '$product', '$quantity', 'Order Refunded', '$total', '$date')
+                INSERT INTO `refund_order` (OrderID, Customer, Product, Quantity, Status, Total, Date, Email)
+                VALUES ('$orderId', '$fullname', '$product', '$quantity', 'Refunded', '$total', '$date', '$email')
             ";
             if (mysqli_query($conn, $insertQuery)) {
                 echo "Order #$orderId Return!`.";
@@ -185,11 +186,11 @@ mysqli_close($conn);
                     <div class="row">
                         <div class="col-lg-12 text-right">
                             <div class="logo_container">
-                                <a href="1homepage.php.php"><img src="assets/1.png"></a>
+                                <a href="1homepage.php"><img src="assets/1.png"></a>
                             </div>
                             <nav class="navbar">
                                 <ul class="navbar_menu">
-                                    <li><a href="1homepage.php.php">home</a></li>
+                                    <li><a href="1homepage.php">home</a></li>
                                     <li><a href="3shop.php">shop</a></li>
                                     <li><a href="3new.php">new</a></li>
                                     
