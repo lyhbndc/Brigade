@@ -13,6 +13,7 @@ $user = $_SESSION['user'];
     <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <title>Captcha Generator</title>
+    <link rel="icon" type="image/png" href="BRIGADE_Icon.png">
     <link rel="stylesheet" href="styles/captcha.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
   </head>

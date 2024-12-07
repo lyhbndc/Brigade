@@ -45,6 +45,7 @@ mysqli_close($conn);
 <html lang="en">
 <head>
     <title>Brigade Clothing</title>
+    <link rel="icon" type="image/png" href="BRIGADE_Icon.png">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -238,7 +239,7 @@ mysqli_close($conn);
                             
                             <input type="submit" name="login" value="Login">
                             <div class="forgot-password">
-                                <a href="7forgotpass.php">Forgot Password?</a>
+                                <a href="7forgotpassadmin.php">Forgot Password?</a>
                             </div>
                             <br>
                             <?php if (!empty($error_message)): ?>
