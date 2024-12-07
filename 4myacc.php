@@ -79,25 +79,30 @@ if (isset($_POST['change_password'])) {
 
         // Verify if current password matches the stored one
         if ($current_password === $stored_password) {
-            // Check if new password matches confirm password
-            if ($new_password === $confirm_password) {
-                // Password validation check (minimum 8 characters, at least 1 uppercase, 1 number, 1 special character)
-                if (preg_match('/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', $new_password)) {
-                    // Update the password in the database (no hashing)
-                    $updatePasswordQuery = "UPDATE user SET Password = '$new_password' WHERE Username = '$user'";
+            // Check if the new password is the same as the current password
+            if ($new_password === $stored_password) {
+                echo "New password cannot be the same as the current password.";
+            } else {
+                // Check if new password matches confirm password
+                if ($new_password === $confirm_password) {
+                    // Password validation check (minimum 8 characters, at least 1 uppercase, 1 number, 1 special character)
+                    if (preg_match('/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', $new_password)) {
+                        // Update the password in the database (no hashing)
+                        $updatePasswordQuery = "UPDATE user SET Password = '$new_password' WHERE Username = '$user'";
 
-                    if (mysqli_query($conn, $updatePasswordQuery)) {
-                        echo "Password updated successfully!";
-                        header("Location: 4myacc.php"); // Redirect to the account page after success
-                        exit();
+                        if (mysqli_query($conn, $updatePasswordQuery)) {
+                            echo "Password updated successfully!";
+                            header("Location: 4myacc.php"); // Redirect to the account page after success
+                            exit();
+                        } else {
+                            echo "Error updating password: " . mysqli_error($conn);
+                        }
                     } else {
-                        echo "Error updating password: " . mysqli_error($conn);
+                        echo "New password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character.";
                     }
                 } else {
-                    echo "New password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character.";
+                    echo "New password and confirm password do not match.";
                 }
-            } else {
-                echo "New password and confirm password do not match.";
             }
         } else {
             echo "Current password is incorrect.";
@@ -460,23 +465,25 @@ document.querySelectorAll('.action-button').forEach(button => {
     }
 
     function validatePassword() {
-        const new_password = document.getElementById("new_password").value; 
-        const confirm_password = document.getElementById("confirm_password").value; 
+    const new_password = document.getElementById("new_password").value; 
+    const confirm_password = document.getElementById("confirm_password").value; 
 
-        // Conditions for password validation
-        const lengthCondition = new_password.length >= 8;
-        const uppercaseCondition = /[A-Z]/.test(new_password);
-        const numberCondition = /\d/.test(new_password);
-        const specialCharCondition = /[!@#$%^&*(),.?":{}|<>]/.test(new_password);
-        const matchCondition = new_password === confirm_password; 
+    const lengthCondition = new_password.length >= 8;
+    const uppercaseCondition = /[A-Z]/.test(new_password);
+    const numberCondition = /\d/.test(new_password);
+    const specialCharCondition = /[!@#$%^&*(),.?":{}|<>]/.test(new_password);
+    const matchCondition = new_password === confirm_password; 
 
-        // Change colors based on the validation result (green for valid, red for invalid)
-        document.getElementById("lengthCondition").style.color = lengthCondition ? "green" : "red";
-        document.getElementById("uppercaseCondition").style.color = uppercaseCondition ? "green" : "red";
-        document.getElementById("numberCondition").style.color = numberCondition ? "green" : "red";
-        document.getElementById("specialCharCondition").style.color = specialCharCondition ? "green" : "red";
-        document.getElementById("matchCondition").style.color = matchCondition ? "green" : "red";
-    }
+    document.getElementById("lengthCondition").style.color = lengthCondition ? "green" : "red";
+    document.getElementById("uppercaseCondition").style.color = uppercaseCondition ? "green" : "red";
+    document.getElementById("numberCondition").style.color = numberCondition ? "green" : "red";
+    document.getElementById("specialCharCondition").style.color = specialCharCondition ? "green" : "red";
+    document.getElementById("matchCondition").style.color = matchCondition ? "green" : "red";
+
+    // Enable the button only if all conditions are met
+    document.querySelector("[name='change_password']").disabled = 
+        !(lengthCondition && uppercaseCondition && numberCondition && specialCharCondition && matchCondition);
+}
 
     function cancelEdit() {
         // Hide the edit form and show the account details again
