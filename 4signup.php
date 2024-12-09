@@ -59,7 +59,7 @@ if (isset($_POST['next'])) {
 
                 // Recipients
                 $mail->setFrom('MS_prz199@trial-z86org809xe4ew13.mlsender.net', 'Brigade');
-                $mail->addAddress($userEmail);
+                $mail->addAddress($email);
                 
                 // Content
                 $mail->isHTML(true);

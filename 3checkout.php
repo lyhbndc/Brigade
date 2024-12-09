@@ -27,8 +27,8 @@ if ($result && mysqli_num_rows($result) > 0) {
 }
 
 // Define PayMongo API Keys
-define('PAYMONGO_PUBLIC_KEY', 'pk_test_KdaM7qBivCT1yP1QmVvjTfCB');
-define('PAYMONGO_SECRET_KEY', 'sk_test_2s7FBobkTc3Fw2unrueQtiQd');
+define('PAYMONGO_PUBLIC_KEY', 'pk_test_UsLyhegapwyxQhwGyzsbWGAK');
+define('PAYMONGO_SECRET_KEY', 'sk_test_Vxq5H26htSPMCKq5AR54tg1J');
 
 // Function to create PayMongo Payment Link
 function createPaymentLink($amount, $description, $email) {

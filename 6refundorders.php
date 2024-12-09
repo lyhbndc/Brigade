@@ -44,9 +44,13 @@ function sendRefundEmail($userEmail, $refundAmount) {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
+        // Disable debug output (set to 0 to suppress all debug information)
+        $mail->SMTPDebug = 0; // Debug levels: 0 = off, 1 = client messages, 2 = client and server messages
+        $mail->Debugoutput = 'html'; // Output debug information in HTML format (if needed)
+
         // Recipients
         $mail->setFrom('MS_prz199@trial-z86org809xe4ew13.mlsender.net', 'Brigade');
-        $mail->addAddress($userEmail);
+        $mail->addAddress($userEmail); // Customer's email address
 
         // Content
         $mail->isHTML(true);

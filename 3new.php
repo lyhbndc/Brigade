@@ -130,7 +130,7 @@ $result = $conn->query($sql);
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
 						<li><a href="1homepage.php">Home</a></li>
-						<li class="active"><a href="3new.php"><i class="fa fa-angle-right" aria-hidden="true"></i>Shop</a></li>
+						<li class="active"><a href="3new.php"><i class="fa fa-angle-right" aria-hidden="true"></i>New</a></li>
 					</ul>
 				</div>
 

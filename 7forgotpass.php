@@ -33,17 +33,17 @@ if (isset($_POST['reset'])) {
                 // Send the new password to the user's email using PHPMailer
                 $mail = new PHPMailer(true);
                 try {
-                    $mail->isSMTP();
-                    $mail->Host = 'smtp.mailersend.net'; // Update this with your SMTP server
-                    $mail->SMTPAuth = true;
-                    $mail->Username = 'MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net'; // SMTP username
-                    $mail->Password = 'fAtQJCLJh8TX4VSX'; // SMTP password
-                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                    $mail->Port = 587;
+                $mail->isSMTP();
+                $mail->Host = 'smtp.mailersend.net'; // Update this with your SMTP server
+                $mail->SMTPAuth = true;
+                $mail->Username = 'MS_prz199@trial-z86org809xe4ew13.mlsender.net'; // SMTP username
+                $mail->Password = 'pBJDLIoqkZPGQG1K'; // SMTP password
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
 
-                    // Recipients
-                    $mail->setFrom('MS_QkjTfQ@trial-pq3enl6w3n042vwr.mlsender.net', 'Brigade');
-                    $mail->addAddress($email);
+                // Recipients
+                $mail->setFrom('MS_prz199@trial-z86org809xe4ew13.mlsender.net', 'Brigade');
+                $mail->addAddress($email);
 
                     // Content
                     $mail->isHTML(true);
