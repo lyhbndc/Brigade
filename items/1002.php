@@ -24,7 +24,6 @@ if ($productId > 0) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,197 +68,197 @@ if ($productId > 0) {
     box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.5); /* Add a glow effect when focused */
 }
 
-	</style>
+</style>
 </head>
 
 <body>
-
-<div class="super_container">
-        <header class="header trans_300">
-            <!-- Top Navigation -->
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="top_nav_left">
-                                <div class="marquee">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 text-right">
-                            <div class="top_nav_right">
-                               
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-		<!-- Main Navigation -->
-
-		<div class="main_nav_container">
+	<div class="super_container">
+		<header class="header trans_300">
+			<!-- Top Navigation -->
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-12 text-right">
-						<div class="logo_container">
-							<a href="../1homepage.php"><img src="images/1.png"></a>
+					<div class="col-md-12">
+						<div class="top_nav_left">
+							<div class="marquee">
+							</div>
 						</div>
-						<nav class="navbar">
-                    <ul class="navbar_menu">
-                        <li><a href="../1homepage.php">home</a></li>
-                        <li><a href="../3shop.php">shop</a></li>
-                        <li><a href="../3new.php">new</a></li>
-                        
-                    </ul>
-                    <ul class="navbar_user">
-					<li class="dropdown">
-    <a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </a>
-    <div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
-        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
-        <ul id="nameList" class="name-list"></ul>
-    </div>
-</li>
-                        
-                        <!-- User Dropdown -->
-                        <li class="dropdown">
-									<a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<i class="fa fa-user" aria-hidden="true"></i>
-									</a>
-									<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-										<?php if ($user): ?>
-											<a class="dropdown-item" href="../4myacc.php">Account</a>
-											<a class="dropdown-item" href="../4recentorders.php">Recent Orders</a>
-											<a class="dropdown-item" href="../logout.php">Logout</a>
-										<?php else: ?>
-											<a class="dropdown-item" href="../4login.php">Sign In</a>
-											<a class="dropdown-item" href="../7adminlogin.php">Admin</a>
-										<?php endif; ?>
-									</div>
-								</li>
-                        
-                        <li class="checkout">
-                            <a href="../3cart.php">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                <span id="checkout_items" class="checkout_items">0</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="hamburger_container">
-                        <i class="fa fa-bars" aria-hidden="true"></i>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
-	</header>
+					</div>
+					<div class="col-md-12 text-right">
+						<div class="top_nav_right">
+						</div>
+					</div>
+				</div>
+			</div>
 
-	<div class="fs_menu_overlay"></div>
+			<!-- Main Navigation -->
 
-	<!-- Hamburger Menu -->
+			<div class="main_nav_container">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12 text-right">
+							<div class="logo_container">
+								<a href="../1homepage.php"><img src="images/1.png"></a>
+							</div>
+							<nav class="navbar">
+								<ul class="navbar_menu">
+									<li><a href="../1homepage.php">home</a></li>
+									<li><a href="../3shop.php">shop</a></li>
+									<li><a href="../3new.php">new</a></li>
+									
+								</ul>
+								<ul class="navbar_user">
+									<li class="dropdown">
+										<a href="#" id="searchDropdown" role="button" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
+											<i class="fa fa-search" aria-hidden="true"></i>
+										</a>
+										<div class="dropdown-menu search-dropdown" id="searchDropdownMenu" style="display: none;">
+											<input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="filterNames()">
+											<ul id="nameList" class="name-list"></ul>
+										</div>
+									</li>
+								
+									<!-- User Dropdown -->
+									<li class="dropdown">
+												<a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													<i class="fa fa-user" aria-hidden="true"></i>
+												</a>
+												<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+													<?php if ($user): ?>
+														<a class="dropdown-item" href="../4myacc.php">Account</a>
+														<a class="dropdown-item" href="../4recentorders.php">Recent Orders</a>
+														<a class="dropdown-item" href="../logout.php">Logout</a>
+													<?php else: ?>
+														<a class="dropdown-item" href="../4login.php">Sign In</a>
+														<a class="dropdown-item" href="../7adminlogin.php">Admin</a>
+													<?php endif; ?>
+												</div>
+											</li>
+									
+									<li class="checkout">
+										<a href="../3cart.php">
+											<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+											<span id="checkout_items" class="checkout_items">0</span>
+										</a>
+									</li>
+								</ul>
+								<div class="hamburger_container">
+									<i class="fa fa-bars" aria-hidden="true"></i>
+								</div>
+							</nav>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
 
-	<div class="hamburger_menu">
-		<div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
-		<div class="hamburger_menu_content text-right">
-			<ul class="menu_top_nav">
-				<li class="menu_item has-children">
-					<a href="#">
-						My Account
-						<i class="fa fa-angle-down"></i>
-					</a>
-					<ul class="menu_selection">
-						<li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-						<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+		<div class="fs_menu_overlay"></div>
+
+		<!-- Hamburger Menu -->
+
+		<div class="hamburger_menu">
+			<div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
+				<div class="hamburger_menu_content text-right">
+					<ul class="menu_top_nav">
+						<li class="menu_item has-children">
+							<a href="#">
+								My Account
+								<i class="fa fa-angle-down"></i>
+							</a>
+							<ul class="menu_selection">
+								<li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+								<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+							</ul>
+						</li>
+						<li class="menu_item"><a href="#">home</a></li>
+						<li class="menu_item"><a href="#">shop</a></li>
+						<li class="menu_item"><a href="#">new</a></li>
+						<li class="menu_item"><a href="#">on sale</a></li>
 					</ul>
-				</li>
-				<li class="menu_item"><a href="#">home</a></li>
-				<li class="menu_item"><a href="#">shop</a></li>
-				<li class="menu_item"><a href="#">new</a></li>
-				<li class="menu_item"><a href="#">on sale</a></li>
-			</ul>
+				</div>
+			</div>
+			<div class="container single_product_container">
+				<div class="row">
+					<div class="col">
+
+						<!-- Breadcrumbs -->
+
+						<div class="breadcrumbs d-flex flex-row align-items-center">
+							<ul>
+								<li><a href="../1homepage.php">Home</a></li>
+								<li><a href="../2tees.php"><i class="fa fa-angle-right" aria-hidden="true"></i><?php echo $product['category']; ?></a></li>
+								<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><?php echo $product['name']; ?> </a></li>
+							</ul>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-7">
+						<div class="single_product_pics">
+							<div class="row">
+								<div class="col-lg-3 thumbnails_col order-lg-1 order-2">
+									<div class="single_product_thumbnails">
+										<ul>
+											<li class="active"><img src="images\1002\t1.png" alt="" data-image="images/1002/1.png"></li>
+											<li ><img src="images\1002\t2.png" alt="" data-image="images/1002/2.png"></li>
+										</ul>
+									</div>
+								</div>
+								<div class="col-lg-9 image_col order-lg-2 order-1">
+									<div class="single_product_image">
+										<div class="single_product_image_background" style="background-image:url(images/1002/1.png)"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-5">
+						<div class="product_details">
+							<div class="product_details_title">
+							<h2><?php echo $product['name']; ?></h2>
+								<p>The Brigade Clothing offers the perfect blend of comfort, style, and bold expression. Designed as a unisex basic T-shirt, this versatile piece is available in sizes ranging from S to XXL, ensuring a fit for everyone. Whether you're lounging or out with friends, this shirt adds an effortlessly cool vibe to your wardrobe.</p>
+							</div>
+							<div class="original_price">₱750.00</div>
+							<p class="product_price"><?php echo '₱' . $product['price']; ?></p>
+							<div class="product_size">
+								<br>
+								<span>Select Size:</span>
+								<div class="size-options">
+									<button class="size-option" data-size="small">Small</button>
+									<button class="size-option" data-size="medium">Medium</button>
+									<button class="size-option" data-size="large">Large</button>
+									<button class="size-option" data-size="xl">XL</button>
+									<button class="size-option" data-size="xxl">XXL</button>
+									<button class="size-option" data-size="xxxl">XXXL</button>
+								</div>
+							</div>
+							<div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
+								<span>Quantity:</span>
+								<div class="quantity_selector">
+									<span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
+									<span id="quantity_value">1</span>
+									<span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
+								</div>
+							<div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
+						</div>
+					</div><br>
+					<?php if ($isOutOfStock): ?>
+						<button class="add-to-cart" disabled>Out of Stock</button>
+					<?php else: ?>
+						<button 
+							class="add-to-cart" 
+							data-id="<?php echo $product['id']; ?>" 
+							data-image="<?php echo 'http://localhost/Brigade/uploads/' . $product['image']; ?>">Add to Cart</button>
+					<?php endif; ?>
+				</div>
+			</div>
 		</div>
 	</div>
-	<div class="container single_product_container">
-		<div class="row">
-			<div class="col">
-
-				<!-- Breadcrumbs -->
-
-				<div class="breadcrumbs d-flex flex-row align-items-center">
-					<ul>
-						<li><a href="../1homepage.php">Home</a></li>
-						<li><a href="../2tees.php"><i class="fa fa-angle-right" aria-hidden="true"></i><?php echo $product['category']; ?></a></li>
-						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><?php echo $product['name']; ?> </a></li>
-					</ul>
-				</div>
-
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-lg-7">
-				<div class="single_product_pics">
-					<div class="row">
-						<div class="col-lg-3 thumbnails_col order-lg-1 order-2">
-							<div class="single_product_thumbnails">
-								<ul>
-									<li class="active"><img src="images\1002\t1.png" alt="" data-image="images/1002/1.png"></li>
-									<li ><img src="images\1002\t2.png" alt="" data-image="images/1002/2.png"></li>
-								</ul>
-							</div>
-						</div>
-						<div class="col-lg-9 image_col order-lg-2 order-1">
-							<div class="single_product_image">
-								<div class="single_product_image_background" style="background-image:url(images/1002/1.png)"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-5">
-				<div class="product_details">
-					<div class="product_details_title">
-					<h2><?php echo $product['name']; ?></h2>
-						<p>The Brigade Clothing offers the perfect blend of comfort, style, and bold expression. Designed as a unisex basic T-shirt, this versatile piece is available in sizes ranging from S to XXL, ensuring a fit for everyone. Whether you're lounging or out with friends, this shirt adds an effortlessly cool vibe to your wardrobe.</p>
-					</div>
-					<div class="original_price">₱750.00</div>
-					<p class="product_price"><?php echo '₱' . $product['price']; ?></p>
-					<div class="product_size">
-						<br>
-						<span>Select Size:</span>
-						<div class="size-options">
-        <button class="size-option" data-size="small">Small</button>
-        <button class="size-option" data-size="medium">Medium</button>
-        <button class="size-option" data-size="large">Large</button>
-        <button class="size-option" data-size="xl">XL</button>
-        <button class="size-option" data-size="xxl">XXL</button>
-        <button class="size-option" data-size="xxxl">XXXL</button>
-    </div>
-					</div>
-					<div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
-						<span>Quantity:</span>
-						<div class="quantity_selector">
-							<span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
-							<span id="quantity_value">1</span>
-							<span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
-						</div>
-						<div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
-					</div>
-				</div><br>
-				<?php if ($isOutOfStock): ?>
-        <button class="add-to-cart" disabled>Out of Stock</button>
-    <?php else: ?>
-        <button class="add-to-cart" data-id="<?php echo $product['id']; ?>">Add to Cart</button>
-    <?php endif; ?>
-</div>
-			</div>
-		</div>
-		</div>
 
 	<!-- Tabs -->
 
 	<div class="tabs_section_container">
-
 		<div class="container">
 			<div class="row">
 				<div class="col">
@@ -312,24 +311,20 @@ if ($productId > 0) {
 									<h4>Additional Information</h4>
 								</div>
                                 <div class="col-lg-8 offset-lg-2 desc_col">
-								<div class="tab_image">
-									<img src="images\ph-11134207-7r98v-lu666edug2a142.webp" alt="">
-									<div class="others">
-								<p>COLOR:<span>Black</span></p>
-								<p>SIZE:<span>S, M, L, Xl, XXL, 3XL</span></p>
+									<div class="tab_image">
+										<img src="images\ph-11134207-7r98v-lu666edug2a142.webp" alt="">
+										<div class="others">
+											<p>COLOR:<span>Black</span></p>
+											<p>SIZE:<span>S, M, L, Xl, XXL, 3XL</span></p>
+										</div>
 									</div>
-                                </div>
+								</div>
 							</div>
 						</div>
 					</div>
-
-						</div>
-					</div>
-
 				</div>
 			</div>
 		</div>
-
 	</div>
 
 	<!-- Benefit -->
@@ -440,51 +435,79 @@ if ($productId > 0) {
 <script src="ins/single_custom.js"></script>
 <script>
     const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`;
-    let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
+	let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
 
-    // Update cart item count
-    function updateCart() {
-        const cartCountElement = document.getElementById('checkout_items');
-        if (cartCountElement) {
-            cartCountElement.textContent = cartItems.length;
-        }
-    }
+	// Update cart item count
+	function updateCart() {
+		const cartCountElement = document.getElementById('checkout_items');
+		if (cartCountElement) {
+			cartCountElement.textContent = cartItems.length;
+		}
+	}
 
-    // Add to Cart Logic
-	document.querySelector('.add-to-cart').addEventListener('click', function(event) {
-    const productId = event.target.getAttribute('data-id');
-    const productName = document.querySelector('h2').textContent; // Product name from the page
-    const productPrice = document.querySelector('.product-price').textContent; // Product price
+	// Add to Cart Logic
+	document.querySelector('.add-to-cart').addEventListener('click', function (event) {
+		const productId = event.target.getAttribute('data-id');
+		const productImage = event.target.getAttribute('data-image'); // Get the image from the button's data attribute
+		const productName = document.querySelector('h2').textContent.trim(); // Product name from the page
+		const productPrice = document.querySelector('.product_price').textContent.trim(); // Correct class for product price
+		const selectedSize = document.querySelector('.size-option.active')?.getAttribute('data-size'); // Get the active size
+		const quantity = parseInt(document.getElementById('quantity_value').textContent, 10); // Get selected quantity
 
-    // Check if the product is already in the cart
-    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+		if (!selectedSize) {
+			alert('Please select a size before adding to cart.');
+			return;
+		}
 
-    const existingItemIndex = cartItems.findIndex(item => item.id === productId);
+		// Check if the product is already in the cart
+		const existingItemIndex = cartItems.findIndex(item => item.id === productId && item.size === selectedSize);
 
-    if (existingItemIndex > -1) {
-        cartItems[existingItemIndex].quantity += 1;
-    } else {
-        cartItems.push({
-            id: productId,
-            name: productName,
-            price: productPrice,
-            quantity: 1
-        });
-    }
+		if (existingItemIndex > -1) {
+			cartItems[existingItemIndex].quantity += quantity;
+		} else {
+			cartItems.push({
+				id: productId,
+				name: productName,
+				price: productPrice,
+				size: selectedSize,
+				quantity: quantity,
+				image: productImage // Use the image from the database
+			});
+		}
 
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    alert(`${productName} has been added to your cart!`);
-    });
+		localStorage.setItem(cartKey, JSON.stringify(cartItems));
+		alert(`${quantity} ${productName} (${selectedSize}) has been added to your cart!`);
+		updateCart();
+	});
 
-    // Update the size selection when clicked
-    document.querySelectorAll('.size-option').forEach(function(button) {
-        button.addEventListener('click', function() {
-            document.querySelectorAll('.size-option').forEach(function(btn) {
-                btn.classList.remove('active');
-            });
-            button.classList.add('active');
-        });
-    });
+	// Update the size selection when clicked
+	document.querySelectorAll('.size-option').forEach(function (button) {
+		button.addEventListener('click', function () {
+			document.querySelectorAll('.size-option').forEach(function (btn) {
+				btn.classList.remove('active');
+			});
+			button.classList.add('active');
+		});
+	});
+
+	// Quantity Selector Logic
+	function incrementQuantity() {
+		let currentQuantity = parseInt(quantityElement.textContent, 10);
+		quantityElement.textContent = currentQuantity + 1;
+	}
+
+	function decrementQuantity() {
+		let currentQuantity = parseInt(quantityElement.textContent, 10);
+		if (currentQuantity > 1) {
+			quantityElement.textContent = currentQuantity - 1;
+		}
+	}
+
+	document.querySelector('.quantity_selector .plus').onclick = incrementQuantity;
+	document.querySelector('.quantity_selector .minus').onclick = decrementQuantity;
+
+	// Initialize cart count on page load
+	updateCart();
 </script>
 
 

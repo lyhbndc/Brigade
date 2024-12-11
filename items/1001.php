@@ -3,7 +3,6 @@ session_start();
 $user = $_SESSION['user'];
 $conn = mysqli_connect("localhost", "root", "", "brigade");
 
-
 $productId = isset($_GET['id']) ? $_GET['id'] : 1001;  // Default to 1001 if no ID is passed
 
 if ($productId > 0) {
@@ -224,18 +223,18 @@ if ($productId > 0) {
 						<p>The Brigade Clothing offers the perfect blend of comfort, style, and bold expression. Designed as a unisex basic T-shirt, this versatile piece is available in sizes ranging from S to XXL, ensuring a fit for everyone. Whether you're lounging or out with friends, this shirt adds an effortlessly cool vibe to your wardrobe.</p>
 					</div>
 					<div class="original_price">₱750.00</div>
-					<p class="product_price"><?php echo '₱' . $product['price']; ?></p>
+						<p class="product_price"><?php echo '₱' . $product['price']; ?></p>
 					<div class="product_size">
 						<br>
 						<span>Select Size:</span>
 						<div class="size-options">
-        <button class="size-option" data-size="small">Small</button>
-        <button class="size-option" data-size="medium">Medium</button>
-        <button class="size-option" data-size="large">Large</button>
-        <button class="size-option" data-size="xl">XL</button>
-        <button class="size-option" data-size="xxl">XXL</button>
-        <button class="size-option" data-size="xxxl">XXXL</button>
-    </div>
+							<button class="size-option" data-size="small">Small</button>
+							<button class="size-option" data-size="medium">Medium</button>
+							<button class="size-option" data-size="large">Large</button>
+							<button class="size-option" data-size="xl">XL</button>
+							<button class="size-option" data-size="xxl">XXL</button>
+							<button class="size-option" data-size="xxxl">XXXL</button>
+						</div>
 					</div>
 					<div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
 						<span>Quantity:</span>
@@ -248,14 +247,17 @@ if ($productId > 0) {
 					</div>
 				</div><br>
 				<?php if ($isOutOfStock): ?>
-        <button class="add-to-cart" disabled>Out of Stock</button>
-    <?php else: ?>
-        <button class="add-to-cart" data-id="<?php echo $product['id']; ?>">Add to Cart</button>
-    <?php endif; ?>
-</div>
+					<button class="add-to-cart" disabled>Out of Stock</button>
+				<?php else: ?>
+					<button 
+						class="add-to-cart" 
+						data-id="<?php echo $product['id']; ?>" 
+						data-image="<?php echo 'http://localhost/Brigade/uploads/' . $product['image']; ?>">Add to Cart</button>
+				<?php endif; ?>
+			</div>
 			</div>
 		</div>
-		</div>
+	</div>
 
 	<!-- Tabs -->
 
@@ -441,53 +443,80 @@ if ($productId > 0) {
 <script src="ins/single_custom.js"></script>
 <script>
     const cartKey = `cartItems_${<?php echo json_encode($user); ?>}`;
-    let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
+	let cartItems = JSON.parse(localStorage.getItem(cartKey)) || [];
 
-    // Update cart item count
-    function updateCart() {
-        const cartCountElement = document.getElementById('checkout_items');
-        if (cartCountElement) {
-            cartCountElement.textContent = cartItems.length;
-        }
-    }
+	// Update cart item count
+	function updateCart() {
+		const cartCountElement = document.getElementById('checkout_items');
+		if (cartCountElement) {
+			cartCountElement.textContent = cartItems.length;
+		}
+	}
 
-    // Add to Cart Logic
-	document.querySelector('.add-to-cart').addEventListener('click', function(event) {
-    const productId = event.target.getAttribute('data-id');
-    const productName = document.querySelector('h2').textContent; // Product name from the page
-    const productPrice = document.querySelector('.product-price').textContent; // Product price
+	// Add to Cart Logic
+	document.querySelector('.add-to-cart').addEventListener('click', function (event) {
+		const productId = event.target.getAttribute('data-id');
+		const productImage = event.target.getAttribute('data-image'); // Get the image from the button's data attribute
+		const productName = document.querySelector('h2').textContent.trim(); // Product name from the page
+		const productPrice = document.querySelector('.product_price').textContent.trim(); // Correct class for product price
+		const selectedSize = document.querySelector('.size-option.active')?.getAttribute('data-size'); // Get the active size
+		const quantity = parseInt(document.getElementById('quantity_value').textContent, 10); // Get selected quantity
 
-    // Check if the product is already in the cart
-    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+		if (!selectedSize) {
+			alert('Please select a size before adding to cart.');
+			return;
+		}
 
-    const existingItemIndex = cartItems.findIndex(item => item.id === productId);
+		// Check if the product is already in the cart
+		const existingItemIndex = cartItems.findIndex(item => item.id === productId && item.size === selectedSize);
 
-    if (existingItemIndex > -1) {
-        cartItems[existingItemIndex].quantity += 1;
-    } else {
-        cartItems.push({
-            id: productId,
-            name: productName,
-            price: productPrice,
-            quantity: 1
-        });
-    }
+		if (existingItemIndex > -1) {
+			cartItems[existingItemIndex].quantity += quantity;
+		} else {
+			cartItems.push({
+				id: productId,
+				name: productName,
+				price: productPrice,
+				size: selectedSize,
+				quantity: quantity,
+				image: productImage // Use the image from the database
+			});
+		}
 
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    alert(`${productName} has been added to your cart!`);
-    });
+		localStorage.setItem(cartKey, JSON.stringify(cartItems));
+		alert(`${quantity} ${productName} (${selectedSize}) has been added to your cart!`);
+		updateCart();
+	});
 
-    // Update the size selection when clicked
-    document.querySelectorAll('.size-option').forEach(function(button) {
-        button.addEventListener('click', function() {
-            document.querySelectorAll('.size-option').forEach(function(btn) {
-                btn.classList.remove('active');
-            });
-            button.classList.add('active');
-        });
-    });
+	// Update the size selection when clicked
+	document.querySelectorAll('.size-option').forEach(function (button) {
+		button.addEventListener('click', function () {
+			document.querySelectorAll('.size-option').forEach(function (btn) {
+				btn.classList.remove('active');
+			});
+			button.classList.add('active');
+		});
+	});
+
+	// Quantity Selector Logic
+	function incrementQuantity() {
+		let currentQuantity = parseInt(quantityElement.textContent, 10);
+		quantityElement.textContent = currentQuantity + 1;
+	}
+
+	function decrementQuantity() {
+		let currentQuantity = parseInt(quantityElement.textContent, 10);
+		if (currentQuantity > 1) {
+			quantityElement.textContent = currentQuantity - 1;
+		}
+	}
+
+	document.querySelector('.quantity_selector .plus').onclick = incrementQuantity;
+	document.querySelector('.quantity_selector .minus').onclick = decrementQuantity;
+
+	// Initialize cart count on page load
+	updateCart();
 </script>
-
 
 <script>
     // JavaScript to make the navbar opaque when scrolling
