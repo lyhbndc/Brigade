@@ -69,7 +69,6 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brigade Clothing</title>
-    <link rel="icon" type="image/png" href="BRIGADE_Icon.png">
     <link rel="stylesheet" href="styles/bootstrap4/bootstrap.min.css">
     <link rel="stylesheet" href="styles/dashboard_styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -125,6 +124,8 @@ $conn->close();
         </div>
     </div>
 
+    
+
     <!-- Combined Monthly Sales Box and Chart -->
     <div class="row mb-2">
         <div class="col-md-6">
@@ -136,7 +137,11 @@ $conn->close();
                     </div>
                 </div>
             </div>
+            <div class="text-center mt-4">
+            <button id="downloadReportBtn" class="btn btn-primary">Download Report</button>
+</div>
         </div>
+        
 
         <!-- Combined Order Status Box and Chart -->
         <div class="col-md-6">
@@ -251,6 +256,33 @@ new Chart(salesChartCtx, {
         }
     });
     
+</script>
+
+<script>
+document.getElementById('downloadReportBtn').addEventListener('click', function () {
+    fetch('generate_report.php')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            // Create a temporary link to trigger the download
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `Monthly_Report_${new Date().toLocaleDateString()}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url); // Clean up
+        })
+        .catch(error => {
+            console.error('There was an error downloading the report:', error);
+            alert('Failed to download the report. Please try again.');
+        });
+});
 </script>
 </body>
 </html>
