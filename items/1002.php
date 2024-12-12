@@ -225,13 +225,13 @@ if ($productId > 0) {
 								<br>
 								<span>Select Size:</span>
 								<div class="size-options">
-									<button class="size-option" data-size="small">Small</button>
-									<button class="size-option" data-size="medium">Medium</button>
-									<button class="size-option" data-size="large">Large</button>
-									<button class="size-option" data-size="xl">XL</button>
-									<button class="size-option" data-size="xxl">XXL</button>
-									<button class="size-option" data-size="xxxl">XXXL</button>
-								</div>
+								<button class="size-option" data-size="S">Small</button>
+								<button class="size-option" data-size="M">Medium</button>
+								<button class="size-option" data-size="L">Large</button>
+								<button class="size-option" data-size="XL">XL</button>
+								<button class="size-option" data-size="XXL">XXL</button>
+								<button class="size-option" data-size="XXXL">XXXL</button>
+							</div>
 							</div>
 							<div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
 								<span>Quantity:</span>
@@ -463,8 +463,18 @@ if ($productId > 0) {
 		const existingItemIndex = cartItems.findIndex(item => item.id === productId && item.size === selectedSize);
 
 		if (existingItemIndex > -1) {
+			const existingItem = cartItems[existingItemIndex];
+			const totalQuantity = existingItem.quantity + quantity;
+
+			if (totalQuantity > 5) {
+				alert("You have reached your limit of 5 quantities per size. Please check your cart and try again.");
+				return;
+			}
+
+			// If the quantity is less than or equal to 5, update the cart with the new quantity
 			cartItems[existingItemIndex].quantity += quantity;
 		} else {
+			// If the product is not in the cart, add it to the cart
 			cartItems.push({
 				id: productId,
 				name: productName,
@@ -476,7 +486,7 @@ if ($productId > 0) {
 		}
 
 		localStorage.setItem(cartKey, JSON.stringify(cartItems));
-		alert(`${quantity} ${productName} (${selectedSize}) has been added to your cart!`);
+		alert(`${quantity} ${productName} [${selectedSize}] has been added to your cart!`);
 		updateCart();
 	});
 
@@ -509,7 +519,6 @@ if ($productId > 0) {
 	// Initialize cart count on page load
 	updateCart();
 </script>
-
 
 <script>
     // JavaScript to make the navbar opaque when scrolling

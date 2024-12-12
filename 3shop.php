@@ -193,7 +193,7 @@ $result = $conn->query($sql);
 									<?php 
 									if ($result->num_rows > 0) {
 										while ($row = $result->fetch_assoc()) {
-											$productId = str_pad($row['id'], 7, '0', STR_PAD_LEFT);
+											$productId = $row['id'];  // No padding needed
 
 											// Check if all sizes are out of stock
 											$isOutOfStock = (
@@ -376,25 +376,37 @@ document.querySelectorAll('.add-to-cart').forEach(button => {
 
         const productItem = button.closest('.product-item');
         const productId = productItem.getAttribute('data-id');
-        const productName = productItem.querySelector('.product_name a').textContent;
+        let productName = productItem.querySelector('.product_name a').textContent;
         const productImage = productItem.querySelector('.product_image img').src;
         const productPrice = productItem.querySelector('.product_price').textContent;
 
         // Get the selected size from the sidebar
-        const selectedSize = document.querySelector('.checkboxes .active span').textContent;
+        let selectedSize = document.querySelector('.checkboxes .active span').textContent;
+
+        // Trim any leading or trailing whitespace from productName and selectedSize
+        productName = productName.trim();
+        selectedSize = selectedSize.trim();
 
         if (!selectedSize) {
             alert("Please select a size from the sidebar.");
             return;
         }
 
-        // Check if the item is already in the cart with the selected size
+        // Check if the item already exists in the cart
         const existingItemIndex = cartItems.findIndex(item => item.id === productId && item.size === selectedSize);
+
         if (existingItemIndex > -1) {
-            // Increase quantity if item already exists
-            cartItems[existingItemIndex].quantity += 1;
+            // If the item already exists, check if the quantity is 5
+            if (cartItems[existingItemIndex].quantity >= 5) {
+                // If there are 5 or more, alert the user and do not add the item
+                alert("You have reached your limit of 5 quantities per size. Please check your cart and try again.");
+                return;
+            } else {
+                // Increase quantity if it's less than 5
+                cartItems[existingItemIndex].quantity += 1;
+            }
         } else {
-            // Add new item with default quantity of 1
+            // Add new item with default quantity of 1 if it doesn't exist in the cart
             cartItems.push({
                 id: productId,
                 name: productName,
